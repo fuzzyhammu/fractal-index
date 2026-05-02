@@ -138,7 +138,7 @@ const Index = () => {
       {/* MANIFESTO — layered: paper bg + drifting notebook + telescope corner + dot field + crinkle */}
       <section
         id="after-hero"
-        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden dots crinkle"
+        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden dots crinkle film-grain leak"
       >
         <img
           src={texturePaper}
@@ -198,7 +198,7 @@ const Index = () => {
       </div>
 
       {/* SKILLS TOOLKIT — layered telescope + cosmos veil + scanlines */}
-      <section className="relative py-14 md:py-20 overflow-hidden scanlines">
+      <section className="relative py-14 md:py-20 overflow-hidden scanlines film-grain dust">
         <img
           src={atmosTelescope}
           alt=""
@@ -215,7 +215,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 01 · Toolkit</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+              <h2 className="display-xl text-3xl md:text-5xl text-ink">
                 Skills I bring <span className="font-accent text-gold">to the table.</span>
               </h2>
             </div>
@@ -246,7 +246,7 @@ const Index = () => {
       </section>
 
       {/* FEATURED HIGHLIGHTS BENTO — cosmos bg + dot field + drifting notebook */}
-      <section className="relative py-14 md:py-20 overflow-hidden dots-fine">
+      <section className="relative py-14 md:py-20 overflow-hidden dots-fine film-grain leak">
         <img
           src={textureCosmos}
           alt=""
@@ -263,7 +263,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 02 · Showcase</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+              <h2 className="display-xl text-3xl md:text-5xl text-ink">
                 Featured <span className="font-accent text-gold">work.</span>
               </h2>
             </div>
@@ -312,7 +312,7 @@ const Index = () => {
       </section>
 
       {/* RANDOM WINS / CURIOSITIES TEASER — paper texture wash + crinkle */}
-      <section className="relative py-12 md:py-16 overflow-hidden crinkle">
+      <section className="relative py-12 md:py-16 overflow-hidden crinkle film-grain dust linen">
         <img
           src={texturePaper}
           alt=""
@@ -323,7 +323,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 03 · Random Wins</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+              <h2 className="display-xl text-3xl md:text-5xl text-ink">
                 Belts, medals <span className="font-accent text-gold">& side quests.</span>
               </h2>
             </div>
@@ -342,7 +342,7 @@ const Index = () => {
       </section>
 
       {/* GRAND GROUPS — index, layered music plate */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      <section className="relative py-16 md:py-24 overflow-hidden film-grain dust halftone">
         <img
           src={atmosMusic}
           alt=""
@@ -359,7 +359,7 @@ const Index = () => {
           <div className="flex items-end justify-between mb-10 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 04 · The Archive</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+              <h2 className="display-xl text-3xl md:text-5xl text-ink">
                 Every cluster, <span className="font-accent text-gold">in four groups.</span>
               </h2>
             </div>
@@ -381,15 +381,15 @@ const Index = () => {
                 <div key={g.slug} data-reveal>
                   <header className="grid md:grid-cols-12 gap-6 items-baseline mb-5 pb-3 border-b border-border">
                     <div className="md:col-span-3 flex items-center gap-3">
-                      <GI className="w-5 h-5 text-gold" />
-                      <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold">Grand Group</span>
+                      <GI className="w-4 h-4 text-gold" />
+                      <span className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">Grand Group</span>
                     </div>
                     <div className="md:col-span-7">
-                      <h3 className="font-display text-3xl md:text-4xl text-ink leading-tight">{g.label}</h3>
-                      <p className="font-accent text-base text-ink-soft mt-1">{g.tagline}</p>
+                      <h3 className="font-display text-xl md:text-2xl text-ink leading-tight">{g.label}</h3>
+                      <p className="font-accent text-sm md:text-base text-ink-soft mt-1">{g.tagline}</p>
                     </div>
                     <div className="md:col-span-2 md:text-right flex md:justify-end items-center gap-3">
-                      <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft">
+                      <span className="font-mono text-[0.55rem] tracking-widest text-ink-soft">
                         {g.clusterSlugs.length} clusters
                       </span>
                       <button
@@ -411,14 +411,14 @@ const Index = () => {
                           <li key={cs} className="bg-paper">
                             <Link
                               to={`/${c.slug}`}
-                              className="group/tile block p-6 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden"
+                              className="group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden"
                             >
-                              <div className="flex items-start justify-between mb-8">
-                                <span className="font-mono text-xs tracking-widest text-gold">{c.num}</span>
-                                <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
+                              <div className="flex items-start justify-between mb-6">
+                                <span className="font-mono text-[0.65rem] tracking-widest text-gold">{c.num}</span>
+                                <ArrowUpRight className="w-3.5 h-3.5 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
                               </div>
-                              <h4 className="font-display text-2xl md:text-[1.7rem] leading-[1.05] mb-2">{c.label}</h4>
-                              <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft">
+                              <h4 className="font-display text-lg md:text-xl leading-snug mb-2">{c.label}</h4>
+                              <p className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft">
                                 {c.tagline}
                               </p>
                               <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-700 group-hover/tile:w-full" />
@@ -436,7 +436,7 @@ const Index = () => {
       </section>
 
       {/* CORE TRAITS BAND — layered cosmos + telescope + dots */}
-      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain dots-fine">
+      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain dots-fine film-grain leak halftone">
         <img
           src={textureCosmos}
           alt=""
@@ -451,7 +451,7 @@ const Index = () => {
         />
         <div className="container relative">
           <p className="label-gold mb-6" data-reveal>§ 05 · Core Traits</p>
-          <h2 className="display-xl text-5xl md:text-7xl mb-12 max-w-3xl text-balance" data-reveal>
+          <h2 className="display-xl text-4xl md:text-6xl mb-12 max-w-3xl text-balance" data-reveal>
             Five instincts <span className="font-accent text-gold">I trust</span> before any plan.
           </h2>
           <div className="grid md:grid-cols-5 gap-8">

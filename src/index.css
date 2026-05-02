@@ -318,6 +318,120 @@
     mix-blend-mode: multiply;
   }
 
+  /* Vintage film grain — finer & warmer than .grain */
+  .film-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0 0.65  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+  .dark .film-grain::after { mix-blend-mode: screen; opacity: 0.07; }
+
+  /* Dust & scratches — sparse organic flecks + thin lines */
+  .dust::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cg fill='%23000' opacity='0.55'%3E%3Ccircle cx='40' cy='80' r='0.6'/%3E%3Ccircle cx='130' cy='220' r='0.4'/%3E%3Ccircle cx='280' cy='60' r='0.7'/%3E%3Ccircle cx='420' cy='150' r='0.5'/%3E%3Ccircle cx='510' cy='340' r='0.6'/%3E%3Ccircle cx='90' cy='430' r='0.4'/%3E%3Ccircle cx='220' cy='510' r='0.5'/%3E%3Ccircle cx='370' cy='470' r='0.6'/%3E%3Ccircle cx='560' cy='100' r='0.4'/%3E%3Ccircle cx='200' cy='300' r='0.5'/%3E%3C/g%3E%3Cg stroke='%23000' stroke-width='0.4' opacity='0.4'%3E%3Cline x1='10' y1='110' x2='70' y2='115'/%3E%3Cline x1='320' y1='220' x2='360' y2='223'/%3E%3Cline x1='480' y1='400' x2='540' y2='402'/%3E%3Cline x1='150' y1='350' x2='200' y2='352'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 600px 600px;
+  }
+  .dark .dust::before { mix-blend-mode: screen; opacity: 0.22; }
+
+  /* Light leak — warm haze in one corner */
+  .leak::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(60% 40% at 90% 10%, hsl(41 90% 65% / 0.35), transparent 70%),
+      radial-gradient(40% 30% at 5% 95%, hsl(20 80% 55% / 0.22), transparent 70%);
+  }
+  .dark .leak::before {
+    background:
+      radial-gradient(60% 40% at 90% 10%, hsl(41 80% 60% / 0.18), transparent 70%),
+      radial-gradient(40% 30% at 5% 95%, hsl(220 70% 30% / 0.3), transparent 70%);
+  }
+
+  /* Halftone — comic / screen-print pattern */
+  .halftone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: radial-gradient(hsl(var(--ink)) 1.3px, transparent 1.6px);
+    background-size: 6px 6px;
+  }
+  .dark .halftone::after { mix-blend-mode: screen; opacity: 0.12; background-image: radial-gradient(hsl(var(--paper)) 1.3px, transparent 1.6px); }
+
+  /* CRT glitch — horizontal warp lines */
+  .glitch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    background-image: repeating-linear-gradient(
+      0deg,
+      hsl(var(--gold) / 0.18) 0px,
+      hsl(var(--gold) / 0.18) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      hsl(var(--ink) / 0.06) 0px,
+      hsl(var(--ink) / 0.06) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+  }
+
+  /* Linen / fabric weave */
+  .linen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image:
+      repeating-linear-gradient(0deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 3px);
+  }
+  .dark .linen::before { mix-blend-mode: screen; opacity: 0.08; background-image:
+      repeating-linear-gradient(0deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 3px); }
+
+  /* Iridescent / holographic sheen — for hover accents */
+  .holo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-editorial);
+    background: linear-gradient(135deg,
+      hsl(330 80% 70% / 0.18),
+      hsl(200 80% 70% / 0.18),
+      hsl(60  80% 70% / 0.18),
+      hsl(280 80% 70% / 0.18));
+    mix-blend-mode: overlay;
+  }
+  .group:hover > .holo::after,
+  .holo.is-on::after { opacity: 1; }
+
   .photo-layer { position: absolute; pointer-events: none; object-fit: cover; filter: grayscale(0.4) contrast(1.05); }
 }
 

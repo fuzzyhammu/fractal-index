@@ -74,6 +74,8 @@ export function BentoCard({ item }: { item: BentoItem }) {
           "hover:border-gold hover:shadow-[0_24px_60px_-20px_hsl(220_60%_9%/0.45)]",
           "hover:-translate-y-1 hover:scale-[1.015] hover:z-10",
           "focus:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/40",
+          // layered textures — distinct in light vs dark via per-utility theme handling
+          hasImage ? "film-grain dust" : "halftone film-grain",
           accent === "navy" ? ACCENT_BG.navy : ACCENT_BG[accent],
         ].join(" ")}
         aria-label={`${item.title} — open detail`}
@@ -94,8 +96,12 @@ export function BentoCard({ item }: { item: BentoItem }) {
                   : "bg-gradient-to-t from-navy-deep/95 via-navy-deep/55 to-navy-deep/10 group-hover:from-navy-deep group-hover:via-navy-deep/80"
               }`}
             />
+            {/* light leak that intensifies on hover */}
+            <span aria-hidden className="leak absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-700" />
           </>
         )}
+        {/* iridescent sheen on hover */}
+        <span aria-hidden className="holo absolute inset-0" />
 
         {/* Content */}
         <div
@@ -123,7 +129,7 @@ export function BentoCard({ item }: { item: BentoItem }) {
           <div>
             <h3
               className={`font-display leading-tight transition-colors duration-300 ${
-                size === "xl" || size === "lg" ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"
+                size === "xl" || size === "lg" ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
               } ${hasImage ? "text-paper-contrast" : "text-ink group-hover:text-gold"}`}
             >
               {item.title}
@@ -157,16 +163,16 @@ export function BentoCard({ item }: { item: BentoItem }) {
 
       {/* Click-to-detail modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl bg-paper border-gold/40 p-0 overflow-hidden">
+        <DialogContent className="max-w-3xl bg-paper border-gold/40 p-0 overflow-hidden relative crinkle film-grain dust">
           {hasImage && (
-            <div className="relative aspect-[16/9] overflow-hidden">
+            <div className="relative aspect-[16/9] overflow-hidden halftone leak">
               <img src={item.image} alt={item.imageAlt ?? ""} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent" />
             </div>
           )}
-          <div className="p-7 md:p-10">
+          <div className="p-7 md:p-10 relative">
             {item.eyebrow && <p className="label-gold mb-3">{item.eyebrow}</p>}
-            <DialogTitle className="font-display text-3xl md:text-5xl text-ink leading-tight">
+            <DialogTitle className="font-display text-2xl md:text-4xl text-ink leading-tight">
               {item.title}
             </DialogTitle>
             {item.meta && (
