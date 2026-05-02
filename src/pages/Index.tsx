@@ -8,12 +8,49 @@ import {
 import { PageShell } from "@/components/SiteChrome";
 import { PullQuote } from "@/components/Editorial";
 import { Bento, type BentoItem } from "@/components/Bento";
+import { HeroSlideshow, type Slide } from "@/components/HeroSlideshow";
 import { GRAND_GROUPS, findCluster } from "@/data/clusters";
 import heroPortrait from "@/assets/hero-portrait.jpg";
 import textureCosmos from "@/assets/texture-cosmos.jpg";
+import texturePaper from "@/assets/texture-paper.jpg";
 import atmosTelescope from "@/assets/atmos-telescope.jpg";
 import atmosNotebook from "@/assets/atmos-notebook.jpg";
 import atmosMusic from "@/assets/atmos-music.jpg";
+
+/* -------------------- HERO SLIDESHOW -------------------- */
+const HERO_SLIDES: Slide[] = [
+  {
+    src: heroPortrait, alt: "Geetika Gehlot — portrait",
+    tone: "light", eyebrow: "Geetika Gehlot · I",
+    title: "Building worlds.",
+    body: "Scientist · Researcher · Creator · Musician · Storyteller · Innovator. A 15-year-old multidisciplinary mind from Montréal.",
+  },
+  {
+    src: atmosTelescope, alt: "Telescope under stars",
+    tone: "light", eyebrow: "Plate II · Observation",
+    title: "Through the lens.",
+    body: "Robotics, physics, and the slow art of paying attention.",
+  },
+  {
+    src: atmosNotebook, alt: "Open notebook with handwritten pages",
+    tone: "dark", eyebrow: "Plate III · Notation",
+    title: "On the page.",
+    body: "A novel cycle in motion. Words before pixels, always.",
+  },
+  {
+    src: atmosMusic, alt: "Stage lights and microphone",
+    tone: "light", eyebrow: "Plate IV · Resonance",
+    title: "In full voice.",
+    body: "Hindustani vocal, voice acting, and the discipline of stage.",
+  },
+  {
+    src: texturePaper, alt: "Aged paper texture",
+    tone: "dark", eyebrow: "Plate V · Dossier",
+    title: "Examined in public.",
+    body: "Every claim, every clipping, every receipt — open for inspection.",
+  },
+];
+
 
 /* -------------------- SKILLS TOOLKIT -------------------- */
 const SKILLS: { icon: React.ComponentType<{ className?: string }>; label: string; level: string }[] = [
