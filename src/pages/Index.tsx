@@ -351,7 +351,9 @@ const Index = () => {
             );
           })}
         </div>
+        </div>
       </section>
+
 
       {/* CORE TRAITS BAND */}
       <section className="bg-navy-deep text-paper py-24 md:py-32 relative overflow-hidden grain">
