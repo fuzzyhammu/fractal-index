@@ -1,84 +1,188 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { NavLink, Link, useParams, useLocation } from "react-router-dom";
 import { ChevronRight, Home, ArrowLeft, ChevronDown } from "lucide-react";
 import { SiteNav, SiteFooter } from "./SiteChrome";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { CLUSTERS, GRAND_GROUPS, findCluster, findSubpage, findGrandGroup } from "@/data/clusters";
 
-function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
+// scroll-spy: tracks which subsection anchor is in view, updates location.hash without jumping
+function useScrollSpy(ids: string[]) {
   const location = useLocation();
+  const [active, setActive] = useState<string>(() => location.hash.replace("#", "") || ids[0]);
+
+  useEffect(() => {
+    if (!ids.length) return;
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    if (!elements.length) return;
+
+    const visibility = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          visibility.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        });
+        // pick the most-visible one
+        let best = "";
+        let bestRatio = 0;
+        visibility.forEach((r, id) => {
+          if (r > bestRatio) {
+            bestRatio = r;
+            best = id;
+          }
+        });
+        if (best && best !== active) {
+          setActive(best);
+          // soft-update hash without scrolling
+          if (history.replaceState) {
+            const newHash = best === ids[0] ? " " : `#${best}`;
+            history.replaceState(null, "", `${location.pathname}${newHash === " " ? "" : newHash}`);
+          }
+        }
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids.join("|"), location.pathname]);
+
+  return active;
+}
+
+// short glyph for collapsed sidebar (Roman-numeral-ish, sleek)
+function shortGlyph(label: string, index: number): string {
+  const ROMAN = ["·", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+  if (index === 0) return "§"; // overview
+  return ROMAN[index] ?? label.slice(0, 1).toUpperCase();
+}
+
+function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
   const cluster = findCluster(clusterSlug);
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
+
+  // Collect subpage slugs in order; "overview" maps to top of page (no hash) but for spy we treat first section as overview
+  const subSlugs = cluster?.subpages.map((s) => s.slug) ?? [];
+  const activeSlug = useScrollSpy(subSlugs);
+
   if (!cluster) return null;
   const Icon = cluster.icon;
-  // intra-page nav uses hash anchors; "overview" = no hash
+
   const linkFor = (slug: string) => slug === "overview" ? `/${cluster.slug}` : `/${cluster.slug}#${slug}`;
-  const isActiveSub = (slug: string) =>
-    (slug === "overview" && !location.hash) || location.hash === `#${slug}`;
+  const isActiveSub = (slug: string) => slug === activeSlug;
+
+  const rails = cluster.subpages.filter((s) => s.kind !== "topic");
+  const topics = cluster.subpages.filter((s) => s.kind === "topic");
+
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
       <SidebarContent className="bg-paper">
-        <div className="px-4 py-5 border-b border-border">
-          <Link to="/dashboard" className="flex items-center gap-2 text-ink-soft hover:text-gold transition-colors">
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em]">Dashboard</span>
-          </Link>
-          <div className="mt-3 flex items-center gap-2.5">
+        <div className={`px-3 py-5 border-b border-border ${collapsed ? "px-2" : "px-4"}`}>
+          {!collapsed && (
+            <Link to="/dashboard" className="flex items-center gap-2 text-ink-soft hover:text-gold transition-colors">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em]">Dashboard</span>
+            </Link>
+          )}
+          <div className={`mt-3 flex items-center gap-2.5 ${collapsed ? "justify-center mt-0" : ""}`}>
             <Icon className="w-4 h-4 text-gold shrink-0" />
-            <span className="font-display text-lg leading-tight text-ink truncate">{cluster.label}</span>
+            {!collapsed && <span className="font-display text-lg leading-tight text-ink truncate">{cluster.label}</span>}
           </div>
-          <p className="font-mono text-[0.6rem] text-gold tracking-widest mt-1">§ {cluster.num}</p>
+          {!collapsed && <p className="font-mono text-[0.6rem] text-gold tracking-widest mt-1">§ {cluster.num}</p>}
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground">
-            Fractal Rails
-          </SidebarGroupLabel>
+          {!collapsed && (
+            <SidebarGroupLabel className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground">
+              Fractal Rails
+            </SidebarGroupLabel>
+          )}
           <SidebarGroupContent>
             <SidebarMenu>
-              {cluster.subpages.filter((s) => s.kind !== "topic").map((s) => (
-                <SidebarMenuItem key={s.slug}>
-                  <SidebarMenuButton asChild>
-                    <a
-                      href={linkFor(s.slug)}
-                      className={`font-mono text-xs tracking-wide ${isActiveSub(s.slug) ? "text-gold bg-paper-deep" : "text-ink hover:text-gold"}`}
+              {rails.map((s, i) => {
+                const active = isActiveSub(s.slug);
+                return (
+                  <SidebarMenuItem key={s.slug}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={active}
+                      tooltip={collapsed ? s.label : undefined}
                     >
-                      <span className="text-gold mr-1">·</span>{s.label}
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                      <a
+                        href={linkFor(s.slug)}
+                        title={collapsed ? s.label : undefined}
+                        className={`font-mono text-xs tracking-wide flex items-center ${
+                          active ? "text-gold bg-paper-deep" : "text-ink hover:text-gold"
+                        }`}
+                      >
+                        {collapsed ? (
+                          <span className="font-display text-sm w-full text-center">
+                            {shortGlyph(s.label, i)}
+                          </span>
+                        ) : (
+                          <>
+                            <span className={`mr-1 ${active ? "text-gold" : "text-gold"}`}>·</span>
+                            <span className="truncate">{s.label}</span>
+                          </>
+                        )}
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {cluster.subpages.some((s) => s.kind === "topic") && (
+        {topics.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground">
-              Topics
-            </SidebarGroupLabel>
+            {!collapsed && (
+              <SidebarGroupLabel className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground">
+                Topics
+              </SidebarGroupLabel>
+            )}
             <SidebarGroupContent>
               <SidebarMenu>
-                {cluster.subpages.filter((s) => s.kind === "topic").map((s) => (
-                  <SidebarMenuItem key={s.slug}>
-                    <SidebarMenuButton asChild>
-                      <a
-                        href={linkFor(s.slug)}
-                        className={`font-display text-sm ${isActiveSub(s.slug) ? "text-gold" : "text-ink hover:text-gold"}`}
+                {topics.map((s, i) => {
+                  const active = isActiveSub(s.slug);
+                  return (
+                    <SidebarMenuItem key={s.slug}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={active}
+                        tooltip={collapsed ? s.label : undefined}
                       >
-                        {s.label}
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                        <a
+                          href={linkFor(s.slug)}
+                          title={collapsed ? s.label : undefined}
+                          className={`font-display text-sm flex items-center ${
+                            active ? "text-gold" : "text-ink hover:text-gold"
+                          }`}
+                        >
+                          {collapsed ? (
+                            <span className="font-mono text-[0.7rem] tracking-widest w-full text-center">
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
+                          ) : (
+                            <span className="truncate">{s.label}</span>
+                          )}
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         )}
 
-        {GRAND_GROUPS.map((g) => {
+        {!collapsed && GRAND_GROUPS.map((g) => {
           const GI = g.icon;
           const currentGroup = findGrandGroup(cluster.slug);
           return (
@@ -112,6 +216,36 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
             </CollapsibleGroup>
           );
         })}
+
+        {collapsed && (
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {GRAND_GROUPS.flatMap((g) => g.clusterSlugs).map((cs) => {
+                  const cc = findCluster(cs);
+                  if (!cc) return null;
+                  const CI = cc.icon;
+                  const isCurrent = cc.slug === cluster.slug;
+                  return (
+                    <SidebarMenuItem key={cs}>
+                      <SidebarMenuButton asChild tooltip={cc.label} isActive={isCurrent}>
+                        <NavLink
+                          to={`/${cc.slug}`}
+                          title={cc.label}
+                          className={`flex items-center justify-center ${
+                            isCurrent ? "text-gold" : "text-ink-soft hover:text-gold"
+                          }`}
+                        >
+                          <CI className="w-3.5 h-3.5" />
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
     </Sidebar>
   );
