@@ -459,6 +459,8 @@
   .photo-layer { position: absolute; pointer-events: none; object-fit: cover; filter: grayscale(0.4) contrast(1.05); }
 
   .visible-popup-panel {
+    display: block !important;
+    opacity: 1 !important;
     background: hsl(38 40% 96%) !important;
     color: hsl(220 60% 9%) !important;
     border-color: hsl(var(--gold)) !important;
@@ -469,6 +471,11 @@
   .visible-popup-panel .text-ink { color: hsl(220 60% 9%) !important; }
   .visible-popup-panel .text-ink-soft,
   .visible-popup-panel .text-muted-foreground { color: hsl(220 30% 22%) !important; }
+
+  .visible-popup-panel > * {
+    opacity: 1 !important;
+    filter: none !important;
+  }
 }
 
 @keyframes fade-up {
