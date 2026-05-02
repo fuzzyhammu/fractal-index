@@ -1,5 +1,5 @@
 import { NavLink, Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { CLUSTERS, GRAND_GROUPS, PROOF_CLUSTER, findGrandGroup } from "@/data/clusters";
 import { ThemeToggle } from "./ThemeToggle";
@@ -233,8 +233,8 @@ export const SiteNav = () => {
   );
 };
 
-export const SiteFooter = () => (
-  <footer className="force-light bg-navy-deep text-paper mt-32 relative overflow-hidden grain">
+export const SiteFooter = forwardRef<HTMLElement>((_, ref) => (
+  <footer ref={ref} className="force-light bg-navy-deep text-paper mt-32 relative overflow-hidden grain">
     <div className="container py-20 grid md:grid-cols-4 gap-12">
       <div className="md:col-span-2">
         <p className="label-gold mb-4">Colophon</p>
@@ -268,7 +268,9 @@ export const SiteFooter = () => (
       </div>
     </div>
   </footer>
-);
+));
+
+SiteFooter.displayName = "SiteFooter";
 
 export const PageShell = ({ children }: { children: React.ReactNode }) => (
   <div className="min-h-screen bg-paper text-foreground">
