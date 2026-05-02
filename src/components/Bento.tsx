@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { forwardRef, ReactNode, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -75,7 +75,7 @@ export function BentoCard({ item }: { item: BentoItem }) {
           "hover:-translate-y-1 hover:scale-[1.015] hover:z-10",
           "focus:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/40",
           // layered textures — distinct in light vs dark via per-utility theme handling
-          hasImage ? "film-grain dust" : "halftone film-grain",
+          hasImage ? "film-grain crumpled-paper" : "crumpled-paper film-grain",
           accent === "navy" ? ACCENT_BG.navy : ACCENT_BG[accent],
         ].join(" ")}
         aria-label={`${item.title} — open detail`}
@@ -163,9 +163,9 @@ export function BentoCard({ item }: { item: BentoItem }) {
 
       {/* Click-to-detail modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="visible-popup-panel force-light z-[1000] max-w-3xl p-0 overflow-y-auto relative">
+        <DialogContent className="visible-popup-panel force-light !z-[1200] max-w-3xl p-0 overflow-y-auto">
           {hasImage && (
-            <div className="relative aspect-[16/9] overflow-hidden halftone leak">
+            <div className="relative aspect-[16/9] overflow-hidden crumpled-paper leak">
               <img src={item.image} alt={item.imageAlt ?? ""} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent" />
             </div>
@@ -194,12 +194,16 @@ export function BentoCard({ item }: { item: BentoItem }) {
 }
 
 /** Convenience: render a list of items into a BentoGrid. */
-export function Bento({ items }: { items: BentoItem[] }) {
+export const Bento = forwardRef<HTMLDivElement, { items: BentoItem[] }>(({ items }, ref) => {
   return (
-    <BentoGrid>
+    <div ref={ref}>
+      <BentoGrid>
       {items.map((it) => (
         <BentoCard key={it.id} item={it} />
       ))}
-    </BentoGrid>
+      </BentoGrid>
+    </div>
   );
-}
+});
+
+Bento.displayName = "Bento";

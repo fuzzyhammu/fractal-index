@@ -303,26 +303,33 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
   }
 
-  /* Halftone dot field — sits above a photo for layered editorial depth */
-  .dots::before {
+  /* Subtle crumpled paper field — replaces the older dotted overlays */
+  .crumpled-paper::before,
+  .dots::before,
+  .dots-fine::before,
+  .halftone::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: radial-gradient(hsl(var(--ink) / 0.55) 1px, transparent 1.2px);
-    background-size: 14px 14px;
-    opacity: 0.08;
+    opacity: 0.105;
     mix-blend-mode: multiply;
+    background-image:
+      linear-gradient(118deg, transparent 0 21%, hsl(var(--ink) / 0.10) 21.4%, transparent 22.4% 45%, hsl(var(--gold) / 0.09) 45.5%, transparent 47% 100%),
+      linear-gradient(31deg, transparent 0 32%, hsl(var(--ink) / 0.08) 32.5%, transparent 34% 68%, hsl(var(--paper-deep) / 0.38) 68.5%, transparent 70% 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018 0.052' numOctaves='4' seed='19'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.42 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
+    background-size: 100% 100%, 100% 100%, cover;
   }
-  .dots-fine::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(hsl(var(--paper) / 0.6) 0.8px, transparent 1px);
-    background-size: 8px 8px;
-    opacity: 0.12;
+  .dark .crumpled-paper::before,
+  .dark .dots::before,
+  .dark .dots-fine::before,
+  .dark .halftone::after {
+    opacity: 0.09;
     mix-blend-mode: screen;
+    background-image:
+      linear-gradient(118deg, transparent 0 21%, hsl(var(--paper-contrast) / 0.08) 21.4%, transparent 22.4% 45%, hsl(var(--gold) / 0.07) 45.5%, transparent 47% 100%),
+      linear-gradient(31deg, transparent 0 32%, hsl(var(--paper-contrast-soft) / 0.06) 32.5%, transparent 34% 68%, hsl(var(--gold) / 0.05) 68.5%, transparent 70% 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018 0.052' numOctaves='4' seed='23'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.24 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
   }
 
   /* Crinkled paper / topographic texture */
@@ -391,19 +398,6 @@
       radial-gradient(40% 30% at 5% 95%, hsl(220 70% 30% / 0.12), transparent 70%);
   }
 
-  /* Halftone — comic / screen-print pattern */
-  .halftone::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.07;
-    mix-blend-mode: multiply;
-    background-image: radial-gradient(hsl(var(--ink)) 1.3px, transparent 1.6px);
-    background-size: 6px 6px;
-  }
-  .dark .halftone::after { mix-blend-mode: screen; opacity: 0.055; background-image: radial-gradient(hsl(var(--paper)) 1.3px, transparent 1.6px); }
-
   /* CRT glitch — horizontal warp lines */
   .glitch::after {
     content: '';
@@ -465,15 +459,23 @@
   .photo-layer { position: absolute; pointer-events: none; object-fit: cover; filter: grayscale(0.4) contrast(1.05); }
 
   .visible-popup-panel {
+    display: block !important;
+    opacity: 1 !important;
     background: hsl(38 40% 96%) !important;
     color: hsl(220 60% 9%) !important;
     border-color: hsl(var(--gold)) !important;
-    box-shadow: 0 30px 90px -25px hsl(220 60% 4% / 0.9), 0 0 0 1px hsl(var(--gold) / 0.45) !important;
+    outline: 1px solid hsl(38 40% 96% / 0.86);
+    box-shadow: 0 34px 120px -22px hsl(220 60% 4% / 0.98), 0 0 0 1px hsl(var(--gold) / 0.62), 0 0 0 9999px hsl(222 65% 6% / 0.42) !important;
   }
 
   .visible-popup-panel .text-ink { color: hsl(220 60% 9%) !important; }
   .visible-popup-panel .text-ink-soft,
   .visible-popup-panel .text-muted-foreground { color: hsl(220 30% 22%) !important; }
+
+  .visible-popup-panel > * {
+    opacity: 1 !important;
+    filter: none !important;
+  }
 }
 
 @keyframes fade-up {
