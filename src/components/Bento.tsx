@@ -163,7 +163,7 @@ export function BentoCard({ item }: { item: BentoItem }) {
 
       {/* Click-to-detail modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="visible-popup-panel force-light z-[1000] max-w-3xl p-0 overflow-y-auto relative">
+        <DialogContent className="visible-popup-panel force-light !z-[1200] max-w-3xl p-0 overflow-y-auto">
           {hasImage && (
             <div className="relative aspect-[16/9] overflow-hidden crumpled-paper leak">
               <img src={item.image} alt={item.imageAlt ?? ""} className="w-full h-full object-cover" />
