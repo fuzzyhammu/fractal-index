@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Geetika Gehlot — E-Portfolio Design System
+  Meta-hybrid: editorial magazine + research dossier + cinematic founder.
+  Palette: deep navy / ivory paper / antique gold / oxblood accent.
+  All colors HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 38 35% 95%;            /* ivory paper */
+    --foreground: 220 60% 9%;            /* deep navy ink */
+
+    --paper: 38 40% 96%;
+    --paper-deep: 36 28% 90%;
+    --ink: 220 60% 9%;
+    --ink-soft: 220 30% 22%;
+
+    --navy: 220 60% 9%;
+    --navy-deep: 222 65% 6%;
+    --navy-muted: 220 35% 18%;
+
+    --gold: 41 55% 52%;
+    --gold-bright: 43 70% 60%;
+    --gold-soft: 41 35% 78%;
+
+    --oxblood: 358 55% 32%;
+
+    --card: 38 35% 97%;
+    --card-foreground: 220 60% 9%;
+
+    --popover: 38 35% 97%;
+    --popover-foreground: 220 60% 9%;
+
+    --primary: 220 60% 9%;
+    --primary-foreground: 38 35% 95%;
+
+    --secondary: 36 28% 90%;
+    --secondary-foreground: 220 60% 9%;
+
+    --muted: 36 20% 88%;
+    --muted-foreground: 220 20% 38%;
+
+    --accent: 41 55% 52%;
+    --accent-foreground: 220 60% 9%;
+
+    --destructive: 358 55% 32%;
+    --destructive-foreground: 38 35% 95%;
+
+    --border: 36 20% 80%;
+    --input: 36 20% 80%;
+    --ring: 41 55% 52%;
+
+    --radius: 0.125rem;
+
+    /* Gradients */
+    --gradient-cosmos: radial-gradient(ellipse at top, hsl(220 65% 12%) 0%, hsl(222 65% 6%) 70%);
+    --gradient-gold: linear-gradient(135deg, hsl(var(--gold-bright)) 0%, hsl(var(--gold)) 100%);
+    --gradient-veil: linear-gradient(180deg, hsla(220, 65%, 6%, 0) 0%, hsla(220, 65%, 6%, 0.85) 70%, hsl(var(--navy-deep)) 100%);
+
+    /* Shadows */
+    --shadow-paper: 0 1px 0 hsl(36 20% 70%), 0 8px 24px -12px hsl(220 30% 20% / 0.18);
+    --shadow-deep: 0 24px 60px -20px hsl(220 60% 9% / 0.55);
+    --shadow-gold: 0 0 0 1px hsl(var(--gold) / 0.4), 0 8px 32px -8px hsl(var(--gold) / 0.35);
+
+    /* Motion */
+    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dark {
+    --background: 222 65% 6%;
+    --foreground: 38 35% 95%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'ss01', 'cv11', 'kern';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, .font-display {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-feature-settings: 'liga', 'dlig';
+    letter-spacing: -0.01em;
+  }
+
+  .font-mono, code, kbd {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  ::selection {
+    background: hsl(var(--gold) / 0.35);
+    color: hsl(var(--ink));
+  }
+}
+
+@layer components {
+  /* Editorial rules & marks */
+  .rule-gold {
+    background: linear-gradient(90deg, hsl(var(--gold)) 0%, hsl(var(--gold) / 0.2) 100%);
+    height: 1px;
+  }
+  .rule-double {
+    border-top: 1px solid hsl(var(--ink) / 0.6);
+    border-bottom: 1px solid hsl(var(--ink) / 0.6);
+    height: 6px;
+  }
+  .eyebrow {
+    @apply font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground;
+  }
+  .label-gold {
+    @apply font-mono text-[0.65rem] uppercase tracking-[0.3em];
+    color: hsl(var(--gold));
+  }
+  .display-xl {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+  }
+  .drop-cap::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem;
+    line-height: 0.85;
+    float: left;
+    padding: 0.3rem 0.6rem 0 0;
+    color: hsl(var(--gold));
+    font-weight: 600;
+  }
+
+  .dossier-card {
+    background: hsl(var(--paper));
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-paper);
+    position: relative;
+  }
+  .dossier-card::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid hsl(var(--border) / 0.5);
+    pointer-events: none;
+  }
+
+  .stamp {
+    @apply font-mono text-[0.6rem] uppercase tracking-[0.25em] inline-flex items-center gap-1.5 px-2 py-1;
+    border: 1px solid hsl(var(--gold));
+    color: hsl(var(--gold));
+  }
+
+  .hover-lift {
+    transition: transform 0.5s var(--ease-editorial), box-shadow 0.5s var(--ease-editorial);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-deep);
+  }
+
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: hsl(var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-editorial);
+  }
+  .link-underline:hover::after { transform: scaleX(1); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .bg-cosmos { background: var(--gradient-cosmos); }
+  .bg-paper { background: hsl(var(--paper)); }
+  .bg-navy { background: hsl(var(--navy)); }
+
+  .text-gold { color: hsl(var(--gold)); }
+  .text-ink { color: hsl(var(--ink)); }
+  .text-ink-soft { color: hsl(var(--ink-soft)); }
+
+  .border-gold { border-color: hsl(var(--gold)); }
+  .border-ink { border-color: hsl(var(--ink)); }
+
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes shimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.animate-fade-up { animation: fade-up 0.9s var(--ease-editorial) both; }
+.animate-fade-in { animation: fade-in 1.2s var(--ease-editorial) both; }
+.animate-shimmer { animation: shimmer 3s ease-in-out infinite; }
