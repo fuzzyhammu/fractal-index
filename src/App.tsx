@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Proof from "./pages/Proof.tsx";
 import { FractalPage } from "./components/FractalPage";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { LEGACY_REDIRECTS } from "./data/clusters";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -18,6 +19,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
