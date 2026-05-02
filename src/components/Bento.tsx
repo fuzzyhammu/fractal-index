@@ -75,7 +75,7 @@ export function BentoCard({ item }: { item: BentoItem }) {
           "hover:-translate-y-1 hover:scale-[1.015] hover:z-10",
           "focus:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/40",
           // layered textures — distinct in light vs dark via per-utility theme handling
-          hasImage ? "film-grain crumpled-paper" : "crumpled-paper film-grain",
+          hasImage ? "film-grain crumpled-paper stipple" : "crumpled-paper film-grain fibers stipple",
           accent === "navy" ? ACCENT_BG.navy : ACCENT_BG[accent],
         ].join(" ")}
         aria-label={`${item.title} — open detail`}

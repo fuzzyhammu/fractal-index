@@ -138,7 +138,7 @@ const Index = () => {
       {/* MANIFESTO — layered: paper bg + drifting notebook + telescope corner + crumpled-paper veil */}
       <section
         id="after-hero"
-        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden crumpled-paper crinkle film-grain leak"
+        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden crumpled-paper crinkle film-grain leak parchment fibers"
       >
         <img
           src={texturePaper}
@@ -198,7 +198,7 @@ const Index = () => {
       </div>
 
       {/* SKILLS TOOLKIT — layered telescope + cosmos veil + scanlines */}
-      <section className="relative py-14 md:py-20 overflow-hidden scanlines film-grain dust">
+      <section className="relative py-14 md:py-20 overflow-hidden scanlines film-grain dust weave-soft stipple">
         <img
           src={atmosTelescope}
           alt=""
@@ -229,7 +229,7 @@ const Index = () => {
                 key={label}
                 data-reveal
                 data-reveal-delay={String(idx * 40)}
-                className="bg-paper p-5 group hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden"
+                className="bg-paper p-5 group hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden fibers stipple"
               >
                 <I className="w-5 h-5 text-gold mb-4 transition-transform duration-500 group-hover:rotate-[8deg] group-hover:scale-110" />
                 <p className="font-display text-xl leading-tight">{label}</p>
@@ -246,7 +246,7 @@ const Index = () => {
       </section>
 
       {/* FEATURED HIGHLIGHTS BENTO — cosmos bg + crumpled-paper field + drifting notebook */}
-      <section className="relative py-14 md:py-20 overflow-hidden crumpled-paper film-grain leak">
+      <section className="relative py-14 md:py-20 overflow-hidden crumpled-paper film-grain leak marble fibers">
         <img
           src={textureCosmos}
           alt=""
@@ -289,7 +289,7 @@ const Index = () => {
               key={x.label}
               data-reveal
               data-reveal-delay={String(idx * 120)}
-              className="relative aspect-[3/4] overflow-hidden group crumpled-paper"
+              className="relative aspect-[3/4] overflow-hidden group crumpled-paper film-grain stipple"
             >
               <img
                 src={x.src}
@@ -312,7 +312,7 @@ const Index = () => {
       </section>
 
       {/* RANDOM WINS / CURIOSITIES TEASER — paper texture wash + crinkle */}
-      <section className="relative py-12 md:py-16 overflow-hidden crinkle film-grain dust linen">
+      <section className="relative py-12 md:py-16 overflow-hidden crinkle film-grain dust linen parchment weave-soft">
         <img
           src={texturePaper}
           alt=""
@@ -342,7 +342,7 @@ const Index = () => {
       </section>
 
       {/* GRAND GROUPS — index, layered music plate */}
-      <section className="relative py-16 md:py-24 overflow-hidden film-grain dust crumpled-paper">
+      <section className="relative py-16 md:py-24 overflow-hidden film-grain dust crumpled-paper marble fibers">
         <img
           src={atmosMusic}
           alt=""
@@ -411,7 +411,7 @@ const Index = () => {
                           <li key={cs} className="bg-paper">
                             <Link
                               to={`/${c.slug}`}
-                              className="group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden"
+                              className="group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden fibers stipple"
                             >
                               <div className="flex items-start justify-between mb-6">
                                 <span className="font-mono text-[0.65rem] tracking-widest text-gold">{c.num}</span>
@@ -436,7 +436,7 @@ const Index = () => {
       </section>
 
       {/* CORE TRAITS BAND — layered cosmos + telescope + crumpled-paper veil */}
-      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain crumpled-paper film-grain leak">
+      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain crumpled-paper film-grain leak marble stipple">
         <img
           src={textureCosmos}
           alt=""
