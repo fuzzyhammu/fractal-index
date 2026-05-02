@@ -312,7 +312,7 @@ const Index = () => {
       </section>
 
       {/* RANDOM WINS / CURIOSITIES TEASER — paper texture wash + crinkle */}
-      <section className="relative py-12 md:py-16 overflow-hidden crinkle">
+      <section className="relative py-12 md:py-16 overflow-hidden crinkle tx-paper tx-watercolor tx-torn tx-rust">
         <img
           src={texturePaper}
           alt=""
