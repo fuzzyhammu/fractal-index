@@ -10,6 +10,7 @@ import { PullQuote } from "@/components/Editorial";
 import { Bento, type BentoItem } from "@/components/Bento";
 import { HeroSlideshow, type Slide } from "@/components/HeroSlideshow";
 import { GRAND_GROUPS, findCluster } from "@/data/clusters";
+import { useReveal } from "@/hooks/useReveal";
 import heroPortrait from "@/assets/hero-portrait.jpg";
 import textureCosmos from "@/assets/texture-cosmos.jpg";
 import texturePaper from "@/assets/texture-paper.jpg";
@@ -117,6 +118,7 @@ const CURIOSITIES: BentoItem[] = [
 ];
 
 const Index = () => {
+  useReveal();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(
     () => Object.fromEntries(GRAND_GROUPS.map((g) => [g.slug, true]))
   );
@@ -127,160 +129,239 @@ const Index = () => {
   };
   const toggleOne = (slug: string) =>
     setOpenGroups((p) => ({ ...p, [slug]: !p[slug] }));
+
   return (
     <PageShell>
       {/* HERO — fullscreen navigable slideshow */}
       <HeroSlideshow slides={HERO_SLIDES} />
 
-      {/* MANIFESTO */}
-      <section id="after-hero" className="relative py-24 md:py-32 scroll-mt-16 overflow-hidden">
+      {/* MANIFESTO — layered: paper bg + drifting notebook + telescope corner + dot field + crinkle */}
+      <section
+        id="after-hero"
+        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden dots crinkle"
+      >
         <img
           src={texturePaper}
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-multiply pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-multiply pointer-events-none animate-ken"
         />
         <img
           src={atmosNotebook}
           alt=""
           aria-hidden
-          className="absolute -right-20 top-10 w-[42%] max-w-2xl h-[80%] object-cover opacity-15 grayscale pointer-events-none hidden md:block"
+          className="absolute -right-16 top-6 w-[44%] max-w-2xl h-[80%] object-cover opacity-20 grayscale pointer-events-none hidden md:block animate-float"
         />
+        <img
+          src={atmosTelescope}
+          alt=""
+          aria-hidden
+          className="absolute -left-24 -bottom-10 w-[28%] max-w-md h-[55%] object-cover opacity-10 grayscale rotate-[-4deg] pointer-events-none hidden md:block animate-drift"
+        />
+
         <div className="container relative">
-          <div className="grid md:grid-cols-12 gap-10">
-            <div className="md:col-span-3">
+          <div className="grid md:grid-cols-12 gap-8 md:gap-10">
+            <div className="md:col-span-3" data-reveal>
               <p className="label-gold">§ 00 · Foreword</p>
               <p className="eyebrow mt-3">Read aloud</p>
+              <div className="rule-gold mt-5 max-w-[60%]" />
             </div>
             <div className="md:col-span-9 max-w-3xl">
-              <p className="font-display text-3xl md:text-5xl text-ink leading-tight text-balance drop-cap">
+              <p
+                className="font-display text-3xl md:text-5xl text-ink leading-[1.05] text-balance drop-cap"
+                data-reveal
+              >
                 This is not a résumé. It is a working dossier — equal parts laboratory
                 notebook, gallery catalogue, and founder's manifesto. Every page has
                 layers, sublayers, evidence. Every claim is meant to be examined.
               </p>
-              <div className="rule-double my-12 max-w-xs" />
-              <p className="text-ink-soft text-lg leading-relaxed">
+              <div className="rule-double my-8 max-w-xs" data-reveal data-reveal-delay="120" />
+              <p
+                className="font-accent text-xl md:text-2xl text-ink-soft leading-relaxed"
+                data-reveal
+                data-reveal-delay="200"
+              >
                 I was born in India, raised between two continents, and I now write,
                 perform, code, and study physics from Montréal. I have spent the
-                last ten years collecting questions; this site is where I begin to
-                answer them — in public, with proof.
+                last ten years collecting questions — this site is where I begin to
+                answer them, in public, with proof.
               </p>
             </div>
           </div>
         </div>
       </section>
 
+      <div data-reveal>
+        <PullQuote attr="The operating principle">
+          Curiosity is not my hobby. It is my operating system.
+        </PullQuote>
+      </div>
 
-      <PullQuote attr="The operating principle">
-        Curiosity is not my hobby. It is my operating system.
-      </PullQuote>
-
-      {/* SKILLS TOOLKIT */}
-      <section className="relative py-20 md:py-28 overflow-hidden">
+      {/* SKILLS TOOLKIT — layered telescope + cosmos veil + scanlines */}
+      <section className="relative py-14 md:py-20 overflow-hidden scanlines">
         <img
           src={atmosTelescope}
           alt=""
           aria-hidden
-          className="absolute -left-24 top-20 w-[36%] max-w-xl h-[70%] object-cover opacity-20 grayscale pointer-events-none hidden md:block"
+          className="absolute -left-24 top-10 w-[40%] max-w-xl h-[80%] object-cover opacity-25 grayscale pointer-events-none hidden md:block animate-float"
+        />
+        <img
+          src={textureCosmos}
+          alt=""
+          aria-hidden
+          className="absolute right-0 -bottom-10 w-[55%] h-[60%] object-cover opacity-10 pointer-events-none animate-drift"
         />
         <div className="container relative">
-          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
+          <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 01 · Toolkit</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">Skills I bring to the table.</h2>
+              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+                Skills I bring <span className="font-accent text-gold">to the table.</span>
+              </h2>
             </div>
             <p className="max-w-md text-ink-soft text-sm leading-relaxed">
               A working list, not a brag sheet. Each tool earns its place by what I've shipped, not what I've studied.
             </p>
           </div>
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-border border border-border">
-            {SKILLS.map(({ icon: I, label, level }) => (
-              <li key={label} className="bg-paper p-5 group hover:bg-navy-deep hover:text-paper transition-colors duration-500">
-                <I className="w-5 h-5 text-gold mb-4" />
+            {SKILLS.map(({ icon: I, label, level }, idx) => (
+              <li
+                key={label}
+                data-reveal
+                data-reveal-delay={String(idx * 40)}
+                className="bg-paper p-5 group hover:bg-navy-deep hover:text-paper transition-colors duration-500 relative overflow-hidden"
+              >
+                <I className="w-5 h-5 text-gold mb-4 transition-transform duration-500 group-hover:rotate-[8deg] group-hover:scale-110" />
                 <p className="font-display text-xl leading-tight">{label}</p>
                 <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover:text-paper/60 mt-2">
                   {level}
                 </p>
+                <span className="absolute right-3 top-3 font-mono text-[0.55rem] tracking-[0.25em] text-ink-soft/40 group-hover:text-gold transition-colors">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-
-      {/* FEATURED HIGHLIGHTS BENTO */}
-      <section className="relative py-20 md:py-28 overflow-hidden">
+      {/* FEATURED HIGHLIGHTS BENTO — cosmos bg + dot field + drifting notebook */}
+      <section className="relative py-14 md:py-20 overflow-hidden dots-fine">
         <img
           src={textureCosmos}
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none animate-ken"
+        />
+        <img
+          src={atmosNotebook}
+          alt=""
+          aria-hidden
+          className="absolute -left-10 bottom-0 w-[26%] max-w-sm h-[55%] object-cover opacity-10 grayscale rotate-[3deg] pointer-events-none hidden md:block animate-float"
         />
         <div className="container relative">
-          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
+          <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 02 · Showcase</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">Featured work.</h2>
+              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+                Featured <span className="font-accent text-gold">work.</span>
+              </h2>
             </div>
             <p className="max-w-md text-ink-soft text-sm leading-relaxed">
               Hover for the elevator pitch. Click for the full story.
             </p>
           </div>
-          <Bento items={FEATURED} />
+          <div data-reveal>
+            <Bento items={FEATURED} />
+          </div>
         </div>
       </section>
 
-
-      {/* TRIPTYCH */}
-      <section className="container py-12">
+      {/* TRIPTYCH — three layered plates */}
+      <section className="container py-8 md:py-10">
         <div className="grid md:grid-cols-3 gap-2">
           {[
             { src: atmosTelescope, label: "Observation", num: "I" },
             { src: atmosNotebook, label: "Notation", num: "II" },
             { src: atmosMusic, label: "Resonance", num: "III" },
-          ].map((x) => (
-            <figure key={x.label} className="relative aspect-[3/4] overflow-hidden group">
+          ].map((x, idx) => (
+            <figure
+              key={x.label}
+              data-reveal
+              data-reveal-delay={String(idx * 120)}
+              className="relative aspect-[3/4] overflow-hidden group dots-fine"
+            >
               <img
-                src={x.src} alt={x.label} width={1600} height={1000} loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                src={x.src}
+                alt={x.label}
+                width={1600}
+                height={1000}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-transparent" />
-              <figcaption className="absolute bottom-6 left-6 text-paper">
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/95 via-navy-deep/30 to-transparent" />
+              <div className="absolute inset-3 border border-paper/15 pointer-events-none" />
+              <figcaption className="absolute bottom-6 left-6 right-6 text-paper">
                 <span className="font-mono text-xs text-gold tracking-widest">PLATE {x.num}</span>
-                <p className="font-display text-3xl mt-1">{x.label}</p>
+                <p className="font-display text-3xl md:text-4xl mt-1 leading-tight">{x.label}</p>
+                <span className="block w-10 h-px bg-gold mt-3 transition-all duration-500 group-hover:w-20" />
               </figcaption>
             </figure>
           ))}
         </div>
       </section>
 
-      {/* RANDOM WINS / CURIOSITIES TEASER */}
-      <section className="container py-20 md:py-28">
-        <div className="flex items-end justify-between mb-10 gap-6 flex-wrap">
-          <div>
-            <p className="label-gold mb-3">§ 03 · Random Wins</p>
-            <h2 className="display-xl text-4xl md:text-6xl text-ink">Belts, medals & side quests.</h2>
+      {/* RANDOM WINS / CURIOSITIES TEASER — paper texture wash + crinkle */}
+      <section className="relative py-12 md:py-16 overflow-hidden crinkle">
+        <img
+          src={texturePaper}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-multiply pointer-events-none"
+        />
+        <div className="container relative">
+          <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
+            <div>
+              <p className="label-gold mb-3">§ 03 · Random Wins</p>
+              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+                Belts, medals <span className="font-accent text-gold">& side quests.</span>
+              </h2>
+            </div>
+            <Link
+              to="/curiosities"
+              className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-soft hover:text-gold transition-colors flex items-center gap-2 group"
+            >
+              Open the full vault
+              <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
           </div>
-          <Link to="/curiosities" className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-soft hover:text-gold transition-colors flex items-center gap-2">
-            Open the full vault <ArrowUpRight className="w-3 h-3" />
-          </Link>
+          <div data-reveal>
+            <Bento items={CURIOSITIES} />
+          </div>
         </div>
-        <Bento items={CURIOSITIES} />
       </section>
 
-      {/* GRAND GROUPS — ALWAYS EXPANDED INDEX */}
-      <section className="relative py-24 md:py-32 overflow-hidden">
+      {/* GRAND GROUPS — index, layered music plate */}
+      <section className="relative py-16 md:py-24 overflow-hidden">
         <img
           src={atmosMusic}
           alt=""
           aria-hidden
-          className="absolute right-0 top-0 w-[40%] max-w-2xl h-[55%] object-cover opacity-15 grayscale pointer-events-none hidden md:block"
+          className="absolute right-0 top-0 w-[40%] max-w-2xl h-[55%] object-cover opacity-20 grayscale pointer-events-none hidden md:block animate-float"
+        />
+        <img
+          src={texturePaper}
+          alt=""
+          aria-hidden
+          className="absolute -left-10 bottom-0 w-[30%] max-w-md h-[50%] object-cover opacity-15 mix-blend-multiply pointer-events-none hidden md:block"
         />
         <div className="container relative">
-          <div className="flex items-end justify-between mb-12 gap-6 flex-wrap">
+          <div className="flex items-end justify-between mb-10 gap-6 flex-wrap" data-reveal>
             <div>
               <p className="label-gold mb-3">§ 04 · The Archive</p>
-              <h2 className="display-xl text-4xl md:text-6xl text-ink">Every cluster, in four groups.</h2>
+              <h2 className="display-xl text-4xl md:text-6xl text-ink">
+                Every cluster, <span className="font-accent text-gold">in four groups.</span>
+              </h2>
             </div>
             <div className="flex items-center gap-4">
               <button
@@ -292,76 +373,86 @@ const Index = () => {
             </div>
           </div>
 
-
-        <div className="space-y-16">
-          {GRAND_GROUPS.map((g) => {
-            const GI = g.icon;
-            const isOpen = openGroups[g.slug];
-            return (
-              <div key={g.slug}>
-                <header className="grid md:grid-cols-12 gap-6 items-baseline mb-6 pb-4 border-b border-border">
-                  <div className="md:col-span-3 flex items-center gap-3">
-                    <GI className="w-5 h-5 text-gold" />
-                    <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold">Grand Group</span>
-                  </div>
-                  <div className="md:col-span-7">
-                    <h3 className="font-display text-3xl md:text-4xl text-ink">{g.label}</h3>
-                    <p className="text-ink-soft text-sm mt-1">{g.tagline}</p>
-                  </div>
-                  <div className="md:col-span-2 md:text-right flex md:justify-end items-center gap-3">
-                    <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft">
-                      {g.clusterSlugs.length} clusters
-                    </span>
-                    <button
-                      onClick={() => toggleOne(g.slug)}
-                      aria-expanded={isOpen}
-                      aria-label={isOpen ? "Collapse group" : "Expand group"}
-                      className="w-8 h-8 flex items-center justify-center border border-border hover:border-gold hover:text-gold transition-colors"
-                    >
-                      <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "" : "-rotate-90"}`} />
-                    </button>
-                  </div>
-                </header>
-                {isOpen && (
-                <ol className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
-                  {g.clusterSlugs.map((cs) => {
-                    const c = findCluster(cs);
-                    if (!c) return null;
-                    return (
-                      <li key={cs} className="bg-paper">
-                        <Link
-                          to={`/${c.slug}`}
-                          className="group/tile block p-7 h-full hover:bg-navy-deep hover:text-paper transition-colors duration-500"
-                        >
-                          <div className="flex items-start justify-between mb-10">
-                            <span className="font-mono text-xs tracking-widest text-gold">{c.num}</span>
-                            <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all" />
-                          </div>
-                          <h4 className="font-display text-2xl md:text-3xl leading-tight mb-2">{c.label}</h4>
-                          <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper/60">
-                            {c.tagline}
-                          </p>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ol>
-                )}
-              </div>
-            );
-          })}
-        </div>
+          <div className="space-y-12">
+            {GRAND_GROUPS.map((g) => {
+              const GI = g.icon;
+              const isOpen = openGroups[g.slug];
+              return (
+                <div key={g.slug} data-reveal>
+                  <header className="grid md:grid-cols-12 gap-6 items-baseline mb-5 pb-3 border-b border-border">
+                    <div className="md:col-span-3 flex items-center gap-3">
+                      <GI className="w-5 h-5 text-gold" />
+                      <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold">Grand Group</span>
+                    </div>
+                    <div className="md:col-span-7">
+                      <h3 className="font-display text-3xl md:text-4xl text-ink leading-tight">{g.label}</h3>
+                      <p className="font-accent text-base text-ink-soft mt-1">{g.tagline}</p>
+                    </div>
+                    <div className="md:col-span-2 md:text-right flex md:justify-end items-center gap-3">
+                      <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft">
+                        {g.clusterSlugs.length} clusters
+                      </span>
+                      <button
+                        onClick={() => toggleOne(g.slug)}
+                        aria-expanded={isOpen}
+                        aria-label={isOpen ? "Collapse group" : "Expand group"}
+                        className="w-8 h-8 flex items-center justify-center border border-border hover:border-gold hover:text-gold transition-colors"
+                      >
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "" : "-rotate-90"}`} />
+                      </button>
+                    </div>
+                  </header>
+                  {isOpen && (
+                    <ol className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+                      {g.clusterSlugs.map((cs) => {
+                        const c = findCluster(cs);
+                        if (!c) return null;
+                        return (
+                          <li key={cs} className="bg-paper">
+                            <Link
+                              to={`/${c.slug}`}
+                              className="group/tile block p-6 h-full hover:bg-navy-deep hover:text-paper transition-colors duration-500 relative overflow-hidden"
+                            >
+                              <div className="flex items-start justify-between mb-8">
+                                <span className="font-mono text-xs tracking-widest text-gold">{c.num}</span>
+                                <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
+                              </div>
+                              <h4 className="font-display text-2xl md:text-[1.7rem] leading-[1.05] mb-2">{c.label}</h4>
+                              <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper/60">
+                                {c.tagline}
+                              </p>
+                              <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-700 group-hover/tile:w-full" />
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-
-      {/* CORE TRAITS BAND */}
-      <section className="force-light bg-navy-deep text-paper py-24 md:py-32 relative overflow-hidden grain">
-        <img src={textureCosmos} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-30" />
+      {/* CORE TRAITS BAND — layered cosmos + telescope + dots */}
+      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain dots-fine">
+        <img
+          src={textureCosmos}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover opacity-40 animate-ken"
+        />
+        <img
+          src={atmosTelescope}
+          alt=""
+          aria-hidden
+          className="absolute -right-20 top-10 w-[35%] max-w-xl h-[70%] object-cover opacity-15 grayscale pointer-events-none hidden md:block animate-float"
+        />
         <div className="container relative">
-          <p className="label-gold mb-6">§ 05 · Core Traits</p>
-          <h2 className="display-xl text-5xl md:text-7xl mb-16 max-w-3xl text-balance">
-            Five instincts I trust before any plan.
+          <p className="label-gold mb-6" data-reveal>§ 05 · Core Traits</p>
+          <h2 className="display-xl text-5xl md:text-7xl mb-12 max-w-3xl text-balance" data-reveal>
+            Five instincts <span className="font-accent text-gold">I trust</span> before any plan.
           </h2>
           <div className="grid md:grid-cols-5 gap-8">
             {[
@@ -370,11 +461,16 @@ const Index = () => {
               ["III", "Leadership", "Quiet, by example."],
               ["IV", "Relentless Work Ethic", "Hours compound."],
               ["V", "Cross-disciplinary Thinking", "Edges are where ideas meet."],
-            ].map(([n, t, d]) => (
-              <div key={t} className="border-t border-gold/40 pt-4">
+            ].map(([n, t, d], idx) => (
+              <div
+                key={t}
+                className="border-t border-gold/40 pt-4"
+                data-reveal
+                data-reveal-delay={String(idx * 100)}
+              >
                 <p className="font-mono text-xs text-gold tracking-widest">{n}</p>
                 <h3 className="font-display text-2xl mt-2">{t}</h3>
-                <p className="text-paper/60 text-sm mt-3 leading-relaxed">{d}</p>
+                <p className="text-paper/70 text-base mt-3 leading-relaxed font-accent">{d}</p>
               </div>
             ))}
           </div>
