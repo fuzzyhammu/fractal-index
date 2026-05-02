@@ -116,14 +116,22 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
     font-feature-settings: 'ss01', 'cv11', 'kern';
     -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, .font-display {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-feature-settings: 'liga', 'dlig';
+    font-family: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+    font-feature-settings: 'liga', 'dlig', 'ss01';
+    font-optical-sizing: auto;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  .font-italic-display, .font-accent {
+    font-family: 'Instrument Serif', 'Fraunces', Georgia, serif;
+    font-style: italic;
     letter-spacing: -0.01em;
   }
 
