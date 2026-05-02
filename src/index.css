@@ -136,6 +136,10 @@
   .dark .text-paper\/60 { color: hsl(var(--paper-contrast) / 0.6); }
   .dark .text-paper\/50 { color: hsl(var(--paper-contrast) / 0.5); }
 
+  .dark .force-light .text-ink { color: hsl(220 60% 9%); }
+  .dark .force-light .text-ink-soft { color: hsl(220 30% 22%); }
+  .dark .force-light .text-muted-foreground { color: hsl(220 20% 38%); }
+
 }
 
 @layer base {
