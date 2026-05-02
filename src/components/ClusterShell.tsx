@@ -121,8 +121,8 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
                         }`}
                       >
                         {collapsed ? (
-                          <span className="font-display text-sm w-full text-center">
-                            {shortGlyph(s.label, i)}
+                          <span className={`font-mono text-[0.65rem] tracking-[0.15em] w-full text-center ${active ? "text-gold" : "text-ink-soft"}`}>
+                            {railGlyph(i)}
                           </span>
                         ) : (
                           <>
