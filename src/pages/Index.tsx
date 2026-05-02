@@ -356,7 +356,7 @@ const Index = () => {
 
 
       {/* CORE TRAITS BAND */}
-      <section className="bg-navy-deep text-paper py-24 md:py-32 relative overflow-hidden grain">
+      <section className="force-light bg-navy-deep text-paper py-24 md:py-32 relative overflow-hidden grain">
         <img src={textureCosmos} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-30" />
         <div className="container relative">
           <p className="label-gold mb-6">§ 05 · Core Traits</p>
