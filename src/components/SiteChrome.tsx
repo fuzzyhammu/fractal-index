@@ -73,7 +73,7 @@ export const SiteNav = () => {
             </span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 text-ink">
             <ThemeToggle className="!text-paper !border-paper/30 hover:!text-gold hover:!border-gold shadow-[0_6px_18px_-4px_hsl(220_60%_4%/0.55)]" />
             <button
               onClick={() => setOpen(true)}
