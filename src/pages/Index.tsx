@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import {
   Atom, Cpu, Music2, Mic2, Code2, PenTool, Languages, Trophy,
   Camera, Wand2, Brain, Palette,
@@ -79,6 +80,16 @@ const CURIOSITIES: BentoItem[] = [
 ];
 
 const Index = () => {
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(
+    () => Object.fromEntries(GRAND_GROUPS.map((g) => [g.slug, true]))
+  );
+  const allOpen = GRAND_GROUPS.every((g) => openGroups[g.slug]);
+  const toggleAll = () => {
+    const next = !allOpen;
+    setOpenGroups(Object.fromEntries(GRAND_GROUPS.map((g) => [g.slug, next])));
+  };
+  const toggleOne = (slug: string) =>
+    setOpenGroups((p) => ({ ...p, [slug]: !p[slug] }));
   return (
     <PageShell>
       {/* HERO */}
@@ -248,14 +259,20 @@ const Index = () => {
             <p className="label-gold mb-3">§ 04 · The Archive</p>
             <h2 className="display-xl text-4xl md:text-6xl text-ink">Every cluster, in four groups.</h2>
           </div>
-          <p className="hidden md:block max-w-sm text-ink-soft text-sm leading-relaxed text-right">
-            Fifteen clusters, bundled into four grand groups. Begin anywhere — every page is its own way in.
-          </p>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleAll}
+              className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-soft hover:text-gold transition-colors border border-border hover:border-gold px-3 py-2"
+            >
+              {allOpen ? "Collapse all" : "Expand all"}
+            </button>
+          </div>
         </div>
 
         <div className="space-y-16">
           {GRAND_GROUPS.map((g) => {
             const GI = g.icon;
+            const isOpen = openGroups[g.slug];
             return (
               <div key={g.slug}>
                 <header className="grid md:grid-cols-12 gap-6 items-baseline mb-6 pb-4 border-b border-border">
@@ -267,10 +284,21 @@ const Index = () => {
                     <h3 className="font-display text-3xl md:text-4xl text-ink">{g.label}</h3>
                     <p className="text-ink-soft text-sm mt-1">{g.tagline}</p>
                   </div>
-                  <div className="md:col-span-2 md:text-right font-mono text-[0.6rem] tracking-widest text-ink-soft">
-                    {g.clusterSlugs.length} clusters
+                  <div className="md:col-span-2 md:text-right flex md:justify-end items-center gap-3">
+                    <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft">
+                      {g.clusterSlugs.length} clusters
+                    </span>
+                    <button
+                      onClick={() => toggleOne(g.slug)}
+                      aria-expanded={isOpen}
+                      aria-label={isOpen ? "Collapse group" : "Expand group"}
+                      className="w-8 h-8 flex items-center justify-center border border-border hover:border-gold hover:text-gold transition-colors"
+                    >
+                      <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "" : "-rotate-90"}`} />
+                    </button>
                   </div>
                 </header>
+                {isOpen && (
                 <ol className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
                   {g.clusterSlugs.map((cs) => {
                     const c = findCluster(cs);
@@ -294,6 +322,7 @@ const Index = () => {
                     );
                   })}
                 </ol>
+                )}
               </div>
             );
           })}

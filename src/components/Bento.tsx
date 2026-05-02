@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 /**
@@ -179,15 +179,8 @@ export function BentoCard({ item }: { item: BentoItem }) {
               <div className="text-ink-soft text-base md:text-lg leading-relaxed font-display [&_p]:mb-4">
                 {item.detail ?? item.blurb ?? "More detail coming soon."}
               </div>
-            </DialogDescription>
+          </DialogDescription>
           </div>
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-paper/90 border border-border hover:border-gold hover:text-gold transition-colors"
-            aria-label="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </DialogContent>
       </Dialog>
     </>
