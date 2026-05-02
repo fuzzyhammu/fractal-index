@@ -411,14 +411,14 @@ const Index = () => {
                           <li key={cs} className="bg-paper">
                             <Link
                               to={`/${c.slug}`}
-                              className="group/tile block p-6 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden"
+                              className="group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500 relative overflow-hidden"
                             >
-                              <div className="flex items-start justify-between mb-8">
-                                <span className="font-mono text-xs tracking-widest text-gold">{c.num}</span>
-                                <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
+                              <div className="flex items-start justify-between mb-6">
+                                <span className="font-mono text-[0.65rem] tracking-widest text-gold">{c.num}</span>
+                                <ArrowUpRight className="w-3.5 h-3.5 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
                               </div>
-                              <h4 className="font-display text-2xl md:text-[1.7rem] leading-[1.05] mb-2">{c.label}</h4>
-                              <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft">
+                              <h4 className="font-display text-lg md:text-xl leading-snug mb-2">{c.label}</h4>
+                              <p className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft">
                                 {c.tagline}
                               </p>
                               <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-700 group-hover/tile:w-full" />
