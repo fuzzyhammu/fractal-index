@@ -58,28 +58,30 @@ export const SiteNav = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "bg-paper/90 backdrop-blur-md border-b border-border" : "bg-transparent"
+          scrolled
+            ? "bg-paper/90 backdrop-blur-md border-b border-border shadow-[0_8px_24px_-12px_hsl(220_60%_9%/0.25)]"
+            : "bg-transparent"
         }`}
       >
         <div className="container flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-3 group">
-            <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold">GG</span>
-            <span className={`hidden sm:inline font-display text-lg text-ink ${scrolled ? "" : heroLight}`}>
+            <span className={`font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold ${scrolled ? "[text-shadow:0_1px_2px_hsl(220_60%_9%/0.18)]" : "[text-shadow:0_2px_8px_hsl(220_60%_4%/0.55),0_1px_2px_hsl(220_60%_4%/0.7)]"}`}>GG</span>
+            <span className={`hidden sm:inline font-display text-lg text-ink ${scrolled ? "[text-shadow:0_1px_2px_hsl(220_60%_9%/0.18)]" : "[text-shadow:0_2px_8px_hsl(220_60%_4%/0.55),0_1px_2px_hsl(220_60%_4%/0.7)]"} ${scrolled ? "" : heroLight}`}>
               Geetika Gehlot
             </span>
           </Link>
 
           <div className={`flex items-center gap-3 ${scrolled ? "" : heroLight}`}>
-            <ThemeToggle className={scrolled ? "" : `${heroLight} ${heroLightBorder} hover:text-gold`} />
+            <ThemeToggle className={`${scrolled ? "shadow-[0_2px_8px_-2px_hsl(220_60%_9%/0.15)]" : "shadow-[0_6px_18px_-4px_hsl(220_60%_4%/0.55)]"} ${scrolled ? "" : `${heroLight} ${heroLightBorder} hover:text-gold`}`} />
             <button
               onClick={() => setOpen(true)}
-              className="flex items-center gap-2 group"
+              className={`flex items-center gap-2 group px-2 py-1 ${scrolled ? "shadow-[0_2px_8px_-2px_hsl(220_60%_9%/0.15)]" : "shadow-[0_6px_18px_-4px_hsl(220_60%_4%/0.55)]"}`}
               aria-label="Open menu"
             >
-              <span className={`hidden md:inline eyebrow text-ink-soft group-hover:text-gold transition-colors ${scrolled ? "" : heroLightSoft}`}>
+              <span className={`hidden md:inline eyebrow text-ink-soft group-hover:text-gold transition-colors ${scrolled ? "[text-shadow:0_1px_2px_hsl(220_60%_9%/0.18)]" : "[text-shadow:0_2px_8px_hsl(220_60%_4%/0.55),0_1px_2px_hsl(220_60%_4%/0.7)]"} ${scrolled ? "" : heroLightSoft}`}>
                 Index
               </span>
-              <Menu className={`w-5 h-5 text-ink group-hover:text-gold transition-colors ${scrolled ? "" : heroLight}`} />
+              <Menu className={`w-5 h-5 text-ink group-hover:text-gold transition-colors ${scrolled ? "drop-shadow-[0_1px_2px_hsl(220_60%_9%/0.2)]" : "drop-shadow-[0_2px_6px_hsl(220_60%_4%/0.55)]"} ${scrolled ? "" : heroLight}`} />
             </button>
           </div>
         </div>
