@@ -135,10 +135,10 @@ const Index = () => {
       {/* HERO — fullscreen navigable slideshow */}
       <HeroSlideshow slides={HERO_SLIDES} />
 
-      {/* MANIFESTO — layered: paper bg + drifting notebook + telescope corner + dot field + crinkle */}
+      {/* MANIFESTO — layered: paper bg + drifting notebook + telescope corner + crumpled-paper veil */}
       <section
         id="after-hero"
-        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden dots crinkle film-grain leak"
+        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden crumpled-paper crinkle film-grain leak"
       >
         <img
           src={texturePaper}
@@ -245,8 +245,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* FEATURED HIGHLIGHTS BENTO — cosmos bg + dot field + drifting notebook */}
-      <section className="relative py-14 md:py-20 overflow-hidden dots-fine film-grain leak">
+      {/* FEATURED HIGHLIGHTS BENTO — cosmos bg + crumpled-paper field + drifting notebook */}
+      <section className="relative py-14 md:py-20 overflow-hidden crumpled-paper film-grain leak">
         <img
           src={textureCosmos}
           alt=""
@@ -289,7 +289,7 @@ const Index = () => {
               key={x.label}
               data-reveal
               data-reveal-delay={String(idx * 120)}
-              className="relative aspect-[3/4] overflow-hidden group dots-fine"
+              className="relative aspect-[3/4] overflow-hidden group crumpled-paper"
             >
               <img
                 src={x.src}
@@ -342,7 +342,7 @@ const Index = () => {
       </section>
 
       {/* GRAND GROUPS — index, layered music plate */}
-      <section className="relative py-16 md:py-24 overflow-hidden film-grain dust halftone">
+      <section className="relative py-16 md:py-24 overflow-hidden film-grain dust crumpled-paper">
         <img
           src={atmosMusic}
           alt=""
@@ -435,8 +435,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CORE TRAITS BAND — layered cosmos + telescope + dots */}
-      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain dots-fine film-grain leak halftone">
+      {/* CORE TRAITS BAND — layered cosmos + telescope + crumpled-paper veil */}
+      <section className="force-light bg-navy-deep text-paper py-20 md:py-28 relative overflow-hidden grain crumpled-paper film-grain leak">
         <img
           src={textureCosmos}
           alt=""
