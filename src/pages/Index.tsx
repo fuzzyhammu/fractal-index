@@ -198,7 +198,7 @@ const Index = () => {
       </div>
 
       {/* SKILLS TOOLKIT — layered telescope + cosmos veil + scanlines */}
-      <section className="relative py-14 md:py-20 overflow-hidden scanlines">
+      <section className="relative py-14 md:py-20 overflow-hidden scanlines tx-grunge tx-crt tx-dust">
         <img
           src={atmosTelescope}
           alt=""
