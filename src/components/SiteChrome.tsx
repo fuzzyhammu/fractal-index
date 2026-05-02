@@ -68,7 +68,7 @@ export const SiteNav = () => {
             <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold [text-shadow:0_2px_8px_hsl(220_60%_4%/0.65),0_1px_2px_hsl(220_60%_4%/0.8)]">
               GG
             </span>
-            <span className="hidden sm:inline font-display text-lg text-paper [text-shadow:0_2px_8px_hsl(220_60%_4%/0.65),0_1px_2px_hsl(220_60%_4%/0.8)]">
+            <span className="hidden sm:inline font-display text-lg [text-shadow:0_2px_8px_hsl(220_60%_4%/0.65),0_1px_2px_hsl(220_60%_4%/0.8)] text-red-300 bg-[#000029]/[0.74]">
               Geetika Gehlot
             </span>
           </Link>
