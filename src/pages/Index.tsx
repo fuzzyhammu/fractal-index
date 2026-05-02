@@ -138,7 +138,7 @@ const Index = () => {
       {/* MANIFESTO — layered: paper bg + drifting notebook + telescope corner + dot field + crinkle */}
       <section
         id="after-hero"
-        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden dots crinkle"
+        className="relative py-16 md:py-24 scroll-mt-16 overflow-hidden dots crinkle tx-paper tx-dust tx-light-leak"
       >
         <img
           src={texturePaper}
