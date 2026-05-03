@@ -1,7 +1,7 @@
-import { NavLink, Link, useLocation } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { forwardRef, useEffect, useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { CLUSTERS, GRAND_GROUPS, PROOF_CLUSTER, findGrandGroup } from "@/data/clusters";
+import { Menu, X } from "lucide-react";
+import { CLUSTERS, PROOF_CLUSTER } from "@/data/clusters";
 import { ThemeToggle } from "./ThemeToggle";
 
 const topLinks = [
@@ -15,23 +15,6 @@ const footerLinks = [
 export const SiteNav = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
-
-  // grand-group expansion state in the drawer
-  const currentClusterSlug = location.pathname.split("/")[1] ?? "";
-  const currentGroup = findGrandGroup(currentClusterSlug);
-  const [openGroups, setOpenGroups] = useState<Set<string>>(
-    () => new Set(currentGroup ? [currentGroup.slug] : []),
-  );
-  const toggleGroup = (slug: string) =>
-    setOpenGroups((prev) => {
-      const next = new Set(prev);
-      next.has(slug) ? next.delete(slug) : next.add(slug);
-      return next;
-    });
-  const allOpen = openGroups.size === GRAND_GROUPS.length;
-  const setAllGroups = (o: boolean) =>
-    setOpenGroups(o ? new Set(GRAND_GROUPS.map((g) => g.slug)) : new Set());
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -41,12 +24,6 @@ export const SiteNav = () => {
   }, []);
 
   useEffect(() => { setOpen(false); }, []);
-  // Auto-open the group containing the active route when navigating
-  useEffect(() => {
-    if (currentGroup) {
-      setOpenGroups((prev) => (prev.has(currentGroup.slug) ? prev : new Set([...prev, currentGroup.slug])));
-    }
-  }, [currentGroup]);
 
   // When the hero slideshow is in view, override header colors to light
   // (the slideshow has a dark overlay regardless of theme).
