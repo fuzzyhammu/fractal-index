@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  User, GraduationCap, Wand2, FileText, Mail, Sparkles, Brain, Compass,
+  User, GraduationCap, Wand2, FileText, Mail, Sparkles,
 } from "lucide-react";
 
 export type Subpage = {
@@ -143,6 +143,8 @@ export const findCluster = (slug: string) => CLUSTERS.find((c) => c.slug === slu
 export const findSubpage = (cluster: Cluster, slug: string) =>
   cluster.subpages.find((s) => s.slug === slug);
 
+/* Grouping removed — the site is flat: five pages + Proof. The exports below
+   are kept as no-op stubs for any legacy imports that may still reference them. */
 export type GrandGroup = {
   slug: string;
   label: string;
@@ -150,27 +152,8 @@ export type GrandGroup = {
   icon: LucideIcon;
   clusterSlugs: string[];
 };
-
-/* Two light groupings, kept simple for the index/drawer. */
-export const GRAND_GROUPS: GrandGroup[] = [
-  {
-    slug: "mind",
-    label: "Mind",
-    tagline: "Who I am and how I think.",
-    icon: Brain,
-    clusterSlugs: ["about", "academics"],
-  },
-  {
-    slug: "reach",
-    label: "Reach",
-    tagline: "What I make, the dossier, and how to reach me.",
-    icon: Compass,
-    clusterSlugs: ["works", "vault", "contact"],
-  },
-];
-
-export const findGrandGroup = (clusterSlug: string) =>
-  GRAND_GROUPS.find((g) => g.clusterSlugs.includes(clusterSlug));
+export const GRAND_GROUPS: GrandGroup[] = [];
+export const findGrandGroup = (_clusterSlug: string): GrandGroup | undefined => undefined;
 
 /* Map of OLD URLs -> NEW canonical merged URLs. Topic anchors map to the
    matching section inside the new merged cluster page. */

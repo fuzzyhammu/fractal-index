@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import {
   Atom, Cpu, Music2, Mic2, Code2, PenTool, Languages, Trophy,
   Camera, Wand2, Brain, Palette,
@@ -9,7 +8,7 @@ import { PageShell } from "@/components/SiteChrome";
 import { PullQuote } from "@/components/Editorial";
 import { Bento, type BentoItem } from "@/components/Bento";
 import { HeroSlideshow, type Slide } from "@/components/HeroSlideshow";
-import { GRAND_GROUPS, findCluster } from "@/data/clusters";
+import { CLUSTERS, findCluster } from "@/data/clusters";
 import { useReveal } from "@/hooks/useReveal";
 import heroPortrait from "@/assets/hero-portrait.jpg";
 import textureCosmos from "@/assets/texture-cosmos.jpg";
@@ -119,16 +118,6 @@ const CURIOSITIES: BentoItem[] = [
 
 const Index = () => {
   useReveal();
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(GRAND_GROUPS.map((g) => [g.slug, true]))
-  );
-  const allOpen = GRAND_GROUPS.every((g) => openGroups[g.slug]);
-  const toggleAll = () => {
-    const next = !allOpen;
-    setOpenGroups(Object.fromEntries(GRAND_GROUPS.map((g) => [g.slug, next])));
-  };
-  const toggleOne = (slug: string) =>
-    setOpenGroups((p) => ({ ...p, [slug]: !p[slug] }));
 
   return (
     <PageShell>
@@ -360,78 +349,40 @@ const Index = () => {
             <div>
               <p className="label-gold mb-3">§ 04 · The Archive</p>
               <h2 className="display-xl text-3xl md:text-5xl text-ink">
-                Every cluster, <span className="font-accent text-gold">in four groups.</span>
+                Five pages, <span className="font-accent text-gold">one dossier.</span>
               </h2>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleAll}
-                className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-soft hover:text-gold transition-colors border border-border hover:border-gold px-3 py-2"
-              >
-                {allOpen ? "Collapse all" : "Expand all"}
-              </button>
+              <p className="mt-4 max-w-xl text-ink-soft text-sm leading-relaxed font-accent italic">
+                The whole site lives across five pages — about, academics & research,
+                the merged works, the document vault, and a way to reach me. No grand
+                groupings, no fractal cul-de-sacs. Just five doors.
+              </p>
             </div>
           </div>
 
-          <div className="space-y-12">
-            {GRAND_GROUPS.map((g) => {
-              const GI = g.icon;
-              const isOpen = openGroups[g.slug];
+          <ol className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border" data-reveal>
+            {CLUSTERS.map((c) => {
+              const CI = c.icon;
               return (
-                <div key={g.slug} data-reveal>
-                  <header className="grid md:grid-cols-12 gap-6 items-baseline mb-5 pb-3 border-b border-border">
-                    <div className="md:col-span-3 flex items-center gap-3">
-                      <GI className="w-4 h-4 text-gold" />
-                      <span className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">Grand Group</span>
+                <li key={c.slug} className="bg-paper">
+                  <Link
+                    to={`/${c.slug}`}
+                    className="fancy-tile group/tile block p-6 h-full hover:bg-navy-deep hover:text-paper-contrast transition-all duration-500 relative overflow-hidden fibers stipple hover:-translate-y-1"
+                  >
+                    <div className="flex items-start justify-between mb-6">
+                      <CI className="w-5 h-5 text-gold" />
+                      <span className="font-mono text-[0.65rem] tracking-widest text-gold">{c.num}</span>
                     </div>
-                    <div className="md:col-span-7">
-                      <h3 className="font-display text-xl md:text-2xl text-ink leading-tight">{g.label}</h3>
-                      <p className="font-accent text-sm md:text-base text-ink-soft mt-1">{g.tagline}</p>
-                    </div>
-                    <div className="md:col-span-2 md:text-right flex md:justify-end items-center gap-3">
-                      <span className="font-mono text-[0.55rem] tracking-widest text-ink-soft">
-                        {g.clusterSlugs.length} clusters
-                      </span>
-                      <button
-                        onClick={() => toggleOne(g.slug)}
-                        aria-expanded={isOpen}
-                        aria-label={isOpen ? "Collapse group" : "Expand group"}
-                        className="w-8 h-8 flex items-center justify-center border border-border hover:border-gold hover:text-gold transition-colors"
-                      >
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "" : "-rotate-90"}`} />
-                      </button>
-                    </div>
-                  </header>
-                  {isOpen && (
-                    <ol className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
-                      {g.clusterSlugs.map((cs) => {
-                        const c = findCluster(cs);
-                        if (!c) return null;
-                        return (
-                          <li key={cs} className="bg-paper">
-                            <Link
-                              to={`/${c.slug}`}
-                              className="fancy-tile group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-all duration-500 relative overflow-hidden fibers stipple hover:-translate-y-1"
-                            >
-                              <div className="flex items-start justify-between mb-6">
-                                <span className="font-mono text-[0.65rem] tracking-widest text-gold">{c.num}</span>
-                                <ArrowUpRight className="w-3.5 h-3.5 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
-                              </div>
-                              <h4 className="font-display text-lg md:text-xl leading-snug mb-2">{c.label}</h4>
-                              <p className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft">
-                                {c.tagline}
-                              </p>
-                              <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-700 group-hover/tile:w-full" />
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  )}
-                </div>
+                    <h4 className="font-display text-xl md:text-2xl leading-snug mb-2">{c.label}</h4>
+                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft mt-2">
+                      {c.tagline}
+                    </p>
+                    <ArrowUpRight className="absolute right-4 bottom-4 w-4 h-4 text-ink-soft group-hover/tile:text-gold group-hover/tile:translate-x-1 group-hover/tile:-translate-y-1 transition-all duration-500" />
+                    <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-700 group-hover/tile:w-full" />
+                  </Link>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </div>
       </section>
 

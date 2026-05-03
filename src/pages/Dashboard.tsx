@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Sparkles, Star, Compass } from "lucide-react";
 import { PageShell } from "@/components/SiteChrome";
-import { GRAND_GROUPS, PROOF_CLUSTER, findCluster } from "@/data/clusters";
+import { CLUSTERS, PROOF_CLUSTER } from "@/data/clusters";
 import heroPortrait from "@/assets/hero-portrait.jpg";
 
 const stats = [
@@ -32,50 +32,7 @@ const startHere = [
   { label: "Random wins vault", to: "/works#karate" },
 ];
 
-function GrandGroupBlock({ group }: { group: typeof GRAND_GROUPS[number] }) {
-  const GI = group.icon;
-  return (
-    <div className="border-t border-border py-8">
-      <header className="flex items-baseline gap-4 mb-5">
-        <GI className="w-4 h-4 text-gold shrink-0" />
-        <div className="flex-1">
-          <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">Grand Group</p>
-          <h3 className="font-display text-2xl md:text-3xl text-ink">{group.label}</h3>
-          <p className="text-xs text-ink-soft mt-1">{group.tagline}</p>
-        </div>
-        <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft">
-          {group.clusterSlugs.length} clusters
-        </span>
-      </header>
-      <ol className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-border">
-        {group.clusterSlugs.map((cs) => {
-          const c = findCluster(cs);
-          if (!c) return null;
-          const I = c.icon;
-          return (
-            <li key={cs} className="bg-paper">
-              <Link
-                to={`/${c.slug}`}
-                className="group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500"
-              >
-                <div className="flex items-start justify-between mb-8">
-                  <I className="w-5 h-5 text-gold" />
-                  <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft group-hover/tile:text-paper-contrast-soft">
-                    {c.num}
-                  </span>
-                </div>
-                <h4 className="font-display text-xl leading-tight">{c.label}</h4>
-                <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft mt-2 line-clamp-2">
-                  {c.tagline}
-                </p>
-              </Link>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
-  );
-}
+// (Grand groups removed — site is flat.)
 
 const Dashboard = () => (
   <PageShell>
@@ -112,52 +69,51 @@ const Dashboard = () => (
       </div>
     </section>
 
-    {/* Featured */}
-    <section className="container py-14">
-      <div className="flex items-baseline gap-3 mb-6">
-        <Star className="w-4 h-4 text-gold" />
-        <span className="label-gold">Featured Highlights</span>
-      </div>
-      <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
-        {featured.map((f) => (
-          <Link
-            key={f.title}
-            to={f.to}
-            className="snap-start shrink-0 w-64 dossier-card p-5 hover-lift"
-          >
-            <p className="font-mono text-[0.6rem] text-gold tracking-widest">{f.tag.toUpperCase()}</p>
-            <p className="font-display text-xl text-ink mt-2 leading-tight">{f.title}</p>
-            <ArrowUpRight className="w-4 h-4 text-ink-soft mt-3" />
-          </Link>
-        ))}
-      </div>
-    </section>
-
-    {/* App grid — always expanded */}
+    {/* App grid — flat list of the five pages */}
     <section className="container pb-14">
       <div className="flex items-baseline gap-3 mb-6">
         <Sparkles className="w-4 h-4 text-gold" />
-        <span className="label-gold">Grand Groups · All Clusters</span>
+        <span className="label-gold">All Pages</span>
         <span className="flex-1 h-px bg-border" />
       </div>
-      <div>
-        {GRAND_GROUPS.map((g) => (
-          <GrandGroupBlock key={g.slug} group={g} />
-        ))}
-        {/* Proof of Curiosity standalone */}
-        <div className="border-t border-border py-6">
-          <Link to={`/${PROOF_CLUSTER.slug}`} className="flex items-center gap-4 group">
-            <PROOF_CLUSTER.icon className="w-4 h-4 text-gold" />
-            <div className="flex-1">
-              <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">Bonus</p>
-              <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">{PROOF_CLUSTER.label}</h3>
-              <p className="text-xs text-ink-soft mt-1">{PROOF_CLUSTER.tagline}</p>
-            </div>
-            <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover:text-gold" />
-          </Link>
-        </div>
+      <ol className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-border">
+        {CLUSTERS.map((c) => {
+          const I = c.icon;
+          return (
+            <li key={c.slug} className="bg-paper">
+              <Link
+                to={`/${c.slug}`}
+                className="group/tile block p-5 h-full hover:bg-navy-deep hover:text-paper-contrast transition-colors duration-500"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <I className="w-5 h-5 text-gold" />
+                  <span className="font-mono text-[0.6rem] tracking-widest text-ink-soft group-hover/tile:text-paper-contrast-soft">
+                    {c.num}
+                  </span>
+                </div>
+                <h4 className="font-display text-xl leading-tight">{c.label}</h4>
+                <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft group-hover/tile:text-paper-contrast-soft mt-2 line-clamp-2">
+                  {c.tagline}
+                </p>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+      <div className="border-t border-border mt-px py-6">
+        <Link to={`/${PROOF_CLUSTER.slug}`} className="flex items-center gap-4 group">
+          <PROOF_CLUSTER.icon className="w-4 h-4 text-gold" />
+          <div className="flex-1">
+            <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">Bonus</p>
+            <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">{PROOF_CLUSTER.label}</h3>
+            <p className="text-xs text-ink-soft mt-1">{PROOF_CLUSTER.tagline}</p>
+          </div>
+          <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover:text-gold" />
+        </Link>
       </div>
     </section>
+
+
 
     {/* Start Here */}
     <section className="container pb-24">
