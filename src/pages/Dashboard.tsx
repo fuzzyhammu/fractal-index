@@ -113,31 +113,7 @@ const Dashboard = () => (
       </div>
     </section>
 
-    {/* App grid — always expanded */}
-    <section className="container pb-14">
-      <div className="flex items-baseline gap-3 mb-6">
-        <Sparkles className="w-4 h-4 text-gold" />
-        <span className="label-gold">Grand Groups · All Clusters</span>
-        <span className="flex-1 h-px bg-border" />
-      </div>
-      <div>
-        {GRAND_GROUPS.map((g) => (
-          <GrandGroupBlock key={g.slug} group={g} />
-        ))}
-        {/* Proof of Curiosity standalone */}
-        <div className="border-t border-border py-6">
-          <Link to={`/${PROOF_CLUSTER.slug}`} className="flex items-center gap-4 group">
-            <PROOF_CLUSTER.icon className="w-4 h-4 text-gold" />
-            <div className="flex-1">
-              <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">Bonus</p>
-              <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">{PROOF_CLUSTER.label}</h3>
-              <p className="text-xs text-ink-soft mt-1">{PROOF_CLUSTER.tagline}</p>
-            </div>
-            <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover:text-gold" />
-          </Link>
-        </div>
-      </div>
-    </section>
+
 
     {/* Start Here */}
     <section className="container pb-24">
