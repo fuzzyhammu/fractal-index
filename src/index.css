@@ -303,7 +303,7 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
   }
 
-  /* Subtle crumpled paper field — replaces the older dotted overlays */
+  /* Vellum mist — soft cloud wash with whisper-thin grain. Replaces previous crumpled diagonals. */
   .crumpled-paper::before,
   .dots::before,
   .dots-fine::before,
@@ -312,24 +312,27 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.105;
+    opacity: 0.05;
     mix-blend-mode: multiply;
-    background-image:
-      linear-gradient(118deg, transparent 0 21%, hsl(var(--ink) / 0.10) 21.4%, transparent 22.4% 45%, hsl(var(--gold) / 0.09) 45.5%, transparent 47% 100%),
-      linear-gradient(31deg, transparent 0 32%, hsl(var(--ink) / 0.08) 32.5%, transparent 34% 68%, hsl(var(--paper-deep) / 0.38) 68.5%, transparent 70% 100%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018 0.052' numOctaves='4' seed='19'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.42 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
-    background-size: 100% 100%, 100% 100%, cover;
+    background:
+      radial-gradient(75% 55% at 22% 28%, hsl(38 45% 80% / 0.22), transparent 70%),
+      radial-gradient(65% 50% at 82% 78%, hsl(28 40% 72% / 0.18), transparent 72%),
+      radial-gradient(55% 45% at 55% 55%, hsl(var(--gold) / 0.05), transparent 75%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='vlm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' seed='14'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23vlm)'/%3E%3C/svg%3E");
+    background-size: auto, auto, auto, 320px 320px;
   }
   .dark .crumpled-paper::before,
   .dark .dots::before,
   .dark .dots-fine::before,
   .dark .halftone::after {
-    opacity: 0.09;
+    opacity: 0.045;
     mix-blend-mode: screen;
-    background-image:
-      linear-gradient(118deg, transparent 0 21%, hsl(var(--paper-contrast) / 0.08) 21.4%, transparent 22.4% 45%, hsl(var(--gold) / 0.07) 45.5%, transparent 47% 100%),
-      linear-gradient(31deg, transparent 0 32%, hsl(var(--paper-contrast-soft) / 0.06) 32.5%, transparent 34% 68%, hsl(var(--gold) / 0.05) 68.5%, transparent 70% 100%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018 0.052' numOctaves='4' seed='23'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.24 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E");
+    background:
+      radial-gradient(75% 55% at 22% 28%, hsl(220 45% 22% / 0.32), transparent 72%),
+      radial-gradient(65% 50% at 82% 78%, hsl(var(--gold) / 0.06), transparent 72%),
+      radial-gradient(55% 45% at 55% 55%, hsl(220 55% 14% / 0.3), transparent 75%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='vlm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' seed='17'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.94  0 0 0 0 0.82  0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23vlm)'/%3E%3C/svg%3E");
+    background-size: auto, auto, auto, 320px 320px;
   }
 
   /* Crinkled paper / topographic texture */
