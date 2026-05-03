@@ -293,17 +293,23 @@
   .border-gold { border-color: hsl(var(--gold)); }
   .border-ink { border-color: hsl(var(--ink)); }
 
+  /* ============ Low-res, chunky textures ============
+     All textures below use big pixel-block noise or large simple shapes
+     so they read as soft tonal washes, not detailed patterns. */
+
   .grain::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.04;
     mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.18' numOctaves='1' seed='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 96px 96px;
+    image-rendering: pixelated;
   }
 
-  /* Vellum mist — soft cloud wash with whisper-thin grain. Replaces previous crumpled diagonals. */
+  /* Vellum mist — chunky cloud blobs */
   .crumpled-paper::before,
   .dots::before,
   .dots-fine::before,
@@ -315,133 +321,117 @@
     opacity: 0.05;
     mix-blend-mode: multiply;
     background:
-      radial-gradient(75% 55% at 22% 28%, hsl(38 45% 80% / 0.22), transparent 70%),
-      radial-gradient(65% 50% at 82% 78%, hsl(28 40% 72% / 0.18), transparent 72%),
-      radial-gradient(55% 45% at 55% 55%, hsl(var(--gold) / 0.05), transparent 75%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='vlm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' seed='14'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23vlm)'/%3E%3C/svg%3E");
-    background-size: auto, auto, auto, 320px 320px;
+      radial-gradient(70% 55% at 25% 30%, hsl(38 45% 80% / 0.22), transparent 72%),
+      radial-gradient(60% 50% at 80% 78%, hsl(28 40% 72% / 0.18), transparent 72%),
+      radial-gradient(50% 45% at 55% 55%, hsl(var(--gold) / 0.05), transparent 75%);
   }
   .dark .crumpled-paper::before,
   .dark .dots::before,
   .dark .dots-fine::before,
   .dark .halftone::after {
-    opacity: 0.045;
+    opacity: 0.05;
     mix-blend-mode: screen;
     background:
-      radial-gradient(75% 55% at 22% 28%, hsl(220 45% 22% / 0.32), transparent 72%),
-      radial-gradient(65% 50% at 82% 78%, hsl(var(--gold) / 0.06), transparent 72%),
-      radial-gradient(55% 45% at 55% 55%, hsl(220 55% 14% / 0.3), transparent 75%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Cfilter id='vlm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' seed='17'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.94  0 0 0 0 0.82  0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23vlm)'/%3E%3C/svg%3E");
-    background-size: auto, auto, auto, 320px 320px;
+      radial-gradient(70% 55% at 25% 30%, hsl(220 45% 22% / 0.32), transparent 72%),
+      radial-gradient(60% 50% at 80% 78%, hsl(var(--gold) / 0.06), transparent 72%),
+      radial-gradient(50% 45% at 55% 55%, hsl(220 55% 14% / 0.3), transparent 75%);
   }
 
-  /* Crinkled paper / topographic texture */
+  /* Crinkle — chunky pixel-block noise */
   .crinkle::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
+    opacity: 0.06;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.04' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3CfeComposite in2='SourceGraphic' operator='in'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    image-rendering: pixelated;
   }
+  .dark .crinkle::before { mix-blend-mode: screen; opacity: 0.05; }
 
-  /* Hairline editorial scanlines */
+  /* Scanlines — wider, softer */
   .scanlines::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: repeating-linear-gradient(0deg, hsl(var(--ink) / 0.04) 0px, hsl(var(--ink) / 0.04) 1px, transparent 1px, transparent 4px);
+    background-image: repeating-linear-gradient(0deg, hsl(var(--ink) / 0.05) 0 1px, transparent 1px 6px);
     mix-blend-mode: multiply;
-    opacity: 0.3;
+    opacity: 0.25;
   }
+  .dark .scanlines::after { background-image: repeating-linear-gradient(0deg, hsl(var(--paper) / 0.05) 0 1px, transparent 1px 6px); mix-blend-mode: screen; }
 
-  /* Vintage film grain — finer & warmer than .grain */
+  /* Film-grain — low-res */
   .film-grain::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.045;
+    opacity: 0.035;
     mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0 0.65  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.25' numOctaves='1' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0 0.65  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
+    image-rendering: pixelated;
   }
-  .dark .film-grain::after { mix-blend-mode: screen; opacity: 0.04; }
+  .dark .film-grain::after { mix-blend-mode: screen; opacity: 0.035; }
 
-  /* Dust & scratches — sparse organic flecks + thin lines */
+  /* Dust — minimal scattered specks */
   .dust::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.07;
+    opacity: 0.06;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cg fill='%23000' opacity='0.55'%3E%3Ccircle cx='40' cy='80' r='0.6'/%3E%3Ccircle cx='130' cy='220' r='0.4'/%3E%3Ccircle cx='280' cy='60' r='0.7'/%3E%3Ccircle cx='420' cy='150' r='0.5'/%3E%3Ccircle cx='510' cy='340' r='0.6'/%3E%3Ccircle cx='90' cy='430' r='0.4'/%3E%3Ccircle cx='220' cy='510' r='0.5'/%3E%3Ccircle cx='370' cy='470' r='0.6'/%3E%3Ccircle cx='560' cy='100' r='0.4'/%3E%3Ccircle cx='200' cy='300' r='0.5'/%3E%3C/g%3E%3Cg stroke='%23000' stroke-width='0.4' opacity='0.4'%3E%3Cline x1='10' y1='110' x2='70' y2='115'/%3E%3Cline x1='320' y1='220' x2='360' y2='223'/%3E%3Cline x1='480' y1='400' x2='540' y2='402'/%3E%3Cline x1='150' y1='350' x2='200' y2='352'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 600px 600px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23000'%3E%3Ccircle cx='30' cy='50' r='1'/%3E%3Ccircle cx='160' cy='40' r='1'/%3E%3Ccircle cx='90' cy='120' r='1'/%3E%3Ccircle cx='180' cy='160' r='1'/%3E%3Ccircle cx='50' cy='170' r='1'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
   }
-  .dark .dust::before { mix-blend-mode: screen; opacity: 0.05; }
+  .dark .dust::before { mix-blend-mode: screen; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='30' cy='50' r='1'/%3E%3Ccircle cx='160' cy='40' r='1'/%3E%3Ccircle cx='90' cy='120' r='1'/%3E%3Ccircle cx='180' cy='160' r='1'/%3E%3Ccircle cx='50' cy='170' r='1'/%3E%3C/g%3E%3C/svg%3E"); }
 
-  /* Light leak — warm haze in one corner */
+  /* Leak — single soft glow */
   .leak::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.16;
+    opacity: 0.14;
     mix-blend-mode: screen;
-    background:
-      radial-gradient(60% 40% at 90% 10%, hsl(41 90% 65% / 0.18), transparent 70%),
-      radial-gradient(40% 30% at 5% 95%, hsl(20 80% 55% / 0.1), transparent 70%);
+    background: radial-gradient(55% 40% at 88% 12%, hsl(41 90% 65% / 0.18), transparent 72%);
   }
   .dark .leak::before {
-    background:
-      radial-gradient(60% 40% at 90% 10%, hsl(41 80% 60% / 0.1), transparent 70%),
-      radial-gradient(40% 30% at 5% 95%, hsl(220 70% 30% / 0.12), transparent 70%);
+    background: radial-gradient(55% 40% at 88% 12%, hsl(41 80% 60% / 0.12), transparent 72%);
   }
 
-  /* CRT glitch — horizontal warp lines */
+  /* Glitch — wider lines */
   .glitch::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.07;
+    opacity: 0.05;
     mix-blend-mode: overlay;
-    background-image: repeating-linear-gradient(
-      0deg,
-      hsl(var(--gold) / 0.18) 0px,
-      hsl(var(--gold) / 0.18) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      hsl(var(--ink) / 0.06) 0px,
-      hsl(var(--ink) / 0.06) 1px,
-      transparent 1px,
-      transparent 7px
-    );
+    background-image: repeating-linear-gradient(0deg, hsl(var(--gold) / 0.18) 0 1px, transparent 1px 8px);
   }
 
-  /* Linen / fabric weave */
+  /* Linen — wider weave */
   .linen::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.07;
+    opacity: 0.05;
     mix-blend-mode: multiply;
     background-image:
-      repeating-linear-gradient(0deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 3px),
-      repeating-linear-gradient(90deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 3px);
+      repeating-linear-gradient(0deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 6px),
+      repeating-linear-gradient(90deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 6px);
   }
   .dark .linen::before { mix-blend-mode: screen; opacity: 0.04; background-image:
-      repeating-linear-gradient(0deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 3px),
-      repeating-linear-gradient(90deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 3px); }
+      repeating-linear-gradient(0deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 6px),
+      repeating-linear-gradient(90deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 6px); }
 
-  /* Iridescent / holographic sheen — for hover accents */
+  /* Holo */
   .holo::after {
     content: '';
     position: absolute;
@@ -486,7 +476,6 @@
       0 18px 40px -18px hsl(var(--gold) / 0.28),
       0 2px 0 hsl(var(--gold) / 0.45) inset;
   }
-  /* shimmering gold sweep on hover */
   .fancy-tile::before {
     content: '';
     position: absolute;
@@ -504,7 +493,6 @@
     z-index: 1;
   }
   .fancy-tile:hover::before { transform: translateX(110%); }
-  /* glowing gold corner ticks */
   .fancy-tile::after {
     content: '';
     position: absolute;
@@ -545,7 +533,6 @@
     filter: none !important;
   }
 
-  /* Dark-theme popup — overrides the forced light panel when .dark is on the html root */
   .dark .visible-popup-panel {
     background: hsl(220 50% 7%) !important;
     color: hsl(38 35% 92%) !important;
@@ -557,7 +544,6 @@
   .dark .visible-popup-panel .text-popover-foreground { color: hsl(38 35% 92%) !important; }
   .dark .visible-popup-panel .text-ink-soft,
   .dark .visible-popup-panel .text-muted-foreground { color: hsl(38 25% 75%) !important; }
-  /* Neutralise `.force-light` overrides inside dark popup so they don't darken text */
   .dark .visible-popup-panel.force-light .text-ink,
   .dark .visible-popup-panel .force-light .text-ink { color: hsl(38 35% 92%) !important; }
   .dark .visible-popup-panel.force-light .text-ink-soft,
@@ -565,9 +551,9 @@
   .dark .visible-popup-panel.force-light .text-muted-foreground,
   .dark .visible-popup-panel .force-light .text-muted-foreground { color: hsl(38 25% 75%) !important; }
 
-  /* ============ Additional subtle textures ============ */
+  /* ============ Subtle low-res accents ============ */
 
-  /* Fibers — long, thin paper threads (very faint) */
+  /* Fibers — chunky soft streaks */
   .fibers::before {
     content: '';
     position: absolute;
@@ -575,38 +561,43 @@
     pointer-events: none;
     opacity: 0.05;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.012 0.6' numOctaves='2' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-    background-size: cover;
+    background-image: repeating-linear-gradient(92deg,
+      hsl(var(--ink) / 0.18) 0 1px,
+      transparent 1px 14px,
+      hsl(var(--ink) / 0.1) 14px 15px,
+      transparent 15px 32px);
   }
   .dark .fibers::before {
     mix-blend-mode: screen;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.012 0.6' numOctaves='2' seed='5'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    background-image: repeating-linear-gradient(92deg,
+      hsl(var(--paper) / 0.18) 0 1px,
+      transparent 1px 14px,
+      hsl(var(--paper) / 0.1) 14px 15px,
+      transparent 15px 32px);
   }
 
-  /* Parchment — soft warm cloud wash */
+  /* Parchment — broad warm wash */
   .parchment::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
+    opacity: 0.1;
     mix-blend-mode: multiply;
     background:
-      radial-gradient(80% 60% at 20% 25%, hsl(38 55% 78% / 0.35), transparent 70%),
-      radial-gradient(70% 55% at 85% 80%, hsl(28 50% 70% / 0.28), transparent 72%),
-      radial-gradient(50% 40% at 60% 50%, hsl(var(--gold) / 0.08), transparent 75%);
+      radial-gradient(80% 60% at 20% 25%, hsl(38 55% 78% / 0.3), transparent 72%),
+      radial-gradient(70% 55% at 85% 80%, hsl(28 50% 70% / 0.22), transparent 72%);
   }
   .dark .parchment::before {
     mix-blend-mode: screen;
-    opacity: 0.1;
+    opacity: 0.08;
     background:
-      radial-gradient(80% 60% at 20% 25%, hsl(220 50% 22% / 0.45), transparent 72%),
-      radial-gradient(70% 55% at 85% 80%, hsl(var(--gold) / 0.08), transparent 70%),
-      radial-gradient(50% 40% at 60% 50%, hsl(220 60% 15% / 0.4), transparent 75%);
+      radial-gradient(80% 60% at 20% 25%, hsl(220 50% 22% / 0.4), transparent 72%),
+      radial-gradient(70% 55% at 85% 80%, hsl(var(--gold) / 0.08), transparent 72%);
   }
 
-  /* Marbled — slow swirling veins */
+  /* Marble — chunky low-res blobs */
   .marble::before {
     content: '';
     position: absolute;
@@ -614,50 +605,56 @@
     pointer-events: none;
     opacity: 0.05;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.012' numOctaves='3' seed='11'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='40'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
-    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='1' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    background-size: 320px 320px;
+    image-rendering: pixelated;
   }
   .dark .marble::before {
     mix-blend-mode: screen;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.012' numOctaves='3' seed='11'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='40'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='1' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    background-size: 320px 320px;
+    image-rendering: pixelated;
   }
 
-  /* Stipple — sparse organic specks (lighter than .dust) */
+  /* Stipple — sparse low-res pixel grain */
   .stipple::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.07;
+    opacity: 0.05;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.4' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 -0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
-    background-size: 280px 280px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 -0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    image-rendering: pixelated;
   }
   .dark .stipple::after {
     mix-blend-mode: screen;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.4' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.8  0 0 0 0.5 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.8  0 0 0 0.5 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    image-rendering: pixelated;
   }
 
-  /* Weave-soft — gentler than .linen, diagonal cross-hatch */
+  /* Weave-soft — wider diagonal cross-hatch */
   .weave-soft::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.04;
     mix-blend-mode: multiply;
     background-image:
-      repeating-linear-gradient(45deg, hsl(var(--ink) / 0.45) 0 1px, transparent 1px 5px),
-      repeating-linear-gradient(-45deg, hsl(var(--ink) / 0.4) 0 1px, transparent 1px 5px);
+      repeating-linear-gradient(45deg, hsl(var(--ink) / 0.45) 0 1px, transparent 1px 8px),
+      repeating-linear-gradient(-45deg, hsl(var(--ink) / 0.4) 0 1px, transparent 1px 8px);
   }
   .dark .weave-soft::before {
     mix-blend-mode: screen;
-    opacity: 0.04;
+    opacity: 0.035;
     background-image:
-      repeating-linear-gradient(45deg, hsl(var(--paper) / 0.4) 0 1px, transparent 1px 5px),
-      repeating-linear-gradient(-45deg, hsl(var(--paper) / 0.4) 0 1px, transparent 1px 5px);
+      repeating-linear-gradient(45deg, hsl(var(--paper) / 0.4) 0 1px, transparent 1px 8px),
+      repeating-linear-gradient(-45deg, hsl(var(--paper) / 0.4) 0 1px, transparent 1px 8px);
   }
 }
 
