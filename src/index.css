@@ -343,7 +343,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.06;
+    opacity: 0.035;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
     background-size: 180px 180px;
@@ -383,12 +383,12 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.06;
+    opacity: 0.035;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23000'%3E%3Ccircle cx='30' cy='50' r='1'/%3E%3Ccircle cx='160' cy='40' r='1'/%3E%3Ccircle cx='90' cy='120' r='1'/%3E%3Ccircle cx='180' cy='160' r='1'/%3E%3Ccircle cx='50' cy='170' r='1'/%3E%3C/g%3E%3C/svg%3E");
     background-size: 200px 200px;
   }
-  .dark .dust::before { mix-blend-mode: screen; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='30' cy='50' r='1'/%3E%3Ccircle cx='160' cy='40' r='1'/%3E%3Ccircle cx='90' cy='120' r='1'/%3E%3Ccircle cx='180' cy='160' r='1'/%3E%3Ccircle cx='50' cy='170' r='1'/%3E%3C/g%3E%3C/svg%3E"); }
+  .dark .dust::before { mix-blend-mode: screen; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='30' cy='50' r='1'/%3E%3Ccircle cx='160' cy='40' r='1'/%3E%3Ccircle cx='90' cy='120' r='1'/%3E%3Ccircle cx='180' cy='160' r='1'/%3E%3Ccircle cx='50' cy='170' r='1'/%3E%3C/g%3E%3C/svg%3E"); }
 
   /* Leak — single soft glow */
   .leak::before {
@@ -396,7 +396,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.14;
+    opacity: 0.08;
     mix-blend-mode: screen;
     background: radial-gradient(55% 40% at 88% 12%, hsl(41 90% 65% / 0.18), transparent 72%);
   }
@@ -410,7 +410,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     mix-blend-mode: overlay;
     background-image: repeating-linear-gradient(0deg, hsl(var(--gold) / 0.18) 0 1px, transparent 1px 8px);
   }
@@ -421,13 +421,13 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     mix-blend-mode: multiply;
     background-image:
       repeating-linear-gradient(0deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 6px),
       repeating-linear-gradient(90deg, hsl(var(--ink) / 0.5) 0 1px, transparent 1px 6px);
   }
-  .dark .linen::before { mix-blend-mode: screen; opacity: 0.04; background-image:
+  .dark .linen::before { mix-blend-mode: screen; opacity: 0.025; background-image:
       repeating-linear-gradient(0deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 6px),
       repeating-linear-gradient(90deg, hsl(var(--paper) / 0.5) 0 1px, transparent 1px 6px); }
 
@@ -559,7 +559,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     mix-blend-mode: multiply;
     background-image: repeating-linear-gradient(92deg,
       hsl(var(--ink) / 0.18) 0 1px,
@@ -569,7 +569,7 @@
   }
   .dark .fibers::before {
     mix-blend-mode: screen;
-    opacity: 0.04;
+    opacity: 0.025;
     background-image: repeating-linear-gradient(92deg,
       hsl(var(--paper) / 0.18) 0 1px,
       transparent 1px 14px,
@@ -583,7 +583,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.1;
+    opacity: 0.06;
     mix-blend-mode: multiply;
     background:
       radial-gradient(80% 60% at 20% 25%, hsl(38 55% 78% / 0.3), transparent 72%),
@@ -591,7 +591,7 @@
   }
   .dark .parchment::before {
     mix-blend-mode: screen;
-    opacity: 0.08;
+    opacity: 0.05;
     background:
       radial-gradient(80% 60% at 20% 25%, hsl(220 50% 22% / 0.4), transparent 72%),
       radial-gradient(70% 55% at 85% 80%, hsl(var(--gold) / 0.08), transparent 72%);
@@ -603,7 +603,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='1' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
     background-size: 320px 320px;
@@ -611,7 +611,7 @@
   }
   .dark .marble::before {
     mix-blend-mode: screen;
-    opacity: 0.04;
+    opacity: 0.025;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='1' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
     background-size: 320px 320px;
     image-rendering: pixelated;
@@ -623,7 +623,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 -0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
     background-size: 220px 220px;
@@ -631,7 +631,7 @@
   }
   .dark .stipple::after {
     mix-blend-mode: screen;
-    opacity: 0.04;
+    opacity: 0.025;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.8  0 0 0 0.5 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
     background-size: 220px 220px;
     image-rendering: pixelated;
@@ -643,7 +643,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.04;
+    opacity: 0.025;
     mix-blend-mode: multiply;
     background-image:
       repeating-linear-gradient(45deg, hsl(var(--ink) / 0.45) 0 1px, transparent 1px 8px),
@@ -651,7 +651,7 @@
   }
   .dark .weave-soft::before {
     mix-blend-mode: screen;
-    opacity: 0.035;
+    opacity: 0.02;
     background-image:
       repeating-linear-gradient(45deg, hsl(var(--paper) / 0.4) 0 1px, transparent 1px 8px),
       repeating-linear-gradient(-45deg, hsl(var(--paper) / 0.4) 0 1px, transparent 1px 8px);
