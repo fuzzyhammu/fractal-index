@@ -359,7 +359,7 @@
     pointer-events: none;
     background-image: repeating-linear-gradient(0deg, hsl(var(--ink) / 0.05) 0 1px, transparent 1px 6px);
     mix-blend-mode: multiply;
-    opacity: 0.25;
+    opacity: 0.14;
   }
   .dark .scanlines::after { background-image: repeating-linear-gradient(0deg, hsl(var(--paper) / 0.05) 0 1px, transparent 1px 6px); mix-blend-mode: screen; }
 
