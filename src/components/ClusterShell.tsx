@@ -1,13 +1,13 @@
 import { ReactNode, useState, useEffect } from "react";
 import { NavLink, Link, useParams, useLocation } from "react-router-dom";
-import { ChevronRight, Home, ArrowLeft, ChevronDown } from "lucide-react";
+import { ChevronRight, Home, ArrowLeft } from "lucide-react";
 import { SiteNav, SiteFooter } from "./SiteChrome";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { CLUSTERS, GRAND_GROUPS, findCluster, findSubpage, findGrandGroup } from "@/data/clusters";
+import { CLUSTERS, findCluster, findSubpage } from "@/data/clusters";
 
 // scroll-spy: tracks which subsection anchor is in view, updates location.hash without jumping
 function useScrollSpy(ids: string[]) {
@@ -181,97 +181,40 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
           </SidebarGroup>
         )}
 
-        {!collapsed && GRAND_GROUPS.map((g) => {
-          const GI = g.icon;
-          const currentGroup = findGrandGroup(cluster.slug);
-          return (
-            <CollapsibleGroup
-              key={g.slug}
-              title={g.label}
-              icon={GI}
-              defaultOpen={currentGroup?.slug === g.slug}
-            >
-              {g.clusterSlugs.map((cs) => {
-                const cc = findCluster(cs);
-                if (!cc) return null;
+        {/* Flat all-pages nav */}
+        <SidebarGroup>
+          {!collapsed && (
+            <SidebarGroupLabel className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground">
+              All Pages
+            </SidebarGroupLabel>
+          )}
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {CLUSTERS.map((cc) => {
                 const CI = cc.icon;
                 const isCurrent = cc.slug === cluster.slug;
                 return (
-                  <SidebarMenuItem key={cs}>
-                    <SidebarMenuButton asChild>
+                  <SidebarMenuItem key={cc.slug}>
+                    <SidebarMenuButton asChild tooltip={collapsed ? cc.label : undefined} isActive={isCurrent}>
                       <NavLink
                         to={`/${cc.slug}`}
-                        className={`font-mono text-[0.7rem] tracking-wide flex items-center gap-2 ${
-                          isCurrent ? "text-gold" : "text-ink-soft hover:text-gold"
-                        }`}
+                        title={collapsed ? cc.label : undefined}
+                        className={`flex items-center gap-2 ${
+                          collapsed ? "justify-center" : ""
+                        } ${isCurrent ? "text-gold" : "text-ink-soft hover:text-gold"}`}
                       >
-                        <CI className="w-3 h-3" />
-                        <span className="truncate">{cc.label}</span>
+                        <CI className="w-3.5 h-3.5 shrink-0" />
+                        {!collapsed && (
+                          <span className="font-mono text-[0.7rem] tracking-wide truncate">{cc.label}</span>
+                        )}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
               })}
-            </CollapsibleGroup>
-          );
-        })}
-
-        {collapsed && (
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {GRAND_GROUPS.flatMap((g) => g.clusterSlugs).map((cs) => {
-                  const cc = findCluster(cs);
-                  if (!cc) return null;
-                  const CI = cc.icon;
-                  const isCurrent = cc.slug === cluster.slug;
-                  return (
-                    <SidebarMenuItem key={cs}>
-                      <SidebarMenuButton asChild tooltip={cc.label} isActive={isCurrent}>
-                        <NavLink
-                          to={`/${cc.slug}`}
-                          title={cc.label}
-                          className={`flex items-center justify-center ${
-                            isCurrent ? "text-gold" : "text-ink-soft hover:text-gold"
-                          }`}
-                        >
-                          <CI className="w-3.5 h-3.5" />
-                        </NavLink>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
-      </SidebarContent>
-    </Sidebar>
-  );
-}
-
-function CollapsibleGroup({
-  title, icon: Icon, defaultOpen = false, children,
-}: { title: string; icon: React.ComponentType<{ className?: string }>; defaultOpen?: boolean; children: ReactNode }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <SidebarGroup>
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="w-full px-2 py-1.5 flex items-center gap-2 text-muted-foreground hover:text-gold transition-colors"
-      >
-        <Icon className="w-3 h-3" />
-        <span className="font-mono text-[0.6rem] tracking-[0.25em] uppercase flex-1 text-left">{title}</span>
-        <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <SidebarGroupContent>
-          <SidebarMenu>{children}</SidebarMenu>
-        </SidebarGroupContent>
-      )}
-    </SidebarGroup>
-  );
-}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
 
 export function Breadcrumbs({ cluster, sub }: { cluster: string; sub?: string }) {
   const c = findCluster(cluster);
