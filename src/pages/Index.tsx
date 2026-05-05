@@ -160,9 +160,9 @@ const Index = () => {
                 className="font-display text-3xl md:text-5xl text-ink leading-[1.05] text-balance drop-cap"
                 data-reveal
               >
-                This is not a résumé. It is a working dossier — equal parts laboratory
-                notebook, gallery catalogue, and founder's manifesto. Every page has
-                layers, sublayers, evidence. Every claim is meant to be examined.
+                Born February 2009 in India. Moved to Montréal on October 10, 2024. Now in
+                Secondary 5 in Westmount, Quebec — one year from graduation, already deep
+                into university physics, Olympiad math, and a 400-chapter sci-fi novel.
               </p>
               <div className="rule-double my-8 max-w-xs" data-reveal data-reveal-delay="120" />
               <p
@@ -170,10 +170,11 @@ const Index = () => {
                 data-reveal
                 data-reveal-delay="200"
               >
-                I was born in India, raised between two continents, and I now write,
-                perform, code, and study physics from Montréal. I have spent the
-                last ten years collecting questions — this site is where I begin to
-                answer them, in public, with proof.
+                I have been self-teaching high-energy physics since I was ten. I act in
+                Bollywood productions, sing Hindustani classical, play electric guitar
+                (zero to Polyphia in six months), paint on canvas, lead a YMCA youth
+                co-op, and aim straight at elite U.S. universities — and, eventually, a
+                multibillion-dollar career in science and business.
               </p>
             </div>
           </div>
