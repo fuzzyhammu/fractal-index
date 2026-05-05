@@ -5,8 +5,7 @@ import {
   Mail, Linkedin, Github, Send, MapPin,
 } from "lucide-react";
 import { ClusterShell } from "./ClusterShell";
-import { PullQuote, Marginalia } from "./Editorial";
-import { Bento, type BentoItem } from "./Bento";
+import { PullQuote } from "./Editorial";
 import { CLUSTERS, findCluster, type Cluster, type Subpage } from "@/data/clusters";
 import heroFallback from "@/assets/atmos-notebook.jpg";
 import heroPortrait from "@/assets/hero-portrait.jpg";
