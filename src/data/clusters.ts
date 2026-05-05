@@ -41,12 +41,10 @@ const withTopics = (...topics: string[]): Subpage[] => [
   ...TAIL,
 ];
 
-/* Five merged clusters. Every topic from the old 15-cluster site is preserved
-   as a named section/rail inside one of these pages. */
 export const CLUSTERS: Cluster[] = [
   {
     num: "01", slug: "about", label: "About", icon: User,
-    tagline: "Who I am, where I come from, and where I am headed.",
+    tagline: "17, born February 2009 in India · moved to Montréal Oct 10, 2024 · Secondary 5 in Westmount · Rajasthani roots, trilingual (EN · HI · FR).",
     subpages: withTopics(
       "Personal Profile",
       "Identity Timeline",
@@ -58,7 +56,7 @@ export const CLUSTERS: Cluster[] = [
   },
   {
     num: "02", slug: "academics", label: "Academics, STEM & Research", icon: GraduationCap,
-    tagline: "Education timeline, exams, awards, physics, and research interests.",
+    tagline: "Self-taught high-energy physics since age 10. Five AP exams passed in grade 10. Olympiad finalist. Mentored by Profs. at Concordia.",
     subpages: withTopics(
       "Education Timeline",
       "Subject Strengths",
@@ -73,47 +71,38 @@ export const CLUSTERS: Cluster[] = [
   },
   {
     num: "03", slug: "works", label: "Works", icon: Wand2,
-    tagline: "Every craft under one roof — robotics, writing, music, screen, design, art, leadership, sport.",
+    tagline: "Bollywood acting · Hindustani classical vocal · electric guitar (Polyphia in 6 months) · 400+ chapter sci-fi novel · FRC 7700 · YMCA VP.",
     subpages: withTopics(
-      // Robotics & Engineering
       "FRC Team 7700",
       "Engineering Skills",
       "Robotics Build Log",
-      // Writing
       "Novel Series Archive",
       "Writing Samples",
       "Podcast",
       "Creative Method",
-      // Music
       "Vocal Performance",
       "Instrumental",
       "Performance Portfolio",
       "Repertoire",
-      // Acting & Media
       "Child Artist Archive",
       "Acting Reel",
       "Voice & Screen",
       "Media Credits",
-      // Design / Web / Tech
       "Zionaxelle",
       "Multimedia Production",
       "Tech Skills",
       "Tech Build Log",
-      // Art
       "Canvas Art",
       "Embroidery",
       "Mixed Media",
-      // Leadership & Impact
       "YMCA Youth Co-op",
       "Mentoring",
       "Community & Family",
       "Cultural Integration",
-      // Sports & Strategy
       "Badminton",
       "Table Tennis",
       "Chess",
       "Strategic Thinking",
-      // Curiosities
       "Karate",
       "Abacus",
       "Side Quests",
@@ -123,12 +112,12 @@ export const CLUSTERS: Cluster[] = [
   },
   {
     num: "04", slug: "vault", label: "CV & Document Vault", icon: FileText,
-    tagline: "CV, certificates, transcripts, recognition — every receipt, open for inspection.",
+    tagline: "Hundreds of awards — most-awarded student in her school. AP scores, Olympiad ranks, EMSB ministry results, certificates — open for inspection.",
     subpages: withTopics("Certificates", "Transcripts", "Recognition"),
   },
   {
     num: "05", slug: "contact", label: "Contact & Links", icon: Mail,
-    tagline: "Open correspondence and links to everywhere else.",
+    tagline: "Open correspondence — research mentors, collaborators, scholarship committees welcome.",
     subpages: withTopics("Channels", "Links"),
   },
 ];
