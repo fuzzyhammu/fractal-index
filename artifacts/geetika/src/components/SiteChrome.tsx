@@ -35,7 +35,7 @@ export const SiteNav = () => {
             <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-gold [text-shadow:0_2px_8px_hsl(220_60%_4%/0.65),0_1px_2px_hsl(220_60%_4%/0.8)]">
               GG
             </span>
-            <span className="hidden sm:inline font-display [text-shadow:0_2px_8px_hsl(220_60%_4%/0.65),0_1px_2px_hsl(220_60%_4%/0.8)] text-[#ffc83d] text-xl">
+            <span className="hidden sm:inline font-display [text-shadow:0_2px_8px_hsl(220_60%_4%/0.65),0_1px_2px_hsl(220_60%_4%/0.8)] text-xl text-[#faee6e] bg-[#91262600]">
               Geetika Gehlot
             </span>
           </Link>
@@ -54,7 +54,6 @@ export const SiteNav = () => {
           </div>
         </div>
       </header>
-
       <div
         className={`fixed inset-0 z-[60] transition-all duration-500 ${
           open ? "visible opacity-100" : "invisible opacity-0"
