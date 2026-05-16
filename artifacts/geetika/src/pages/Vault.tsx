@@ -181,7 +181,7 @@ function PDFEmbedBox({
       </div>
 
       {/* PDF embed */}
-      <div className="relative w-full" style={{ height: "60vh", minHeight: "420px" }}>
+      <div className="relative w-full" style={{ height: "45vh", minHeight: "320px" }}>
         <iframe
           src={pdfUrl}
           title={`${title} PDF`}
@@ -215,25 +215,25 @@ function PDFEmbedBox({
 function CVDocumentGrid() {
   return (
     <div className="space-y-6">
-      {/* CV Box */}
-      <PDFEmbedBox
-        title="CV"
-        subtitle="Full curriculum vitae"
-        badge="PDF · A4"
-        pdfUrl={CV_PDF_URL}
-        icon={FileText}
-        footerMeta="Updated 2025"
-      />
-
-      {/* Résumé Box */}
-      <PDFEmbedBox
-        title="Résumé"
-        subtitle="One-page condensed version"
-        badge="PDF · Letter"
-        pdfUrl={CV_PDF_URL}
-        icon={BookOpen}
-        footerMeta="Updated 2025"
-      />
+      {/* CV + Résumé side by side */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <PDFEmbedBox
+          title="CV"
+          subtitle="Full curriculum vitae"
+          badge="PDF · A4"
+          pdfUrl={CV_PDF_URL}
+          icon={FileText}
+          footerMeta="Updated 2025"
+        />
+        <PDFEmbedBox
+          title="Résumé"
+          subtitle="One-page condensed version"
+          badge="PDF · Letter"
+          pdfUrl={CV_PDF_URL}
+          icon={BookOpen}
+          footerMeta="Updated 2025"
+        />
+      </div>
 
       {/* LinkedIn tile */}
       <a
