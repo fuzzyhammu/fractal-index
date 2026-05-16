@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/sidebar";
 import { CLUSTERS, findCluster, findSubpage, getSubpages } from "@/data/clusters";
 
-// scroll-spy: tracks which subsection anchor is in view, updates location.hash without jumping
 function useScrollSpy(ids: string[]) {
   const location = useLocation();
   const [active, setActive] = useState<string>(() => location.hash.replace("#", "") || ids[0]);
@@ -82,7 +81,7 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
           {!collapsed && (
             <Link to="/dashboard" className="flex items-center gap-2 text-ink-soft hover:text-gold transition-colors">
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em]">Dashboard</span>
+              <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em]">Pages</span>
             </Link>
           )}
           <div className={`mt-3 flex items-center gap-2.5 ${collapsed ? "justify-center mt-0" : ""}`}>
@@ -177,7 +176,6 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
           </SidebarGroup>
         )}
 
-        {/* Flat all-pages nav */}
         <SidebarGroup>
           {!collapsed && (
             <SidebarGroupLabel className="font-mono text-[0.6rem] tracking-[0.25em] uppercase text-muted-foreground">
@@ -223,7 +221,7 @@ export function Breadcrumbs({ cluster, sub }: { cluster: string; sub?: string })
     <nav className="flex items-center gap-2 text-[0.7rem] font-mono uppercase tracking-[0.2em] text-muted-foreground">
       <Link to="/" className="hover:text-gold flex items-center gap-1.5"><Home className="w-3 h-3" />Home</Link>
       <ChevronRight className="w-3 h-3" />
-      <Link to="/dashboard" className="hover:text-gold">Dashboard</Link>
+      <Link to="/dashboard" className="hover:text-gold">Pages</Link>
       {c && (
         <>
           <ChevronRight className="w-3 h-3" />

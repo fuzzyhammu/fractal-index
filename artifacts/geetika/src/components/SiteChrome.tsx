@@ -1,14 +1,13 @@
 import { NavLink, Link } from "react-router-dom";
 import { forwardRef, useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { CLUSTERS, PROOF_CLUSTER } from "@/data/clusters";
+import { CLUSTERS } from "@/data/clusters";
 import { ThemeToggle } from "./ThemeToggle";
 
 const topLinks = [
-  { to: "/", label: "Home (Editorial)", num: "00" },
-  { to: "/dashboard", label: "Dashboard", num: "✦✦" },
+  { to: "/", label: "Home", num: "00" },
+  { to: "/dashboard", label: "Pages", num: "✦✦" },
 ];
-const footerLinks: { to: string; label: string; num: string }[] = [];
 
 export const SiteNav = () => {
   const [open, setOpen] = useState(false);
@@ -22,12 +21,6 @@ export const SiteNav = () => {
   }, []);
 
   useEffect(() => { setOpen(false); }, []);
-
-  // When the hero slideshow is in view, override header colors to light
-  // (the slideshow has a dark overlay regardless of theme).
-  const heroLight = "[html.hero-in-view_&]:text-paper";
-  const heroLightSoft = "[html.hero-in-view_&]:text-paper/80";
-  const heroLightBorder = "[html.hero-in-view_&]:border-paper/30";
 
   return (
     <>
@@ -64,17 +57,13 @@ export const SiteNav = () => {
         </div>
       </header>
 
-      {/* Index drawer */}
       <div
         className={`fixed inset-0 z-[60] transition-all duration-500 ${
           open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <div
-          className="absolute inset-0 bg-navy-deep/85 backdrop-blur-sm"
-          onClick={() => setOpen(false)}
-        />
-          <aside className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-paper text-ink shadow-2xl overflow-y-auto">
+        <div className="absolute inset-0 bg-navy-deep/85 backdrop-blur-sm" onClick={() => setOpen(false)} />
+        <aside className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-paper text-ink shadow-2xl overflow-y-auto">
           <div className="flex items-center justify-between p-6 border-b border-border">
             <span className="eyebrow">Site Index</span>
             <button onClick={() => setOpen(false)} aria-label="Close menu">
@@ -82,7 +71,6 @@ export const SiteNav = () => {
             </button>
           </div>
           <nav className="p-6">
-            {/* Top fixed links */}
             <ol className="space-y-0">
               {topLinks.map((s) => (
                 <li key={s.to}>
@@ -95,19 +83,14 @@ export const SiteNav = () => {
                       }`
                     }
                   >
-                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">
-                      {s.num}
-                    </span>
+                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">{s.num}</span>
                     <span className="font-display text-2xl">{s.label}</span>
                   </NavLink>
                 </li>
               ))}
             </ol>
 
-            {/* Flat list of all clusters */}
-            <div className="mt-6 mb-2">
-              <span className="eyebrow">Pages</span>
-            </div>
+            <div className="mt-6 mb-2"><span className="eyebrow">Pages</span></div>
             <ul className="border-t border-border/60">
               {CLUSTERS.map((c) => {
                 const CI = c.icon;
@@ -123,41 +106,13 @@ export const SiteNav = () => {
                       }
                     >
                       <CI className="w-3.5 h-3.5 text-gold shrink-0 self-center" />
-                      <span className="font-mono text-[0.65rem] tracking-widest text-muted-foreground w-8">
-                        {c.num}
-                      </span>
+                      <span className="font-mono text-[0.65rem] tracking-widest text-muted-foreground w-8">{c.num}</span>
                       <span className="font-display text-lg">{c.label}</span>
                     </NavLink>
                   </li>
                 );
               })}
             </ul>
-
-            {/* Footer fixed links (Proof) */}
-            <ol className="mt-2">
-              {footerLinks.map((s) => (
-                <li key={s.to}>
-                  <NavLink
-                    to={s.to}
-                    onClick={() => setOpen(false)}
-                    className={({ isActive }) =>
-                      `flex items-baseline gap-6 py-4 border-b border-border/60 transition-colors ${
-                        isActive ? "text-gold" : "text-ink hover:text-gold"
-                      }`
-                    }
-                  >
-                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">
-                      {s.num}
-                    </span>
-                    <span className="font-display text-2xl">{s.label}</span>
-                  </NavLink>
-                </li>
-              ))}
-            </ol>
-
-            <p className="mt-8 eyebrow text-muted-foreground">
-              Curiosity is not my hobby. It is my operating system.
-            </p>
           </nav>
         </aside>
       </div>
@@ -178,7 +133,7 @@ export const SiteFooter = forwardRef<HTMLElement>((_, ref) => (
         <p className="eyebrow text-paper/60 mb-4">Navigate</p>
         <ul className="space-y-2 font-mono text-xs">
           <li><Link to="/" className="link-underline hover:text-gold">00 · Home</Link></li>
-          <li><Link to="/dashboard" className="link-underline hover:text-gold">✦✦ · Dashboard</Link></li>
+          <li><Link to="/dashboard" className="link-underline hover:text-gold">✦✦ · Pages</Link></li>
           {CLUSTERS.map((c) => (
             <li key={c.slug}>
               <Link to={`/${c.slug}`} className="link-underline hover:text-gold">
