@@ -36,7 +36,7 @@ const TINTS = [
 function YouTubeEmbed({ src, caption }: { src: string; caption?: string }) {
   return (
     <div className="mt-6">
-      <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-border bg-navy-deep">
+      <div className="relative w-full aspect-video overflow-hidden border border-border bg-navy-deep">
         <iframe
           src={src}
           title={caption ?? "Embedded video"}
@@ -54,8 +54,8 @@ function YouTubeEmbed({ src, caption }: { src: string; caption?: string }) {
 
 function ImageEmbed({ src, caption }: { src: string; caption?: string }) {
   return (
-    <div className="mt-6">
-      <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-border bg-paper-deep">
+    <div className="mt-4">
+      <div className="relative w-full aspect-video overflow-hidden border border-border bg-paper-deep">
         <img
           src={src}
           alt={caption ?? "Embedded image"}
@@ -79,11 +79,11 @@ function MosaicBox({ topic, span, tint }: { topic: TopicData; span: string; tint
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`group relative ${span} min-h-[140px] overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${tint} transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-gold hover:shadow-[0_18px_40px_-24px_hsl(220_60%_4%/0.4)] cursor-pointer`}
+        className={`group relative ${span} min-h-[140px] overflow-hidden border border-border bg-gradient-to-br ${tint} transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-gold hover:shadow-[0_18px_40px_-24px_hsl(220_60%_4%/0.4)] cursor-pointer`}
       >
         <span className="absolute inset-0 ring-1 ring-inset ring-paper/30 mix-blend-overlay pointer-events-none" />
         <span className="absolute inset-0 holo opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="absolute inset-0 p-4 md:p-5 flex flex-col justify-end">
+        <div className="absolute inset-0 p-4 md:p-5 flex flex-col justify-between">
           <h3
             className={`font-display text-ink leading-tight transition-colors duration-300 group-hover:text-gold ${
               isLarge ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
@@ -92,7 +92,7 @@ function MosaicBox({ topic, span, tint }: { topic: TopicData; span: string; tint
             {topic.label}
           </h3>
           {isLarge && topic.blurb && (
-            <p className="mt-2 text-sm text-ink-soft leading-relaxed line-clamp-2">
+            <p className="mt-1 text-sm text-ink-soft leading-relaxed line-clamp-2">
               {topic.blurb}
             </p>
           )}
@@ -106,7 +106,7 @@ function MosaicBox({ topic, span, tint }: { topic: TopicData; span: string; tint
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-3xl bg-paper p-0 overflow-hidden">
-          <div className="p-7 md:p-10">
+          <div className="p-6 md:p-8">
             <DialogTitle className="font-display text-2xl md:text-4xl text-ink leading-tight pr-8">
               {topic.label}
             </DialogTitle>
@@ -139,8 +139,8 @@ function MosaicBox({ topic, span, tint }: { topic: TopicData; span: string; tint
 
 export function MoodMosaic({ topics }: { topics: TopicData[] }) {
   return (
-    <section className="px-4 md:px-12 pb-16">
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[120px] md:auto-rows-[140px] gap-3 md:gap-4">
+    <section className="px-0 pb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[120px] md:auto-rows-[140px] gap-px bg-border">
         {topics.map((t, i) => (
           <MosaicBox
             key={t.slug}

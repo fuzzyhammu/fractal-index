@@ -18,8 +18,8 @@ const Contact = () => {
 
   return (
     <PageShell>
-      <section className="container pt-16 md:pt-24 pb-12">
-        <div className="flex items-baseline gap-6 mb-8 animate-fade-in">
+      <section className="container pt-12 md:pt-16 pb-6">
+        <div className="flex items-baseline gap-4 mb-5 animate-fade-in">
           <span className="font-mono text-xs tracking-[0.3em] text-gold">§ 05</span>
           <span className="eyebrow">Contact & Links</span>
           <span className="flex-1 h-px bg-border" />
@@ -27,15 +27,15 @@ const Contact = () => {
         <h1 className="display-xl text-5xl md:text-7xl lg:text-8xl text-balance max-w-5xl animate-fade-up">
           Open correspondence and links to everywhere else.
         </h1>
-        <p className="mt-8 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
+        <p className="mt-5 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
           Click any box for details, or use the form below to reach out directly.
         </p>
-        <div className="rule-gold mt-10" />
+        <div className="rule-gold mt-8" />
       </section>
 
       <MoodMosaic topics={cluster.topics} />
 
-      <section className="container pb-16">
+      <section className="container pb-8">
         <ContactBlock />
       </section>
     </PageShell>
@@ -70,21 +70,21 @@ function ContactBlock() {
   ];
 
   return (
-    <div className="grid md:grid-cols-[1.2fr,1fr] gap-8 items-start">
-      <form onSubmit={onSubmit} className="bg-paper-deep border border-border p-6 md:p-8 space-y-4 rounded-2xl">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <label className="block">
+    <div className="grid md:grid-cols-[1.2fr,1fr] gap-px bg-border items-stretch">
+      <form onSubmit={onSubmit} className="bg-paper-deep border border-border p-5 md:p-6 space-y-3 fancy-tile fibers stipple">
+        <div className="grid sm:grid-cols-2 gap-px bg-border">
+          <label className="block bg-paper-deep p-4">
             <span className="eyebrow">Your name</span>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} required
               className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-display text-base text-ink" placeholder="Your name" />
           </label>
-          <label className="block">
+          <label className="block bg-paper-deep p-4">
             <span className="eyebrow">Email</span>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} required
               className="mt-2 w-full bg-paper border focus:border-gold border-border outline-none px-3 py-2 font-display text-base text-ink" placeholder="you@domain.com" />
           </label>
         </div>
-        <label className="block">
+        <label className="block bg-paper-deep p-4">
           <span className="eyebrow">Message</span>
           <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={2000} required rows={6}
             className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-accent text-base text-ink resize-y"
@@ -98,10 +98,10 @@ function ContactBlock() {
         </button>
       </form>
 
-      <ul className="space-y-3">
+      <ul className="grid gap-px bg-border">
         {channels.map(({ icon: I, label, value, href }) => {
           const inner = (
-            <div className="group dossier-card p-5 hover-lift flex items-start gap-3">
+            <div className="group dossier-card p-5 hover-lift flex items-start gap-3 h-full">
               <I className="w-4 h-4 text-gold mt-1 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-gold">{label}</p>

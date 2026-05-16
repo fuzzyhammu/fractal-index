@@ -49,7 +49,7 @@ const ACCENT_BG: Record<NonNullable<BentoItem["accent"]>, string> = {
 export function BentoGrid({ children, dense = true }: { children: ReactNode; dense?: boolean }) {
   return (
     <div
-      className={`grid grid-cols-6 auto-rows-[12rem] gap-3 md:gap-4 ${dense ? "[grid-auto-flow:dense]" : ""}`}
+      className={`grid grid-cols-6 auto-rows-[12rem] gap-px md:gap-px bg-border ${dense ? "[grid-auto-flow:dense]" : ""}`}
     >
       {children}
     </div>
@@ -72,7 +72,7 @@ export function BentoCard({ item }: { item: BentoItem }) {
           "group fancy-tile relative overflow-hidden border border-border text-left",
           "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform",
           "hover:border-gold",
-          "hover:-translate-y-1.5 hover:scale-[1.02] hover:rotate-[0.25deg] hover:z-10",
+          "hover:-translate-y-1 hover:scale-[1.01] hover:rotate-[0.15deg] hover:z-10",
           "focus:outline-none focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/40",
           hasImage ? "film-grain crumpled-paper stipple" : "crumpled-paper film-grain fibers stipple",
           accent === "navy" ? ACCENT_BG.navy : ACCENT_BG[accent],
@@ -169,7 +169,7 @@ export function BentoCard({ item }: { item: BentoItem }) {
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-transparent" />
             </div>
           )}
-          <div className="p-7 md:p-10 relative">
+          <div className="p-6 md:p-8 relative">
             {item.eyebrow && <p className="label-gold mb-3">{item.eyebrow}</p>}
             <DialogTitle className="font-display text-2xl md:text-4xl text-ink leading-tight pr-8">
               {item.title}
@@ -197,9 +197,9 @@ export const Bento = forwardRef<HTMLDivElement, { items: BentoItem[] }>(({ items
   return (
     <div ref={ref}>
       <BentoGrid>
-      {items.map((it) => (
-        <BentoCard key={it.id} item={it} />
-      ))}
+        {items.map((it) => (
+          <BentoCard key={it.id} item={it} />
+        ))}
       </BentoGrid>
     </div>
   );

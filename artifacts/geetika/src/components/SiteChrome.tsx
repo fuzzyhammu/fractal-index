@@ -25,12 +25,6 @@ export const SiteNav = () => {
 
   useEffect(() => { setOpen(false); }, []);
 
-  // When the hero slideshow is in view, override header colors to light
-  // (the slideshow has a dark overlay regardless of theme).
-  const heroLight = "[html.hero-in-view_&]:text-paper";
-  const heroLightSoft = "[html.hero-in-view_&]:text-paper/80";
-  const heroLightBorder = "[html.hero-in-view_&]:border-paper/30";
-
   return (
     <>
       <header
@@ -66,17 +60,9 @@ export const SiteNav = () => {
         </div>
       </header>
 
-      {/* Index drawer */}
-      <div
-        className={`fixed inset-0 z-[60] transition-all duration-500 ${
-          open ? "visible opacity-100" : "invisible opacity-0"
-        }`}
-      >
-        <div
-          className="absolute inset-0 bg-navy-deep/85 backdrop-blur-sm"
-          onClick={() => setOpen(false)}
-        />
-          <aside className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-paper text-ink shadow-2xl overflow-y-auto">
+      <div className={`fixed inset-0 z-[60] transition-all duration-500 ${open ? "visible opacity-100" : "invisible opacity-0"}`}>
+        <div className="absolute inset-0 bg-navy-deep/85 backdrop-blur-sm" onClick={() => setOpen(false)} />
+        <aside className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-paper text-ink shadow-2xl overflow-y-auto">
           <div className="flex items-center justify-between p-6 border-b border-border">
             <span className="eyebrow">Site Index</span>
             <button onClick={() => setOpen(false)} aria-label="Close menu">
@@ -84,7 +70,6 @@ export const SiteNav = () => {
             </button>
           </div>
           <nav className="p-6">
-            {/* Top fixed links */}
             <ol className="space-y-0">
               {topLinks.map((s) => (
                 <li key={s.to}>
@@ -92,22 +77,16 @@ export const SiteNav = () => {
                     to={s.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-baseline gap-6 py-4 border-b border-border/60 group transition-colors ${
-                        isActive ? "text-gold" : "text-ink hover:text-gold"
-                      }`
+                      `flex items-baseline gap-4 py-3 border-b border-border/60 group transition-colors ${isActive ? "text-gold" : "text-ink hover:text-gold"}`
                     }
                   >
-                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">
-                      {s.num}
-                    </span>
+                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">{s.num}</span>
                     <span className="font-display text-2xl">{s.label}</span>
                   </NavLink>
                 </li>
               ))}
             </ol>
-
-            {/* Flat list of all clusters */}
-            <div className="mt-6 mb-2">
+            <div className="mt-5 mb-2">
               <span className="eyebrow">Pages</span>
             </div>
             <ul className="border-t border-border/60">
@@ -119,23 +98,17 @@ export const SiteNav = () => {
                       to={`/${c.slug}`}
                       onClick={() => setOpen(false)}
                       className={({ isActive }) =>
-                        `flex items-baseline gap-4 py-3 transition-colors ${
-                          isActive ? "text-gold" : "text-ink hover:text-gold"
-                        }`
+                        `flex items-baseline gap-4 py-3 transition-colors ${isActive ? "text-gold" : "text-ink hover:text-gold"}`
                       }
                     >
                       <CI className="w-3.5 h-3.5 text-gold shrink-0 self-center" />
-                      <span className="font-mono text-[0.65rem] tracking-widest text-muted-foreground w-8">
-                        {c.num}
-                      </span>
+                      <span className="font-mono text-[0.65rem] tracking-widest text-muted-foreground w-8">{c.num}</span>
                       <span className="font-display text-lg">{c.label}</span>
                     </NavLink>
                   </li>
                 );
               })}
             </ul>
-
-            {/* Footer fixed links (Proof) */}
             <ol className="mt-2">
               {footerLinks.map((s) => (
                 <li key={s.to}>
@@ -143,23 +116,15 @@ export const SiteNav = () => {
                     to={s.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-baseline gap-6 py-4 border-b border-border/60 transition-colors ${
-                        isActive ? "text-gold" : "text-ink hover:text-gold"
-                      }`
+                      `flex items-baseline gap-4 py-3 border-b border-border/60 transition-colors ${isActive ? "text-gold" : "text-ink hover:text-gold"}`
                     }
                   >
-                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">
-                      {s.num}
-                    </span>
+                    <span className="font-mono text-[0.7rem] tracking-widest text-muted-foreground w-8">{s.num}</span>
                     <span className="font-display text-2xl">{s.label}</span>
                   </NavLink>
                 </li>
               ))}
             </ol>
-
-            <p className="mt-8 eyebrow text-muted-foreground">
-              Curiosity is not my hobby. It is my operating system.
-            </p>
           </nav>
         </aside>
       </div>
@@ -168,8 +133,8 @@ export const SiteNav = () => {
 };
 
 export const SiteFooter = forwardRef<HTMLElement>((_, ref) => (
-  <footer ref={ref} className="force-light bg-navy-deep text-paper mt-32 relative overflow-hidden grain">
-    <div className="container py-20 grid md:grid-cols-4 gap-12">
+  <footer ref={ref} className="force-light bg-navy-deep text-paper mt-12 relative overflow-hidden grain">
+    <div className="container py-10 grid md:grid-cols-4 gap-6">
       <div className="md:col-span-2">
         <p className="label-gold mb-4">Colophon</p>
         <p className="font-display text-3xl text-balance leading-tight">
@@ -195,12 +160,11 @@ export const SiteFooter = forwardRef<HTMLElement>((_, ref) => (
         <ul className="space-y-2 font-mono text-xs">
           <li><Link to="/contact" className="link-underline hover:text-gold">Email</Link></li>
           <li><Link to="/vault" className="link-underline hover:text-gold">Curriculum Vitae</Link></li>
-          <li><Link to="/proof" className="link-underline hover:text-gold">Proof of Curiosity</Link></li>
         </ul>
       </div>
     </div>
     <div className="border-t border-paper/10">
-      <div className="container py-6 flex flex-col md:flex-row justify-between gap-3 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-paper/50">
+      <div className="container py-4 flex flex-col md:flex-row justify-between gap-3 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-paper/50">
         <span>© {new Date().getFullYear()} Geetika Gehlot · Montréal</span>
         <span>Edition I · Volume One · Ongoing</span>
       </div>
