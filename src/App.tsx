@@ -5,8 +5,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
-import Proof from "./pages/Proof.tsx";
-import { FractalPage } from "./components/FractalPage";
+import About from "./pages/About.tsx";
+import Academics from "./pages/Academics.tsx";
+import Works from "./pages/Works.tsx";
+import Vault from "./pages/Vault.tsx";
+import Contact from "./pages/Contact.tsx";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { LEGACY_REDIRECTS } from "./data/clusters";
 import NotFound from "./pages/NotFound.tsx";
@@ -23,14 +26,14 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/proof" element={<Proof />} />
-          {/* Legacy flat URLs → cluster overview */}
+          <Route path="/about" element={<About />} />
+          <Route path="/academics" element={<Academics />} />
+          <Route path="/works" element={<Works />} />
+          <Route path="/vault" element={<Vault />} />
+          <Route path="/contact" element={<Contact />} />
           {Object.entries(LEGACY_REDIRECTS).map(([from, to]) => (
             <Route key={from} path={from} element={<Navigate to={to} replace />} />
           ))}
-          {/* Cluster + subpage */}
-          <Route path="/:cluster" element={<FractalPage />} />
-          <Route path="/:cluster/:sub" element={<FractalPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

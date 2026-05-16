@@ -7,7 +7,7 @@ import {
 import { ClusterShell } from "./ClusterShell";
 import { PullQuote, Marginalia } from "./Editorial";
 import { Bento, type BentoItem } from "./Bento";
-import { CLUSTERS, findCluster, type Cluster, type Subpage } from "@/data/clusters";
+import { CLUSTERS, findCluster, type Cluster, type Subpage, getSubpages } from "@/data/clusters";
 import heroFallback from "@/assets/atmos-notebook.jpg";
 import heroPortrait from "@/assets/hero-portrait.jpg";
 import atmosTelescope from "@/assets/atmos-telescope.jpg";
@@ -46,7 +46,6 @@ function SubpageHeader({ kicker, num, title, lede, portrait }: { kicker: string;
   );
 }
 
-/** Always-expanded rail: no toggle, just an anchored block with header + content. */
 type IconCmp = React.ComponentType<{ className?: string }>;
 
 function Rail({
@@ -91,48 +90,22 @@ function RelatedRail({ clusterSlug }: { clusterSlug: string }) {
   );
 }
 
-/* -------------------- Inner renderers (bento everywhere it makes sense) -------------------- */
-
-/** Visual-first Overview: hero image + tagline + featured trio. */
 function OverviewInner({ cluster }: { cluster: Cluster }) {
   const trio: BentoItem[] = [
-    {
-      id: "trio-1", size: "md", eyebrow: "Signature win",
-      title: "The headline achievement",
-      blurb: "Replace with the single most impressive thing in this cluster.",
-      meta: "TODO · most recent or biggest",
-    },
-    {
-      id: "trio-2", size: "md", eyebrow: "Origin",
-      title: "Where it started",
-      blurb: "The first spark — when, where, and why this began.",
-      meta: "TODO",
-    },
-    {
-      id: "trio-3", size: "md", eyebrow: "What's next",
-      title: "The next chapter",
-      blurb: "What I'm currently building inside this cluster.",
-      meta: "TODO",
-    },
+    { id: "trio-1", size: "md", eyebrow: "Signature win", title: "The headline achievement", blurb: "Replace with the single most impressive thing in this cluster.", meta: "TODO · most recent or biggest" },
+    { id: "trio-2", size: "md", eyebrow: "Origin", title: "Where it started", blurb: "The first spark — when, where, and why this began.", meta: "TODO" },
+    { id: "trio-3", size: "md", eyebrow: "What's next", title: "The next chapter", blurb: "What I'm currently building inside this cluster.", meta: "TODO" },
   ];
   return (
     <div className="space-y-8">
-      {/* Visual-first hero */}
       <div className="relative overflow-hidden border border-border aspect-[21/9]">
-        <img
-          src={heroFallback}
-          alt={`${cluster.label} — atmospheric hero`}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={heroFallback} alt={`${cluster.label} — atmospheric hero`} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/60 to-navy-deep/10" />
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 text-paper">
           <p className="label-gold mb-3">§ {cluster.num} · {cluster.label}</p>
-          <h2 className="font-display text-3xl md:text-6xl leading-tight max-w-3xl text-balance">
-            {cluster.tagline}
-          </h2>
+          <h2 className="font-display text-3xl md:text-6xl leading-tight max-w-3xl text-balance">{cluster.tagline}</h2>
           <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-paper/60">
-            {cluster.subpages.filter((s) => s.kind === "topic").length} topic threads ·
-            {" "}{cluster.subpages.filter((s) => s.kind !== "topic").length} fractal rails
+            {cluster.topics.length} topic threads
           </p>
         </div>
       </div>
@@ -155,12 +128,8 @@ function HighlightsInner({ cluster }: { cluster: Cluster }) {
 
 function EvidenceInner() {
   const items: BentoItem[] = Array.from({ length: 8 }).map((_, i) => ({
-    id: `e${i}`,
-    size: i === 0 ? "lg" : i === 3 ? "wide" : "sm",
-    eyebrow: "Document",
-    title: `Evidence ${i + 1}`,
-    blurb: "Drop a scan, certificate, transcript, or PDF here.",
-    meta: "TODO · who issued · when",
+    id: `e${i}`, size: i === 0 ? "lg" : i === 3 ? "wide" : "sm",
+    eyebrow: "Document", title: `Evidence ${i + 1}`, blurb: "Drop a scan, certificate, transcript, or PDF here.", meta: "TODO · who issued · when",
   }));
   return (
     <div className="space-y-6">
@@ -234,12 +203,10 @@ function renderInner(s: Subpage, c: Cluster): ReactNode {
   }
 }
 
-/** Single-page cluster view: every rail rendered as an always-expanded section. */
 export function FractalPage() {
   const { cluster = "", sub } = useParams();
   const c = findCluster(cluster);
 
-  // If a sub is requested, drop a hash so the matching Rail scrolls into view.
   useEffect(() => {
     if (!c) return;
     if (sub && sub !== "overview") {
@@ -255,6 +222,7 @@ export function FractalPage() {
   if (!c) return <Navigate to="/dashboard" replace />;
 
   const showPortrait = ["about", "works", "contact"].includes(c.slug);
+  const subpages = getSubpages(c);
 
   return (
     <ClusterShell>
@@ -274,7 +242,7 @@ export function FractalPage() {
         </Rail>
       )}
 
-      {c.subpages.map((s) => {
+      {subpages.map((s) => {
         const meta = KIND_META[s.kind ?? "topic"];
         const isTopic = s.kind === "topic";
         const title = isTopic ? s.label : meta.title(c.label);
@@ -295,7 +263,7 @@ export function FractalPage() {
   );
 }
 
-/* -------------------- Contact block: form + direct channels -------------------- */
+/* -------------------- Contact block -------------------- */
 
 const CONTACT_EMAIL = "geetika@example.com";
 
@@ -383,7 +351,7 @@ function ContactBlock() {
   );
 }
 
-/* -------------------- Works mood board: an assortment of mismatched scraps -------------------- */
+/* -------------------- Works mood board -------------------- */
 
 type Scrap =
   | { kind: "image"; src: string; label: string; tilt?: number; shape?: "square" | "tall" | "wide" | "circle" | "polaroid" | "diamond" | "arch"; size?: "sm" | "md" | "lg" | "xl" }
@@ -468,9 +436,7 @@ function ScrapCard({ scrap, idx }: { scrap: Scrap; idx: number }) {
           loading="lazy"
           className={`absolute inset-0 w-full h-full object-cover ${isDiamond ? "-rotate-45 scale-[1.42]" : ""} ${isPolaroid ? "!relative !inset-auto !h-auto aspect-[4/5]" : ""}`}
         />
-        {!isPolaroid && (
-          <span className="absolute inset-0 ring-1 ring-inset ring-paper/10 mix-blend-overlay pointer-events-none" />
-        )}
+        {!isPolaroid && <span className="absolute inset-0 ring-1 ring-inset ring-paper/10 mix-blend-overlay pointer-events-none" />}
         {isPolaroid && (
           <figcaption className="absolute left-0 right-0 bottom-1.5 text-center font-mono text-[0.55rem] uppercase tracking-[0.25em] text-ink-soft">
             {scrap.label}
@@ -488,7 +454,7 @@ function ScrapCard({ scrap, idx }: { scrap: Scrap; idx: number }) {
       : "text-ink border-border bg-paper";
     return wrap(
       <blockquote className={`max-w-[260px] border ${toneCls} p-4 font-display italic text-base md:text-lg leading-snug shadow-[0_8px_22px_-12px_hsl(220_60%_4%/0.35)]`}>
-        “{scrap.text}”
+        "{scrap.text}"
       </blockquote>
     );
   }
@@ -511,9 +477,7 @@ function ScrapCard({ scrap, idx }: { scrap: Scrap; idx: number }) {
     return wrap(
       <div className="bg-paper border border-border p-2 shadow-[0_6px_16px_-8px_hsl(220_60%_4%/0.4)]" style={{ width: w }}>
         <div className="aspect-square" style={{ background: scrap.color }} />
-        <p className="font-mono text-[0.55rem] uppercase tracking-[0.25em] text-ink-soft mt-1.5 text-center">
-          {scrap.label}
-        </p>
+        <p className="font-mono text-[0.55rem] uppercase tracking-[0.25em] text-ink-soft mt-1.5 text-center">{scrap.label}</p>
       </div>
     );
   }
@@ -522,9 +486,7 @@ function ScrapCard({ scrap, idx }: { scrap: Scrap; idx: number }) {
     return wrap(
       <div className="border-2 border-dashed border-gold/70 px-3 py-2 text-center bg-paper">
         <p className="font-display text-lg text-gold leading-none">{scrap.text}</p>
-        {scrap.sub && (
-          <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-gold/80 mt-1">{scrap.sub}</p>
-        )}
+        {scrap.sub && <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-gold/80 mt-1">{scrap.sub}</p>}
       </div>
     );
   }
@@ -532,28 +494,18 @@ function ScrapCard({ scrap, idx }: { scrap: Scrap; idx: number }) {
   if (scrap.kind === "ticket") {
     return wrap(
       <div className="flex items-stretch shadow-[0_8px_22px_-12px_hsl(220_60%_4%/0.4)]">
-        <div className="bg-navy-deep text-paper px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.3em] flex items-center">
-          {scrap.head}
-        </div>
-        <div className="bg-paper border border-l-0 border-border px-4 py-2 font-display text-sm text-ink">
-          {scrap.body}
-        </div>
+        <div className="bg-navy-deep text-paper px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.3em] flex items-center">{scrap.head}</div>
+        <div className="bg-paper border border-l-0 border-border px-4 py-2 font-display text-sm text-ink">{scrap.body}</div>
       </div>
     );
   }
 
-  // asterism
-  return wrap(
-    <div className="font-display text-3xl text-gold tracking-[0.35em] select-none">✦ ✶ ✦</div>
-  );
+  return wrap(<div className="font-display text-3xl text-gold tracking-[0.35em] select-none">✦ ✶ ✦</div>);
 }
 
 function WorksMoodBoard() {
   return (
-    <section
-      id="mood-board"
-      className="relative scroll-mt-32 px-4 md:px-12 pt-2 pb-12 border-t border-border crumpled-paper film-grain stipple"
-    >
+    <section id="mood-board" className="relative scroll-mt-32 px-4 md:px-12 pt-2 pb-12 border-t border-border crumpled-paper film-grain stipple">
       <header className="flex items-center gap-3 mb-6">
         <Sparkles className="w-4 h-4 text-gold shrink-0" />
         <span className="label-gold">Mood board</span>
@@ -567,9 +519,7 @@ function WorksMoodBoard() {
       <div className="relative -mx-4 md:-mx-12 px-4 md:px-12 overflow-x-auto pb-4">
         <ul className="flex items-center gap-5 md:gap-7 min-w-max">
           {MOOD_SCRAPS.map((scrap, i) => (
-            <li key={i} className="flex items-center">
-              <ScrapCard scrap={scrap} idx={i} />
-            </li>
+            <li key={i} className="flex items-center"><ScrapCard scrap={scrap} idx={i} /></li>
           ))}
         </ul>
       </div>

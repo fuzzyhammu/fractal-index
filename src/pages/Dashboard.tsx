@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/SiteChrome";
-import { CLUSTERS, PROOF_CLUSTER } from "@/data/clusters";
+import { CLUSTERS } from "@/data/clusters";
 import { useReveal } from "@/hooks/useReveal";
 
 const Dashboard = () => {
@@ -53,27 +53,6 @@ const Dashboard = () => {
               </Link>
             );
           })}
-          <Link
-            to={`/${PROOF_CLUSTER.slug}`}
-            className="group dossier-card p-6 hover-lift flex flex-col justify-between"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <PROOF_CLUSTER.icon className="w-5 h-5 text-gold" />
-              <span className="font-mono text-[0.65rem] tracking-widest text-gold">{PROOF_CLUSTER.num}</span>
-            </div>
-            <div>
-              <h2 className="font-display text-2xl text-ink leading-tight group-hover:text-gold transition-colors">
-                {PROOF_CLUSTER.label}
-              </h2>
-              <p className="mt-2 text-ink-soft text-sm leading-relaxed">{PROOF_CLUSTER.tagline}</p>
-            </div>
-            <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
-              <span className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
-                Raw archive
-              </span>
-              <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover:text-gold transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </div>
-          </Link>
         </div>
       </section>
     </PageShell>

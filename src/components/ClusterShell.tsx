@@ -1,13 +1,13 @@
 import { ReactNode, useState, useEffect } from "react";
 import { NavLink, Link, useParams, useLocation } from "react-router-dom";
-import { ChevronRight, Home, ArrowLeft } from "lucide-react";
+import { ChevronRight, Chrome as Home, ArrowLeft } from "lucide-react";
 import { SiteNav, SiteFooter } from "./SiteChrome";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { CLUSTERS, findCluster, findSubpage } from "@/data/clusters";
+import { CLUSTERS, findCluster, findSubpage, getSubpages } from "@/data/clusters";
 
 // scroll-spy: tracks which subsection anchor is in view, updates location.hash without jumping
 function useScrollSpy(ids: string[]) {
@@ -27,7 +27,6 @@ function useScrollSpy(ids: string[]) {
         entries.forEach((e) => {
           visibility.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
         });
-        // pick the most-visible one
         let best = "";
         let bestRatio = 0;
         visibility.forEach((r, id) => {
@@ -38,7 +37,6 @@ function useScrollSpy(ids: string[]) {
         });
         if (best && best !== active) {
           setActive(best);
-          // soft-update hash without scrolling
           if (history.replaceState) {
             const newHash = best === ids[0] ? " " : `#${best}`;
             history.replaceState(null, "", `${location.pathname}${newHash === " " ? "" : newHash}`);
@@ -55,9 +53,7 @@ function useScrollSpy(ids: string[]) {
   return active;
 }
 
-// short glyph for collapsed sidebar (Roman-numeral-ish, sleek)
 function railGlyph(index: number): string {
-  // small two-digit numerals — clean, consistent width
   return String(index + 1).padStart(2, "0");
 }
 
@@ -66,8 +62,8 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
 
-  // Collect subpage slugs in order; "overview" maps to top of page (no hash) but for spy we treat first section as overview
-  const subSlugs = cluster?.subpages.map((s) => s.slug) ?? [];
+  const subpages = cluster ? getSubpages(cluster) : [];
+  const subSlugs = subpages.map((s) => s.slug);
   const activeSlug = useScrollSpy(subSlugs);
 
   if (!cluster) return null;
@@ -76,8 +72,8 @@ function ClusterSidebar({ clusterSlug }: { clusterSlug: string }) {
   const linkFor = (slug: string) => slug === "overview" ? `/${cluster.slug}` : `/${cluster.slug}#${slug}`;
   const isActiveSub = (slug: string) => slug === activeSlug;
 
-  const rails = cluster.subpages.filter((s) => s.kind !== "topic");
-  const topics = cluster.subpages.filter((s) => s.kind === "topic");
+  const rails = subpages.filter((s) => s.kind !== "topic");
+  const topics = subpages.filter((s) => s.kind === "topic");
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
@@ -231,7 +227,7 @@ export function Breadcrumbs({ cluster, sub }: { cluster: string; sub?: string })
       {c && (
         <>
           <ChevronRight className="w-3 h-3" />
-          <Link to={`/${c.slug}/overview`} className="hover:text-gold">{c.label}</Link>
+          <Link to={`/${c.slug}`} className="hover:text-gold">{c.label}</Link>
         </>
       )}
       {s && (

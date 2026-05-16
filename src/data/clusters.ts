@@ -1,6 +1,8 @@
 import type { LucideIcon } from "lucide-react";
 import { User, GraduationCap, Wand as Wand2, FileText, Mail, Sparkles } from "lucide-react";
 
+/* ── New data model ── */
+
 export type TopicData = {
   slug: string;
   label: string;
@@ -117,13 +119,39 @@ export const CLUSTERS: Cluster[] = [
     ],
   },
 ];
-export const PROOF_CLUSTER = {
-  num: "✦", slug: "proof", label: "Proof of Curiosity", icon: Sparkles,
-  tagline: "Notebook scans, sketches, half-formed ideas.",
-  legacyOverviewPath: "/proof",
-};
 
 export const findCluster = (slug: string) => CLUSTERS.find((c) => c.slug === slug);
+
+/* ── Backward-compatible types for FractalPage / ClusterShell ── */
+
+export type Subpage = {
+  slug: string;
+  label: string;
+  kind?: "overview" | "highlights" | "evidence" | "media" | "reflection" | "related" | "topic";
+};
+
+export const findSubpage = (cluster: Cluster, slug: string) =>
+  cluster.topics.find((t) => t.slug === slug);
+
+/* Derive subpages from topics for backward compat */
+export function getSubpages(cluster: Cluster): Subpage[] {
+  return [
+    { slug: "overview", label: "Overview", kind: "overview" },
+    { slug: "highlights", label: "Highlights", kind: "highlights" },
+    { slug: "media", label: "Media", kind: "media" },
+    ...cluster.topics.map((t) => ({ slug: t.slug, label: t.label, kind: "topic" as const })),
+    { slug: "evidence", label: "Evidence", kind: "evidence" },
+    { slug: "reflection", label: "Reflection", kind: "reflection" },
+    { slug: "related", label: "Related", kind: "related" },
+  ];
+}
+
+/* PROOF_CLUSTER stub — no longer a real page, kept for import compat */
+export const PROOF_CLUSTER: Cluster = {
+  num: "06", slug: "proof", label: "Proof of Curiosity", icon: Sparkles,
+  tagline: "Notebook scans, sketches, half-formed ideas.",
+  topics: [],
+};
 
 export const LEGACY_REDIRECTS: Record<string, string> = {
   "/academic": "/academics",
@@ -143,4 +171,5 @@ export const LEGACY_REDIRECTS: Record<string, string> = {
   "/athletics": "/works",
   "/curiosities": "/works",
   "/vision": "/about",
+  "/proof": "/works",
 };
