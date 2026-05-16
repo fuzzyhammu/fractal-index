@@ -20,8 +20,8 @@ const Vault = () => {
     <PageShell>
       <section className="container pt-16 md:pt-24 pb-12">
         <div className="flex items-baseline gap-6 mb-8 animate-fade-in">
-          <span className="font-mono text-xs tracking-[0.3em] text-gold">§ 04</span>
-          <span className="eyebrow">CV & Document Vault</span>
+          <span className="font-mono text-xs tracking-[0.3em] text-gold">004</span>
+          <span className="eyebrow">CV & Documents</span>
           <span className="flex-1 h-px bg-border" />
         </div>
         <div className="flex items-start gap-5 mb-6 animate-fade-in">
@@ -31,8 +31,7 @@ const Vault = () => {
           </h1>
         </div>
         <p className="mt-8 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
-          CV, certificates, transcripts, recognition — click any box for details,
-          or open the full interactive CV below.
+          Open the full interactive CV below.
         </p>
         <div className="rule-gold mt-10" />
       </section>
@@ -65,8 +64,8 @@ function CVLightbox() {
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-6xl w-[calc(100vw-1.25rem)] sm:w-[calc(100vw-2rem)] max-h-[calc(100vh-1.25rem)] sm:max-h-[calc(100vh-2rem)] p-0 overflow-hidden bg-paper">
-        <DialogTitle className="sr-only">Curriculum Vitae — Geetika Gehlot</DialogTitle>
-        <DialogDescription className="sr-only">Full interactive CV with experience, education, skills, and contact.</DialogDescription>
+        <DialogTitle className="sr-only">Curriculum Vitae: Geetika Gehlot</DialogTitle>
+        <DialogDescription className="sr-only">Full CV with experience, education, skills, and contact.</DialogDescription>
         <div className="overflow-y-auto max-h-[calc(100vh-1.25rem)] sm:max-h-[calc(100vh-2rem)]">
           <CVContent />
         </div>
