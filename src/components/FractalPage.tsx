@@ -1,24 +1,20 @@
-import { ReactNode, useEffect, useState } from "react";
-import { Link, useParams, Navigate } from "react-router-dom";
+import { ReactNode, useEffect, useMemo, useState } from "react";
+import { useParams, Navigate } from "react-router-dom";
 import {
-  ArrowUpRight, FileText, Image as ImgIcon, Sparkles, Quote, Link2, BookOpen,
-  Mail, Linkedin, Github, Send, MapPin, Globe, Phone, Calendar, Briefcase, GraduationCap, Award, Eye,
+  ArrowUpRight, FileText, Mail, Linkedin, Github, Send, MapPin, Globe,
+  Calendar, Briefcase, GraduationCap, Award, Eye, Plus,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ClusterShell } from "./ClusterShell";
-import { PullQuote, Marginalia } from "./Editorial";
-import { Bento, type BentoItem } from "./Bento";
-import { CLUSTERS, findCluster, type Cluster, type Subpage } from "@/data/clusters";
-import heroFallback from "@/assets/atmos-notebook.jpg";
+import { CLUSTERS, findCluster, type Cluster } from "@/data/clusters";
 import heroPortrait from "@/assets/hero-portrait.jpg";
-import atmosTelescope from "@/assets/atmos-telescope.jpg";
-import atmosMusic from "@/assets/atmos-music.jpg";
-import atmosNotebook from "@/assets/atmos-notebook.jpg";
-import textureCosmos from "@/assets/texture-cosmos.jpg";
-import texturePaper from "@/assets/texture-paper.jpg";
 import { toast } from "@/hooks/use-toast";
 
-function SubpageHeader({ kicker, num, title, lede, portrait }: { kicker: string; num: string; title: string; lede?: string; portrait?: string }) {
+type IconCmp = React.ComponentType<{ className?: string }>;
+
+function SubpageHeader({
+  kicker, num, title, lede, portrait,
+}: { kicker: string; num: string; title: string; lede?: string; portrait?: string }) {
   return (
     <header className="px-4 md:px-12 pt-10 md:pt-14 pb-8 max-w-6xl">
       <div className="flex items-baseline gap-4 mb-6">
@@ -47,212 +43,130 @@ function SubpageHeader({ kicker, num, title, lede, portrait }: { kicker: string;
   );
 }
 
-/** Always-expanded rail: no toggle, just an anchored block with header + content. */
-type IconCmp = React.ComponentType<{ className?: string }>;
+/* -------------------- Mosaic: one click-to-fill box per topic -------------------- */
 
-function Rail({
-  id, icon: Icon, label, title, children,
-}: { id: string; icon: IconCmp; label: string; title: string; children: ReactNode }) {
+const SPANS = [
+  "col-span-2 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-2 row-span-1",
+  "col-span-1 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-2 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-2",
+  "col-span-2 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-1",
+];
+
+const TINTS = [
+  "from-gold/15 via-paper to-paper",
+  "from-paper via-paper to-navy-deep/10",
+  "from-navy-deep/10 via-paper to-gold/10",
+  "from-paper-deep via-paper to-paper",
+  "from-gold/20 via-paper-deep to-paper",
+  "from-paper via-gold/10 to-paper-deep",
+];
+
+function MosaicBox({ storageKey, span, tint, index }: { storageKey: string; span: string; tint: string; index: number }) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string>("");
+  const [hasContent, setHasContent] = useState(false);
+
+  useEffect(() => {
+    const v = typeof window !== "undefined" ? window.localStorage.getItem(storageKey) ?? "" : "";
+    setValue(v);
+    setHasContent(v.trim().length > 0);
+  }, [storageKey]);
+
+  const save = () => {
+    window.localStorage.setItem(storageKey, value);
+    setHasContent(value.trim().length > 0);
+    setOpen(false);
+    toast({ title: "Saved" });
+  };
+
   return (
-    <section id={id} className="px-4 md:px-12 border-t border-border scroll-mt-32 py-10 md:py-14">
-      <header className="flex items-center gap-3 mb-8">
-        <Icon className="w-4 h-4 text-gold shrink-0" />
-        <span className="label-gold">{label}</span>
-        <span className="flex-1 h-px bg-border" />
-        <h2 className="font-display text-xl md:text-2xl text-ink text-right">{title}</h2>
-      </header>
-      <div>{children}</div>
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className={`group relative ${span} min-h-[140px] overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${tint} transition-all hover:-translate-y-0.5 hover:border-gold hover:shadow-[0_18px_40px_-24px_hsl(220_60%_4%/0.4)]`}
+        aria-label={`Tile ${index + 1}`}
+      >
+        <span className="absolute inset-0 ring-1 ring-inset ring-paper/30 mix-blend-overlay pointer-events-none" />
+        {hasContent ? (
+          <span className="absolute inset-0 p-4 md:p-5 flex items-start text-left font-display text-ink text-sm md:text-base leading-snug whitespace-pre-wrap overflow-hidden">
+            {value.slice(0, 240)}
+          </span>
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center text-ink-soft/50 group-hover:text-gold transition-colors">
+            <Plus className="h-5 w-5" />
+          </span>
+        )}
+      </button>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-2xl bg-paper">
+          <DialogTitle className="font-display text-2xl text-ink">Add to this tile</DialogTitle>
+          <DialogDescription className="text-ink-soft">
+            Anything you like — a note, a link, a memory. Saved to this browser.
+          </DialogDescription>
+          <textarea
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            rows={10}
+            className="w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-accent text-base text-ink resize-y rounded-md"
+            placeholder="Write, paste a link, sketch an idea…"
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => { setValue(""); window.localStorage.removeItem(storageKey); setHasContent(false); setOpen(false); }}
+              className="px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-soft hover:text-gold"
+            >
+              Clear
+            </button>
+            <button
+              onClick={save}
+              className="inline-flex items-center gap-2 bg-navy-deep text-paper px-5 py-2.5 font-mono text-[0.65rem] uppercase tracking-[0.3em] hover:bg-gold hover:text-navy-deep transition-colors rounded-md"
+            >
+              Save
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function Mosaic({ cluster }: { cluster: Cluster }) {
+  const topics = useMemo(
+    () => cluster.subpages.filter((s) => s.kind === "topic"),
+    [cluster],
+  );
+  return (
+    <section className="px-4 md:px-12 pb-16">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[120px] md:auto-rows-[140px] gap-3 md:gap-4">
+        {topics.map((t, i) => (
+          <MosaicBox
+            key={t.slug}
+            storageKey={`mosaic:${cluster.slug}:${t.slug}`}
+            span={SPANS[i % SPANS.length]}
+            tint={TINTS[i % TINTS.length]}
+            index={i}
+          />
+        ))}
+      </div>
     </section>
   );
 }
 
-function RelatedRail({ clusterSlug }: { clusterSlug: string }) {
-  const others = CLUSTERS.filter((c) => c.slug !== clusterSlug).slice(0, 6);
-  return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      {others.map((c) => {
-        const I = c.icon;
-        return (
-          <Link
-            key={c.slug}
-            to={`/${c.slug}`}
-            className="group dossier-card p-5 hover-lift flex items-start gap-3"
-          >
-            <I className="w-4 h-4 text-gold mt-1 shrink-0" />
-            <div className="min-w-0 flex-1">
-              <p className="font-mono text-[0.6rem] tracking-widest text-muted-foreground">§ {c.num}</p>
-              <h3 className="font-display text-xl text-ink leading-tight">{c.label}</h3>
-              <p className="text-xs text-ink-soft mt-1 leading-relaxed line-clamp-2">{c.tagline}</p>
-            </div>
-            <ArrowUpRight className="w-4 h-4 text-ink-soft group-hover:text-gold transition-colors" />
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
+/* -------------------- Page -------------------- */
 
-/* -------------------- Inner renderers (bento everywhere it makes sense) -------------------- */
-
-/** Visual-first Overview: hero image + tagline + featured trio. */
-function OverviewInner({ cluster }: { cluster: Cluster }) {
-  const trio: BentoItem[] = [
-    {
-      id: "trio-1", size: "md", eyebrow: "Signature win",
-      title: "The headline achievement",
-      blurb: "Replace with the single most impressive thing in this cluster.",
-      meta: "TODO · most recent or biggest",
-    },
-    {
-      id: "trio-2", size: "md", eyebrow: "Origin",
-      title: "Where it started",
-      blurb: "The first spark — when, where, and why this began.",
-      meta: "TODO",
-    },
-    {
-      id: "trio-3", size: "md", eyebrow: "What's next",
-      title: "The next chapter",
-      blurb: "What I'm currently building inside this cluster.",
-      meta: "TODO",
-    },
-  ];
-  return (
-    <div className="space-y-8">
-      {/* Visual-first hero */}
-      <div className="relative overflow-hidden border border-border aspect-[21/9]">
-        <img
-          src={heroFallback}
-          alt={`${cluster.label} — atmospheric hero`}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/60 to-navy-deep/10" />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 text-paper">
-          <p className="label-gold mb-3">§ {cluster.num} · {cluster.label}</p>
-          <h2 className="font-display text-3xl md:text-6xl leading-tight max-w-3xl text-balance">
-            {cluster.tagline}
-          </h2>
-          <p className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-paper/60">
-            {cluster.subpages.filter((s) => s.kind === "topic").length} topic threads ·
-            {" "}{cluster.subpages.filter((s) => s.kind !== "topic").length} fractal rails
-          </p>
-        </div>
-      </div>
-      <Bento items={trio} />
-    </div>
-  );
-}
-
-function HighlightsInner({ cluster }: { cluster: Cluster }) {
-  const items: BentoItem[] = [
-    { id: "h1", size: "xl", eyebrow: "Featured", title: `${cluster.label} — best of`, blurb: "The anchor item. Big, bold, the one I'd lead with in a conversation.", image: heroFallback, meta: "TODO · replace" },
-    { id: "h2", size: "md", eyebrow: "Highlight", title: "Second favourite", blurb: "Strong supporting work — different in tone from the lead." },
-    { id: "h3", size: "md", eyebrow: "Highlight", title: "Recent win", blurb: "Something fresh — within the last 6 months." },
-    { id: "h4", size: "lg", eyebrow: "Highlight", title: "The under-rated one", blurb: "A quieter piece I'm proud of — context unlocks why.", image: heroFallback },
-    { id: "h5", size: "md", eyebrow: "Highlight", title: "Collaboration", blurb: "Made with someone whose taste I trust." },
-    { id: "h6", size: "md", eyebrow: "Highlight", title: "The hard one", blurb: "Almost broke me. Worth it." },
-  ];
-  return <Bento items={items} />;
-}
-
-function EvidenceInner() {
-  const items: BentoItem[] = Array.from({ length: 8 }).map((_, i) => ({
-    id: `e${i}`,
-    size: i === 0 ? "lg" : i === 3 ? "wide" : "sm",
-    eyebrow: "Document",
-    title: `Evidence ${i + 1}`,
-    blurb: "Drop a scan, certificate, transcript, or PDF here.",
-    meta: "TODO · who issued · when",
-  }));
-  return (
-    <div className="space-y-6">
-      <Bento items={items} />
-      <Marginalia>Each evidence item should answer: who issued it, when, what it certifies.</Marginalia>
-    </div>
-  );
-}
-
-function MediaInner() {
-  const items: BentoItem[] = [
-    { id: "m1", size: "xl", eyebrow: "Feature", title: "Headline media", blurb: "Photo, reel, or video that captures the work.", image: heroFallback },
-    { id: "m2", size: "md", eyebrow: "Photo", title: "Behind the scenes" },
-    { id: "m3", size: "md", eyebrow: "Audio", title: "Listen to it" },
-    { id: "m4", size: "wide", eyebrow: "Embed", title: "External player slot", blurb: "YouTube · Vimeo · podcast feed · external player." },
-  ];
-  return <Bento items={items} />;
-}
-
-function ReflectionInner() {
-  return (
-    <div className="max-w-3xl space-y-6">
-      <p className="font-display text-xl text-ink leading-relaxed drop-cap">
-        A short reflection paragraph. What was hard, what surprised me, what I want to keep doing,
-        and what I would no longer do the same way.
-      </p>
-      <PullQuote>One honest sentence I learned the hard way.</PullQuote>
-    </div>
-  );
-}
-
-function TopicInner({ topicLabel }: { topicLabel: string }) {
-  const items: BentoItem[] = [
-    { id: "t1", size: "xl", eyebrow: "Anchor", title: `${topicLabel} — the headline`, blurb: "The single thing someone should know about this thread.", image: heroFallback },
-    { id: "t2", size: "md", eyebrow: "Item", title: "Anchor 2", blurb: "Replace with the real entry." },
-    { id: "t3", size: "md", eyebrow: "Item", title: "Anchor 3", blurb: "Replace with the real entry." },
-    { id: "t4", size: "lg", eyebrow: "Media", title: `${topicLabel} — visual`, blurb: "Photo, video, or scan that grounds this topic.", image: heroFallback },
-    { id: "t5", size: "md", eyebrow: "Item", title: "Anchor 4", blurb: "Replace with the real entry." },
-  ];
-  return (
-    <div className="space-y-6">
-      <p className="max-w-3xl text-ink-soft text-lg leading-relaxed font-display italic">
-        A clear statement of scope for <strong className="text-ink not-italic">{topicLabel}</strong>: what's in,
-        what's out, and why it deserves its own thread.
-      </p>
-      <Bento items={items} />
-    </div>
-  );
-}
-
-const KIND_META: Record<string, { icon: IconCmp; label: string; title: (cl: string) => string }> = {
-  overview:    { icon: Sparkles, label: "Overview",   title: (cl) => `${cl} — at a glance` },
-  highlights:  { icon: Sparkles, label: "Highlights", title: () => "Best-of, hand-picked" },
-  evidence:    { icon: FileText, label: "Evidence",   title: () => "Documents, scores, certificates" },
-  media:       { icon: ImgIcon,  label: "Media",      title: () => "Photos, video, audio, embeds" },
-  reflection:  { icon: Quote,    label: "Reflection", title: () => "What I learned" },
-  related:     { icon: Link2,    label: "Related",    title: () => "Where this connects" },
-  topic:       { icon: BookOpen, label: "Topic",      title: () => "" },
-};
-
-function renderInner(s: Subpage, c: Cluster): ReactNode {
-  switch (s.kind) {
-    case "overview":   return <OverviewInner cluster={c} />;
-    case "highlights": return <HighlightsInner cluster={c} />;
-    case "evidence":   return <EvidenceInner />;
-    case "media":      return <MediaInner />;
-    case "reflection": return <ReflectionInner />;
-    case "related":    return <RelatedRail clusterSlug={c.slug} />;
-    case "topic":      return <TopicInner topicLabel={s.label} />;
-    default:           return null;
-  }
-}
-
-/** Single-page cluster view: every rail rendered as an always-expanded section. */
 export function FractalPage() {
-  const { cluster = "", sub } = useParams();
+  const { cluster = "" } = useParams();
   const c = findCluster(cluster);
-
-  // If a sub is requested, drop a hash so the matching Rail scrolls into view.
-  useEffect(() => {
-    if (!c) return;
-    if (sub && sub !== "overview") {
-      window.location.hash = sub;
-      setTimeout(() => {
-        document.getElementById(sub)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 50);
-    } else if (!sub) {
-      if (window.location.hash) history.replaceState(null, "", window.location.pathname);
-    }
-  }, [sub, c]);
-
   if (!c) return <Navigate to="/dashboard" replace />;
 
   const showPortrait = ["about", "works", "contact"].includes(c.slug);
@@ -267,35 +181,18 @@ export function FractalPage() {
         portrait={showPortrait ? heroPortrait : undefined}
       />
 
-      {c.slug === "works" && <WorksMoodBoard />}
-
-      {c.slug === "contact" && (
-        <Rail id="get-in-touch" icon={Mail} label="Get in touch" title="Open correspondence">
-          <ContactBlock />
-        </Rail>
-      )}
-
-      {c.subpages.map((s) => {
-        const meta = KIND_META[s.kind ?? "topic"];
-        const isTopic = s.kind === "topic";
-        const title = isTopic ? s.label : meta.title(c.label);
-        return (
-          <Rail
-            key={s.slug}
-            id={s.slug}
-            icon={meta.icon}
-            label={isTopic ? "Topic" : meta.label}
-            title={title}
-          >
-            {renderInner(s, c)}
-          </Rail>
-        );
-      })}
+      <Mosaic cluster={c} />
 
       {c.slug === "vault" && (
-        <Rail id="live-cv" icon={FileText} label="Live CV" title="Interactive CV">
+        <section className="px-4 md:px-12 pb-16">
           <CVLightbox />
-        </Rail>
+        </section>
+      )}
+
+      {c.slug === "contact" && (
+        <section className="px-4 md:px-12 pb-16">
+          <ContactBlock />
+        </section>
       )}
 
       <div className="h-24" />
@@ -336,7 +233,7 @@ function ContactBlock() {
 
   return (
     <div className="grid md:grid-cols-[1.2fr,1fr] gap-8 items-start">
-      <form onSubmit={onSubmit} className="bg-paper-deep border border-border p-6 md:p-8 space-y-4 fancy-tile fibers stipple">
+      <form onSubmit={onSubmit} className="bg-paper-deep border border-border p-6 md:p-8 space-y-4 rounded-2xl">
         <div className="grid sm:grid-cols-2 gap-4">
           <label className="block">
             <span className="eyebrow">Your name</span>
@@ -361,9 +258,6 @@ function ContactBlock() {
           <Send className="w-3.5 h-3.5" />
           {sending ? "Sending…" : "Send via email"}
         </button>
-        <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft">
-          Submitting opens your mail app — nothing is stored on this site.
-        </p>
       </form>
 
       <ul className="space-y-3">
@@ -391,201 +285,7 @@ function ContactBlock() {
   );
 }
 
-/* -------------------- Works mood board: an assortment of mismatched scraps -------------------- */
-
-type Scrap =
-  | { kind: "image"; src: string; label: string; tilt?: number; shape?: "square" | "tall" | "wide" | "circle" | "polaroid" | "diamond" | "arch"; size?: "sm" | "md" | "lg" | "xl" }
-  | { kind: "quote"; text: string; tilt?: number; tone?: "ink" | "gold" | "navy" }
-  | { kind: "tag"; text: string; tilt?: number; tone?: "ink" | "gold" | "navy" | "paper" }
-  | { kind: "swatch"; color: string; label: string; tilt?: number; size?: "sm" | "md" | "lg" }
-  | { kind: "stamp"; text: string; sub?: string; tilt?: number }
-  | { kind: "ticket"; head: string; body: string; tilt?: number }
-  | { kind: "asterism"; tilt?: number };
-
-const MOOD_SCRAPS: Scrap[] = [
-  { kind: "image", src: atmosTelescope, label: "Observation", shape: "tall", size: "lg", tilt: -2 },
-  { kind: "tag", text: "Worldbuilding", tone: "gold", tilt: -4 },
-  { kind: "image", src: atmosNotebook, label: "Notation", shape: "polaroid", size: "md", tilt: 3 },
-  { kind: "quote", text: "Curiosity is not my hobby.", tone: "ink", tilt: -1 },
-  { kind: "swatch", color: "hsl(var(--gold))", label: "Gold · 04", size: "md", tilt: 5 },
-  { kind: "image", src: atmosMusic, label: "Resonance", shape: "circle", size: "md", tilt: 0 },
-  { kind: "stamp", text: "Edition I", sub: "Volume One", tilt: -6 },
-  { kind: "tag", text: "Robotics 7700", tone: "navy", tilt: 2 },
-  { kind: "image", src: textureCosmos, label: "Cosmos plate", shape: "wide", size: "lg", tilt: 1 },
-  { kind: "ticket", head: "FRC", body: "Build · Drive · Debug", tilt: -3 },
-  { kind: "image", src: heroPortrait, label: "Self-portrait", shape: "polaroid", size: "sm", tilt: -5 },
-  { kind: "swatch", color: "hsl(var(--navy-deep))", label: "Navy · 01", size: "sm", tilt: -2 },
-  { kind: "asterism", tilt: 0 },
-  { kind: "tag", text: "Hindustani vocal", tone: "ink", tilt: 4 },
-  { kind: "image", src: texturePaper, label: "Paper field", shape: "diamond", size: "md", tilt: -3 },
-  { kind: "quote", text: "Words before pixels.", tone: "gold", tilt: 2 },
-  { kind: "image", src: atmosNotebook, label: "Drafting", shape: "arch", size: "md", tilt: -1 },
-  { kind: "tag", text: "Zionaxelle", tone: "paper", tilt: -2 },
-  { kind: "stamp", text: "Examined", sub: "in public", tilt: 4 },
-  { kind: "image", src: atmosTelescope, label: "Optics", shape: "square", size: "sm", tilt: 3 },
-  { kind: "swatch", color: "hsl(var(--paper-deep))", label: "Paper · 00", size: "sm", tilt: 6 },
-  { kind: "tag", text: "Embroidery", tone: "gold", tilt: -3 },
-  { kind: "image", src: atmosMusic, label: "Stage", shape: "tall", size: "md", tilt: 2 },
-  { kind: "ticket", head: "YMCA", body: "Youth co-op · VP", tilt: -4 },
-  { kind: "quote", text: "Every claim, open for inspection.", tone: "ink", tilt: -2 },
-  { kind: "tag", text: "Karate · Abacus · Chess", tone: "navy", tilt: 3 },
-];
-
-const sizePx = { sm: 110, md: 170, lg: 230, xl: 300 } as const;
-
-function shapeClasses(shape: NonNullable<Extract<Scrap, { kind: "image" }>["shape"]>) {
-  switch (shape) {
-    case "square":   return "aspect-square";
-    case "tall":     return "aspect-[3/4]";
-    case "wide":     return "aspect-[16/9]";
-    case "circle":   return "aspect-square rounded-full";
-    case "polaroid": return "aspect-[4/5] p-2 pb-8 bg-paper border border-border shadow-[0_8px_22px_-10px_hsl(220_60%_4%/0.4)]";
-    case "diamond":  return "aspect-square rotate-45";
-    case "arch":     return "aspect-[3/4] rounded-t-full";
-  }
-}
-
-function ScrapCard({ scrap, idx }: { scrap: Scrap; idx: number }) {
-  const tilt = scrap.tilt ?? 0;
-  const baseTransform = `rotate(${tilt}deg)`;
-  const hoverStyle: React.CSSProperties = { transform: baseTransform };
-
-  const wrap = (children: ReactNode, extra = "") => (
-    <div
-      className={`shrink-0 transition-transform duration-500 hover:!rotate-0 hover:scale-[1.04] hover:z-10 will-change-transform ${extra}`}
-      style={hoverStyle}
-      data-reveal
-      data-reveal-delay={String((idx % 12) * 40)}
-    >
-      {children}
-    </div>
-  );
-
-  if (scrap.kind === "image") {
-    const w = sizePx[scrap.size ?? "md"];
-    const isPolaroid = scrap.shape === "polaroid";
-    const isDiamond = scrap.shape === "diamond";
-    const inner = (
-      <figure
-        className={`relative overflow-hidden ${shapeClasses(scrap.shape ?? "square")} ${isPolaroid ? "" : "border border-border bg-paper-deep"}`}
-        style={{ width: w }}
-      >
-        <img
-          src={scrap.src}
-          alt={scrap.label}
-          loading="lazy"
-          className={`absolute inset-0 w-full h-full object-cover ${isDiamond ? "-rotate-45 scale-[1.42]" : ""} ${isPolaroid ? "!relative !inset-auto !h-auto aspect-[4/5]" : ""}`}
-        />
-        {!isPolaroid && (
-          <span className="absolute inset-0 ring-1 ring-inset ring-paper/10 mix-blend-overlay pointer-events-none" />
-        )}
-        {isPolaroid && (
-          <figcaption className="absolute left-0 right-0 bottom-1.5 text-center font-mono text-[0.55rem] uppercase tracking-[0.25em] text-ink-soft">
-            {scrap.label}
-          </figcaption>
-        )}
-      </figure>
-    );
-    return wrap(inner);
-  }
-
-  if (scrap.kind === "quote") {
-    const toneCls =
-      scrap.tone === "gold" ? "text-gold border-gold/40"
-      : scrap.tone === "navy" ? "text-paper bg-navy-deep border-navy-deep"
-      : "text-ink border-border bg-paper";
-    return wrap(
-      <blockquote className={`max-w-[260px] border ${toneCls} p-4 font-display italic text-base md:text-lg leading-snug shadow-[0_8px_22px_-12px_hsl(220_60%_4%/0.35)]`}>
-        “{scrap.text}”
-      </blockquote>
-    );
-  }
-
-  if (scrap.kind === "tag") {
-    const toneCls =
-      scrap.tone === "gold" ? "bg-gold text-navy-deep"
-      : scrap.tone === "navy" ? "bg-navy-deep text-paper"
-      : scrap.tone === "paper" ? "bg-paper-deep text-ink border border-border"
-      : "bg-paper text-ink border border-border";
-    return wrap(
-      <span className={`inline-block px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.3em] ${toneCls} shadow-[0_4px_12px_-6px_hsl(220_60%_4%/0.4)]`}>
-        {scrap.text}
-      </span>
-    );
-  }
-
-  if (scrap.kind === "swatch") {
-    const w = sizePx[scrap.size ?? "md"];
-    return wrap(
-      <div className="bg-paper border border-border p-2 shadow-[0_6px_16px_-8px_hsl(220_60%_4%/0.4)]" style={{ width: w }}>
-        <div className="aspect-square" style={{ background: scrap.color }} />
-        <p className="font-mono text-[0.55rem] uppercase tracking-[0.25em] text-ink-soft mt-1.5 text-center">
-          {scrap.label}
-        </p>
-      </div>
-    );
-  }
-
-  if (scrap.kind === "stamp") {
-    return wrap(
-      <div className="border-2 border-dashed border-gold/70 px-3 py-2 text-center bg-paper">
-        <p className="font-display text-lg text-gold leading-none">{scrap.text}</p>
-        {scrap.sub && (
-          <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-gold/80 mt-1">{scrap.sub}</p>
-        )}
-      </div>
-    );
-  }
-
-  if (scrap.kind === "ticket") {
-    return wrap(
-      <div className="flex items-stretch shadow-[0_8px_22px_-12px_hsl(220_60%_4%/0.4)]">
-        <div className="bg-navy-deep text-paper px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.3em] flex items-center">
-          {scrap.head}
-        </div>
-        <div className="bg-paper border border-l-0 border-border px-4 py-2 font-display text-sm text-ink">
-          {scrap.body}
-        </div>
-      </div>
-    );
-  }
-
-  // asterism
-  return wrap(
-    <div className="font-display text-3xl text-gold tracking-[0.35em] select-none">✦ ✶ ✦</div>
-  );
-}
-
-function WorksMoodBoard() {
-  return (
-    <section
-      id="mood-board"
-      className="relative scroll-mt-32 px-4 md:px-12 pt-2 pb-12 border-t border-border crumpled-paper film-grain stipple"
-    >
-      <header className="flex items-center gap-3 mb-6">
-        <Sparkles className="w-4 h-4 text-gold shrink-0" />
-        <span className="label-gold">Mood board</span>
-        <span className="flex-1 h-px bg-border" />
-        <h2 className="font-display text-xl md:text-2xl text-ink text-right">A drawer of miscellany</h2>
-      </header>
-      <p className="max-w-2xl text-ink-soft text-sm md:text-base font-accent italic mb-6 leading-relaxed">
-        Scraps, swatches, polaroids, half-tickets — the off-cuts that don't fit a single rail
-        but together explain the room. Hover any piece to straighten it.
-      </p>
-      <div className="relative -mx-4 md:-mx-12 px-4 md:px-12 overflow-x-auto pb-4">
-        <ul className="flex items-center gap-5 md:gap-7 min-w-max">
-          {MOOD_SCRAPS.map((scrap, i) => (
-            <li key={i} className="flex items-center">
-              <ScrapCard scrap={scrap} idx={i} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-/* -------------------- CV Lightbox: recreated CV opened in a modal -------------------- */
+/* -------------------- CV Lightbox -------------------- */
 
 function CVLightbox() {
   return (
@@ -684,16 +384,6 @@ function CVContent() {
         </section>
 
         <section>
-          <CVEyebrow>Projects</CVEyebrow>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <CVProject color="from-orange-300 to-orange-400" title="Interactive Data Dashboard" date="Jan 24, 2024" role="Frontend Lead" tag="Internal Tools" />
-            <CVProject color="from-violet-300 to-indigo-400" title="Personal Finance Tracker" date="Mar 15, 2024" role="Frontend Developer" tag="Fintech" />
-            <CVProject color="from-emerald-300 to-teal-400" title="Collaborative Coding Environment" date="Jan 12, 2024" role="Frontend Developer" tag="Developer Tools" />
-            <CVProject color="from-amber-200 to-rose-300" title="Robotics Build Log" date="Ongoing" role="Team Member" tag="Robotics" />
-          </div>
-        </section>
-
-        <section>
           <CVEyebrow>Experience</CVEyebrow>
           <div className="space-y-3">{experience.map((e) => <CVEntry key={e.role} icon={Briefcase} {...e} />)}</div>
         </section>
@@ -717,16 +407,6 @@ function CVContent() {
             ))}
           </div>
         </section>
-
-        <section>
-          <CVEyebrow>Contact</CVEyebrow>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <CVContactRow icon={Mail} label="Email" value="geetikagehlot2009@gmail.com" href="mailto:geetikagehlot2009@gmail.com" />
-            <CVContactRow icon={Globe} label="Website" value="geetikagehlot.com" href="#" />
-            <CVContactRow icon={Linkedin} label="LinkedIn" value="/geetika" href="#" />
-            <CVContactRow icon={Calendar} label="Meeting" value="Book a call" href="#" />
-          </div>
-        </section>
       </main>
     </div>
   );
@@ -740,21 +420,6 @@ function CVEyebrow({ children }: { children: ReactNode }) {
 }
 function CVPill({ children }: { children: ReactNode }) {
   return <span className="inline-block rounded-full border border-border bg-card px-2.5 py-1 text-xs text-ink">{children}</span>;
-}
-function CVProject({ color, title, date, role, tag }: { color: string; title: string; date: string; role: string; tag: string }) {
-  return (
-    <article className="overflow-hidden rounded-xl border border-border bg-card transition hover:border-gold">
-      <div className={`aspect-[16/10] bg-gradient-to-br ${color}`} />
-      <div className="p-4">
-        <h3 className="font-display text-base text-ink">{title}</h3>
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-soft">
-          <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" />{date}</span>
-          <span className="inline-flex items-center gap-1"><Briefcase className="h-3 w-3" />{role}</span>
-          <span>{tag}</span>
-        </div>
-      </div>
-    </article>
-  );
 }
 function CVEntry({ icon: Icon, role, date, org, place, desc }: { icon: IconCmp; role: string; date: string; org: string; place: string; desc: string }) {
   return (
@@ -774,15 +439,6 @@ function CVEntry({ icon: Icon, role, date, org, place, desc }: { icon: IconCmp; 
     </div>
   );
 }
-function CVContactRow({ icon: Icon, label, value, href }: { icon: IconCmp; label: string; value: string; href: string }) {
-  return (
-    <a href={href} className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 transition hover:border-gold">
-      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold/10 text-gold"><Icon className="h-4 w-4" /></span>
-      <div className="min-w-0">
-        <p className="text-xs text-ink-soft">{label}</p>
-        <p className="text-sm text-ink truncate">{value}</p>
-      </div>
-      <ArrowUpRight className="ml-auto h-4 w-4 text-ink-soft" />
-    </a>
-  );
-}
+
+// CLUSTERS import retained for type narrowing in earlier helpers; no-op reference:
+void CLUSTERS;
