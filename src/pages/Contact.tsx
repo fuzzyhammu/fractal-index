@@ -76,23 +76,23 @@ function ContactBlock() {
           <label className="block">
             <span className="eyebrow">Your name</span>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} required
-              className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-display text-base text-ink" placeholder="Your name" />
+              className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-display text-base text-ink rounded-md" placeholder="Your name" />
           </label>
           <label className="block">
             <span className="eyebrow">Email</span>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} required
-              className="mt-2 w-full bg-paper border focus:border-gold border-border outline-none px-3 py-2 font-display text-base text-ink" placeholder="you@domain.com" />
+              className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-display text-base text-ink rounded-md" placeholder="you@domain.com" />
           </label>
         </div>
         <label className="block">
           <span className="eyebrow">Message</span>
           <textarea value={message} onChange={(e) => setMessage(e.target.value)} maxLength={2000} required rows={6}
-            className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-accent text-base text-ink resize-y"
+            className="mt-2 w-full bg-paper border border-border focus:border-gold outline-none px-3 py-2 font-accent text-base text-ink resize-y rounded-md"
             placeholder="Say hello, ask a question, or open a door." />
           <span className="block mt-1 font-mono text-[0.6rem] tracking-widest text-ink-soft text-right">{message.length}/2000</span>
         </label>
         <button type="submit" disabled={sending}
-          className="inline-flex items-center gap-2 bg-navy-deep text-paper px-5 py-3 font-mono text-[0.65rem] uppercase tracking-[0.3em] hover:bg-gold hover:text-navy-deep transition-colors disabled:opacity-50">
+          className="inline-flex items-center gap-2 bg-navy-deep text-paper px-5 py-3 font-mono text-[0.65rem] uppercase tracking-[0.3em] hover:bg-gold hover:text-navy-deep transition-colors disabled:opacity-50 rounded-md">
           <Send className="w-3.5 h-3.5" />
           {sending ? "Sending…" : "Send via email"}
         </button>

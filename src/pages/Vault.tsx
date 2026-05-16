@@ -31,8 +31,7 @@ const Vault = () => {
           </h1>
         </div>
         <p className="mt-8 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
-          CV, certificates, transcripts, recognition — click any box for details,
-          or open the full interactive CV below.
+          Click any box for details, or open the full interactive CV below.
         </p>
         <div className="rule-gold mt-10" />
       </section>
@@ -113,9 +112,7 @@ function CVContent() {
             <p className="text-xs text-ink-soft">she/her</p>
           </div>
         </div>
-
         <CVSection label="About"><p className="text-sm">Student</p></CVSection>
-
         <CVSection label="Contact">
           <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2"><Mail className="h-3.5 w-3.5 text-gold" /><a className="hover:text-gold break-all" href="mailto:geetikagehlot2009@gmail.com">geetikagehlot2009@gmail.com</a></li>
@@ -123,16 +120,13 @@ function CVContent() {
             <li className="flex items-center gap-2"><Linkedin className="h-3.5 w-3.5 text-gold" /><span>linkedin.com</span></li>
           </ul>
         </CVSection>
-
         <CVSection label="Skills">
           <div className="flex flex-wrap gap-1.5">{skills.map((s) => <CVPill key={s}>{s}</CVPill>)}</div>
         </CVSection>
-
         <CVSection label="Languages">
           <div className="flex flex-wrap gap-1.5">{languages.map((s) => <CVPill key={s}>{s}</CVPill>)}</div>
         </CVSection>
       </aside>
-
       <main className="p-6 md:p-10 space-y-12">
         <section>
           <CVEyebrow>Intro</CVEyebrow>
@@ -141,17 +135,14 @@ function CVContent() {
             <p>Currently exploring computer science, design, and interdisciplinary research while serving as Vice President of the YMCA Youth Co-op and contributing to robotics teams.</p>
           </div>
         </section>
-
         <section>
           <CVEyebrow>Experience</CVEyebrow>
           <div className="space-y-3">{experience.map((e) => <CVEntry key={e.role} icon={Briefcase} {...e} />)}</div>
         </section>
-
         <section>
           <CVEyebrow>Education</CVEyebrow>
           <div className="space-y-3">{education.map((e) => <CVEntry key={e.role} icon={GraduationCap} {...e} />)}</div>
         </section>
-
         <section>
           <CVEyebrow>License & Certification</CVEyebrow>
           <div className="grid sm:grid-cols-2 gap-3">

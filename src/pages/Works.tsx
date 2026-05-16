@@ -24,7 +24,7 @@ const Works = () => {
         </div>
         <p className="mt-8 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
           Robotics, writing, music, screen, design, art, leadership, sport —
-          click any box to see the receipts, build logs, and performance reels.
+          click any box to see the receipts.
         </p>
         <div className="rule-gold mt-10" />
       </section>
