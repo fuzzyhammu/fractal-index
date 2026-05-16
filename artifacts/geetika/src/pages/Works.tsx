@@ -18,7 +18,7 @@ const Works = () => {
         </div>
         <div className="flex items-start gap-5 mb-6 animate-fade-in">
           <Wand2 className="w-6 h-6 text-gold shrink-0 mt-2" />
-          <h1 className="display-xl text-4xl md:text-5xl lg:text-6xl text-balance max-w-5xl animate-fade-up">
+          <h1 className="display-xl text-xl md:text-2xl lg:text-3xl text-balance max-w-5xl animate-fade-up">
             Every craft under one roof.
           </h1>
         </div>

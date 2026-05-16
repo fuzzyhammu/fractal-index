@@ -19,7 +19,7 @@ export const PageHeader = ({
       <span className="eyebrow">{kicker}</span>
       <span className="flex-1 h-px bg-border" />
     </div>
-    <h1 className="display-xl text-4xl md:text-5xl lg:text-6xl text-balance max-w-5xl animate-fade-up">
+    <h1 className="display-xl text-xl md:text-2xl lg:text-3xl text-balance max-w-5xl animate-fade-up">
       {title}
     </h1>
     {lede && (

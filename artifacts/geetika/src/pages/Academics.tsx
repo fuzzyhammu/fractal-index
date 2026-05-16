@@ -18,7 +18,7 @@ const Academics = () => {
         </div>
         <div className="flex items-start gap-5 mb-6 animate-fade-in">
           <GraduationCap className="w-6 h-6 text-gold shrink-0 mt-2" />
-          <h1 className="display-xl text-3xl md:text-4xl lg:text-5xl text-balance max-w-4xl animate-fade-up">
+          <h1 className="display-xl text-lg md:text-xl lg:text-2xl text-balance max-w-4xl animate-fade-up">
             Education timeline, exams, awards, physics, and research.
           </h1>
         </div>

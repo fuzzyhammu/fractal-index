@@ -217,10 +217,17 @@
     color: hsl(var(--gold));
   }
   .display-xl {
-    font-family: 'Playfair Display', Georgia, 'Times New Roman', Times, serif;
-    font-weight: 500;
-    line-height: 1.02;
-    letter-spacing: -0.02em;
+    font-family: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.04em;
+    color: hsl(var(--gold));
+    transition: all 0.6s var(--ease-editorial);
+  }
+  .display-xl:hover {
+    color: hsl(var(--gold-bright));
+    text-shadow: 0 0 18px hsl(var(--gold) / 0.45), 0 0 40px hsl(var(--gold) / 0.2);
+    letter-spacing: 0.08em;
   }
   .drop-cap::first-letter {
     font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', Times, serif;

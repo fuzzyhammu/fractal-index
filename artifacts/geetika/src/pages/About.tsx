@@ -18,7 +18,7 @@ const About = () => {
         </div>
         <div className="grid md:grid-cols-[1fr,auto] gap-8 items-start">
           <div>
-            <h1 className="display-xl text-4xl md:text-5xl lg:text-6xl text-balance max-w-5xl animate-fade-up">
+            <h1 className="display-xl text-xl md:text-2xl lg:text-3xl text-balance max-w-5xl animate-fade-up">
               Who I am, where I come from, and where I am headed.
             </h1>
             <p className="mt-8 max-w-2xl text-base md:text-lg text-ink-soft leading-relaxed font-accent italic animate-fade-up">

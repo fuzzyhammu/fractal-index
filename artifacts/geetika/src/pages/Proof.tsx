@@ -14,7 +14,7 @@ const Proof = () => {
           <span className="eyebrow">Proof of Curiosity</span>
           <span className="flex-1 h-px bg-border" />
         </div>
-        <h1 className="display-xl text-4xl md:text-5xl lg:text-6xl text-balance max-w-5xl animate-fade-up">
+        <h1 className="display-xl text-xl md:text-2xl lg:text-3xl text-balance max-w-5xl animate-fade-up">
           Notebook scans, sketches, half-formed ideas.
         </h1>
         <p className="mt-8 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-accent italic animate-fade-up">
