@@ -177,23 +177,24 @@ function SplitTile({ left, right, tintLeft, tintRight, index }: { left: TopicDat
 
 export function MoodMosaic({ topics }: { topics: TopicData[] }) {
   const splitIndex = topics.findIndex((topic) => topic.slug === "childhood-trophies");
+  const isWorks = topics.some((topic) => topic.slug === "frc-team-7700");
   return (
     <section className="px-4 md:px-12 pb-4 overflow-hidden">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[118px] md:auto-rows-[138px] lg:auto-rows-[156px] gap-2.5 md:gap-3.5 lg:gap-4 [grid-auto-flow:dense]">
         {topics.map((topic, index) => {
-          if (topic.slug === "childhood-trophies" && splitIndex >= 0 && splitIndex + 1 < topics.length) {
+          if (((topic.slug === "childhood-trophies" && splitIndex >= 0 && splitIndex + 1 < topics.length) || (isWorks && index === 35 && index + 1 < topics.length))) {
             return (
               <SplitTile
                 key={topic.slug}
-                left={topics[splitIndex]}
-                right={topics[splitIndex + 1]}
-                index={splitIndex}
-                tintLeft={CELL_TINTS[splitIndex % CELL_TINTS.length]}
-                tintRight={CELL_TINTS[(splitIndex + 1) % CELL_TINTS.length]}
+                left={topics[isWorks ? index : splitIndex]}
+                right={topics[isWorks ? index + 1 : splitIndex + 1]}
+                index={isWorks ? index : splitIndex}
+                tintLeft={CELL_TINTS[(isWorks ? index : splitIndex) % CELL_TINTS.length]}
+                tintRight={CELL_TINTS[(isWorks ? index + 1 : splitIndex + 1) % CELL_TINTS.length]}
               />
             );
           }
-          if (splitIndex >= 0 && index === splitIndex + 1) {
+          if ((splitIndex >= 0 && index === splitIndex + 1) || (isWorks && index === 36)) {
             return null;
           }
           if (index === 35) {
