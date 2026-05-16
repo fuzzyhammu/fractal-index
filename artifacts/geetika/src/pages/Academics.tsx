@@ -29,7 +29,9 @@ const Academics = () => {
         <div className="rule-gold mt-10" />
       </section>
 
-      <MoodMosaic topics={cluster.topics} />
+      <div className="overflow-hidden">
+        <MoodMosaic topics={cluster.topics} />
+      </div>
     </PageShell>
   );
 };

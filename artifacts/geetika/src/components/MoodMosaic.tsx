@@ -90,7 +90,7 @@ function MosaicTile({ topic, span, tint, index }: { topic: TopicData; span: stri
           <MediaFrame topic={topic} />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/75 via-navy-deep/20 to-transparent" />
-        <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-between">
+        <div className="absolute inset-0 p-4 md:p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between gap-3">
             <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-paper/80">{String(index + 1).padStart(2, "0")}</span>
             {hasMedia && (
@@ -99,9 +99,9 @@ function MosaicTile({ topic, span, tint, index }: { topic: TopicData; span: stri
               </span>
             )}
           </div>
-          <div className="space-y-2">
-            <h3 className={`font-display leading-tight text-paper ${span.includes("row-span-2") ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"}`}>{topic.label}</h3>
-            <p className="max-w-md font-display italic text-sm md:text-base leading-relaxed text-paper/80 line-clamp-3">{topic.blurb}</p>
+          <div className="space-y-1.5">
+            <h3 className="font-display leading-[0.95] text-paper text-lg md:text-xl lg:text-[1.35rem] line-clamp-2">{topic.label}</h3>
+            <p className="max-w-md font-sans italic text-[0.72rem] md:text-[0.8rem] leading-snug text-paper/82 line-clamp-2">{topic.blurb}</p>
           </div>
         </div>
       </button>
@@ -132,7 +132,7 @@ function MosaicTile({ topic, span, tint, index }: { topic: TopicData; span: stri
 export function MoodMosaic({ topics }: { topics: TopicData[] }) {
   return (
     <section className="px-4 md:px-12 pb-16 overflow-hidden">
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[140px] md:auto-rows-[170px] lg:auto-rows-[190px] gap-4 md:gap-5 lg:gap-6 [grid-auto-flow:dense]">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[132px] md:auto-rows-[154px] lg:auto-rows-[176px] gap-3 md:gap-4 lg:gap-5 [grid-auto-flow:dense]">
         {topics.map((topic, index) => (
           <MosaicTile
             key={topic.slug}
