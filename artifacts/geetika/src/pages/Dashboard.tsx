@@ -9,8 +9,8 @@ const Dashboard = () => {
 
   return (
     <PageShell>
-      <section className="container pt-12 md:pt-16 pb-6">
-        <div className="flex items-baseline gap-4 mb-5 animate-fade-in">
+      <section className="container pt-16 md:pt-24 pb-12">
+        <div className="flex items-baseline gap-6 mb-8 animate-fade-in">
           <span className="font-mono text-xs tracking-[0.3em] text-gold">§ ✦✦</span>
           <span className="eyebrow">Dashboard</span>
           <span className="flex-1 h-px bg-border" />
@@ -18,14 +18,14 @@ const Dashboard = () => {
         <h1 className="display-xl text-5xl md:text-7xl lg:text-8xl text-balance max-w-5xl animate-fade-up">
           Five pages, one dossier.
         </h1>
-        <p className="mt-5 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
+        <p className="mt-8 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed font-display italic animate-fade-up">
           A single index of every section. Pick a door.
         </p>
-        <div className="rule-gold mt-8" />
+        <div className="rule-gold mt-12" />
       </section>
 
-      <section className="container py-10 md:py-14" data-reveal>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+      <section className="container py-16 md:py-24" data-reveal>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {CLUSTERS.map((c) => {
             const Icon = c.icon;
             return (
