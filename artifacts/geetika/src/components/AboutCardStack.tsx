@@ -7,35 +7,32 @@ import atmosTelescope from "@/assets/atmos-telescope.jpg";
 import atmosMusic from "@/assets/atmos-music.jpg";
 import textureCosmos from "@/assets/texture-cosmos.jpg";
 
-/* ─── Helpers ──────────────────────────────────────────────────── */
 function clamp(v: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, v)); }
 function lerp(a: number, b: number, t: number) { return a + (b - a) * clamp(t, 0, 1); }
 function easeOut(t: number) { return 1 - Math.pow(1 - clamp(t, 0, 1), 3); }
-function easeInOut(t: number) { const c = clamp(t, 0, 1); return c < 0.5 ? 2*c*c : 1 - Math.pow(-2*c+2, 2)/2; }
+function easeInOut(t: number) { const c = clamp(t, 0, 1); return c < 0.5 ? 2 * c * c : 1 - Math.pow(-2 * c + 2, 2) / 2; }
 
-/* ─── Scroll phases ─────────────────────────────────────────────── */
-const ENTER        = 0.03;   // profile card starts entering
-const EXPAND_END   = 0.20;   // fully expanded
-const READ_END     = 0.58;   // essay fully read
-const CARD_STACK_START = 0.62;
-const CARD_STACK_SPAN = 0.72;
+const ENTER = 0.03;
+const EXPAND_END = 0.24;
+const READ_END = 0.66;
+const CARD_STACK_START = 0.72;
+const CARD_STACK_SPAN = 0.98;
 
-/* ─── Card placement aesthetics ────────────────────────────────── */
 const ENTRY = [
-  { angle:  8, x:  55, y: -75 },
+  { angle: 8, x: 55, y: -75 },
   { angle: -7, x: -50, y: -80 },
-  { angle:  9, x:  60, y: -70 },
+  { angle: 9, x: 60, y: -70 },
   { angle: -6, x: -45, y: -72 },
-  { angle:  7, x:  52, y: -78 },
+  { angle: 7, x: 52, y: -78 },
   { angle: -8, x: -55, y: -68 },
 ];
 const PEEK = [
-  { angle: -2.8, x: -7, y:  5 },
-  { angle:  2.2, x:  5, y:  6 },
-  { angle: -3.2, x: -8, y:  4 },
-  { angle:  1.8, x:  6, y:  7 },
-  { angle: -2.5, x: -6, y:  5 },
-  { angle:  2.6, x:  7, y:  6 },
+  { angle: -2.8, x: -7, y: 5 },
+  { angle: 2.2, x: 5, y: 6 },
+  { angle: -3.2, x: -8, y: 4 },
+  { angle: 1.8, x: 6, y: 7 },
+  { angle: -2.5, x: -6, y: 5 },
+  { angle: 2.6, x: 7, y: 6 },
 ];
 
 const CARD_BG = [
@@ -47,16 +44,15 @@ const CARD_BG = [
   "hsl(223 26% 7%)",
 ];
 const CARD_ACCENT = [
-  "#c9a342",  // gold
-  "#8ab4c8",  // blue-silver
-  "#c49a3a",  // warm gold
-  "#7bbcb4",  // teal
-  "#d4aa44",  // bright gold
-  "#9aaed4",  // cool silver
+  "#c9a342",
+  "#8ab4c8",
+  "#c49a3a",
+  "#7bbcb4",
+  "#d4aa44",
+  "#9aaed4",
 ];
 const PHOTOS = [heroPortrait, atmosNotebook, atmosTelescope, atmosMusic, textureCosmos, atmosNotebook];
 
-/* ─── Profile card inner essay ─────────────────────────────────── */
 function EssayPhoto({ src, alt, caption, align = "right" }: { src: string; alt: string; caption: string; align?: "left" | "right" | "full" }) {
   if (align === "full") return (
     <figure className="my-8 w-full clear-both">
@@ -131,16 +127,8 @@ function Essay({ innerRef }: { innerRef: React.RefObject<HTMLDivElement | null> 
   );
 }
 
-/* ─── Single topic card ─────────────────────────────────────────── */
-function TopicCard({
-  topic, index, transform, opacity, zIndex, isInteractive,
-}: {
-  topic: TopicData; index: number;
-  transform: string; opacity: number; zIndex: number; isInteractive: boolean;
-}) {
+function TopicCard({ topic, index, transform, opacity, zIndex, isInteractive, }: { topic: TopicData; index: number; transform: string; opacity: number; zIndex: number; isInteractive: boolean; }) {
   const [open, setOpen] = useState(false);
-  const [mx, setMx] = useState(50);
-  const [my, setMy] = useState(50);
   const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -149,19 +137,11 @@ function TopicCard({
   const photo = PHOTOS[index % PHOTOS.length];
   const num = String(index + 1).padStart(2, "0");
 
-  const onMove = useCallback((e: React.MouseEvent) => {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    setMx(((e.clientX - r.left) / r.width) * 100);
-    setMy(((e.clientY - r.top) / r.height) * 100);
-  }, []);
-
   return (
     <>
       <div
         ref={ref}
         onClick={() => isInteractive && setOpen(true)}
-        onMouseMove={onMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
@@ -174,74 +154,38 @@ function TopicCard({
           pointerEvents: isInteractive ? "auto" : "none",
           willChange: "transform, opacity",
           background: bg,
-          border: `1px solid ${hovered && isInteractive ? accent + "bb" : accent + "30"}`,
+          border: `1px solid ${hovered && isInteractive ? `${accent}66` : `${accent}30`}`,
           borderRadius: "28px",
           overflow: "hidden",
-          transition: "border-color 0.4s ease, box-shadow 0.4s ease",
+          transition: "border-color 0.7s ease, box-shadow 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.7s ease",
           boxShadow: isInteractive && hovered
-            ? `0 0 0 1px ${accent}40, 0 40px 100px -20px hsl(220 90% 3%/0.97), 0 0 80px -20px ${accent}30`
-            : `0 20px 80px -24px hsl(220 90% 3%/0.8)`,
+            ? `0 0 0 1px ${accent}24, 0 24px 72px -28px hsl(220 90% 3%/0.9)`
+            : `0 18px 56px -28px hsl(220 90% 3%/0.72)`,
         }}
       >
-        {/* Faint background photo */}
-        <img src={photo} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-[0.06] grayscale pointer-events-none" />
-        {/* Spotlight */}
-        {hovered && isInteractive && (
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: `radial-gradient(600px circle at ${mx}% ${my}%, ${accent}16, transparent 55%)` }}
-          />
-        )}
-        {/* Scan lines */}
-        <div className="pointer-events-none absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent 0 3px, hsl(220 50% 100%/0.01) 3px 4px)" }} />
-        {/* Top glow edge */}
-        <div className="pointer-events-none absolute top-0 left-0 right-0" style={{ height: "1px", background: `linear-gradient(to right, transparent, ${accent}${hovered ? "80" : "28"}, transparent)`, transition: "background 0.4s ease" }} />
+        <img src={photo} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-[0.05] grayscale pointer-events-none" />
+        <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 0%, hsl(220 30% 4% / 0.16) 100%)" }} />
+        <div className="pointer-events-none absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent 0 3px, hsl(220 50% 100%/0.01) 3px 4px)", opacity: 0.45 }} />
+        <div className="pointer-events-none absolute top-0 left-0 right-0" style={{ height: "1px", background: `linear-gradient(to right, transparent, ${accent}${hovered && isInteractive ? "66" : "28"}, transparent)`, transition: "background 0.7s ease" }} />
 
-        {/* Content */}
         <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-12">
-          {/* Top bar */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="font-mono uppercase tracking-[0.35em]" style={{ fontSize: "9px", color: `${accent}99` }}>§ 01</span>
               <span className="w-6 h-px" style={{ background: `${accent}35` }} />
               <span className="font-mono uppercase tracking-[0.25em]" style={{ fontSize: "9px", color: `${accent}55` }}>{num}</span>
             </div>
-            {isInteractive && (
-              <span className="font-mono uppercase tracking-[0.22em] text-paper/20" style={{ fontSize: "8.5px" }}>tap to expand →</span>
-            )}
+            {isInteractive && <span className="font-mono uppercase tracking-[0.22em] text-paper/20" style={{ fontSize: "8.5px" }}>tap to expand →</span>}
           </div>
 
-          {/* Ghost number */}
-          <div className="pointer-events-none absolute bottom-6 right-6" style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: "clamp(120px, 18vw, 240px)",
-            fontWeight: 700, lineHeight: 1, color: `${accent}07`, userSelect: "none", letterSpacing: "-0.05em",
-          }}>{num}</div>
+          <div className="pointer-events-none absolute bottom-6 right-6" style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(120px, 18vw, 240px)", fontWeight: 700, lineHeight: 1, color: `${accent}07`, userSelect: "none", letterSpacing: "-0.05em" }}>{num}</div>
 
-          {/* Main text */}
           <div className="relative z-10">
-            <h3 style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(28px, 4.5vw, 60px)",
-              fontWeight: 600, lineHeight: 1.06,
-              color: `hsl(38 30% ${hovered && isInteractive ? 97 : 88}%)`,
-              transition: "color 0.35s ease",
-              marginBottom: "1rem",
-            }}>{topic.label}</h3>
-            <p style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "clamp(15px, 1.8vw, 22px)",
-              fontStyle: "italic",
-              color: `hsl(38 15% ${hovered && isInteractive ? 75 : 62}%)`,
-              maxWidth: "520px", lineHeight: 1.55,
-              transition: "color 0.35s ease",
-            }}>{topic.blurb}</p>
-            <div className="inline-flex items-center gap-2 mt-7" style={{
-              border: `1px solid ${accent}${hovered && isInteractive ? "55" : "22"}`,
-              padding: "7px 16px", borderRadius: "2px", transition: "border-color 0.4s ease",
-            }}>
-              <span className="font-mono uppercase tracking-[0.28em]" style={{ fontSize: "8.5px", color: `${accent}${hovered && isInteractive ? "cc" : "60"}`, transition: "color 0.4s ease" }}>Read more</span>
-              <span style={{ color: `${accent}${hovered && isInteractive ? "cc" : "45"}`, fontSize: "11px", transition: "color 0.4s ease" }}>→</span>
+            <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(28px, 4.5vw, 60px)", fontWeight: 600, lineHeight: 1.06, color: `hsl(38 30% ${hovered && isInteractive ? 96 : 88}%)`, transition: "color 0.7s ease", marginBottom: "1rem" }}>{topic.label}</h3>
+            <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(15px, 1.8vw, 22px)", fontStyle: "italic", color: `hsl(38 15% ${hovered && isInteractive ? 74 : 62}%)`, maxWidth: "520px", lineHeight: 1.55, transition: "color 0.7s ease" }}>{topic.blurb}</p>
+            <div className="inline-flex items-center gap-2 mt-7" style={{ border: `1px solid ${accent}${hovered && isInteractive ? "40" : "22"}`, padding: "7px 16px", borderRadius: "2px", transition: "border-color 0.7s ease, transform 0.7s ease", transform: hovered && isInteractive ? "translateY(-1px)" : "translateY(0)" }}>
+              <span className="font-mono uppercase tracking-[0.28em]" style={{ fontSize: "8.5px", color: `${accent}${hovered && isInteractive ? "b0" : "60"}`, transition: "color 0.7s ease" }}>Read more</span>
+              <span style={{ color: `${accent}${hovered && isInteractive ? "b0" : "45"}`, fontSize: "11px", transition: "color 0.7s ease" }}>→</span>
             </div>
           </div>
         </div>
@@ -258,8 +202,10 @@ function TopicCard({
             <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontStyle: "italic", color: "hsl(38 20% 62%)", marginTop: "0.4rem", marginBottom: "1.2rem" }}>{topic.blurb}</p>
             <div className="h-px bg-border/28 mb-5" />
             <DialogDescription asChild>
-              <div style={{ fontFamily: "'Source Sans 3', system-ui, sans-serif", fontSize: "14.5px", lineHeight: 1.8, color: "hsl(220 15% 74%)" }}>
-                {topic.detail.split("\n").map((para, i) => <p key={i} className={i > 0 ? "mt-3" : ""}>{para}</p>)}
+              <div style={{ fontFamily: "'Source Sans 3', system-ui, sans-serif", fontSize: "14.5px", lineHeight: 1.8, color: "hsl(220 15% 75%)" }}>
+                {topic.detail.split("\n").map((para, i) => (
+                  <p key={i} className={i > 0 ? "mt-4" : ""}>{para}</p>
+                ))}
               </div>
             </DialogDescription>
           </div>
@@ -269,216 +215,94 @@ function TopicCard({
   );
 }
 
-/* ─── Profile card (base of stack) ─────────────────────────────── */
-function ProfileCard({
-  ep, essayRef, transform,
-}: {
-  ep: number; essayRef: React.RefObject<HTMLDivElement | null>; transform: string;
-}) {
-  const bOp = lerp(0.18, 0.7, ep);
-  const spr  = lerp(0, 90, ep);
-  const gOp  = lerp(0, 0.18, ep);
+function ProfileCard({ ep, essayRef, transform, }: { ep: number; essayRef: React.RefObject<HTMLDivElement | null>; transform: string; }) {
+  const bOp = lerp(0.14, 0.52, ep);
+  const spr = lerp(0, 64, ep);
+  const gOp = lerp(0, 0.12, ep);
   const imgW = lerp(48, 96, ep);
-  const PY   = lerp(20, 48, ep);
-  const PX   = lerp(22, 56, ep);
-  const W    = lerp(56, 88, ep);
+  const PY = lerp(28, 54, ep);
+  const PX = lerp(28, 64, ep);
+  const W = lerp(50, 78, ep);
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 1,
-        transform,
-        willChange: "transform",
-      }}
-    >
-      <div
-        className="relative flex flex-col bg-[hsl(220_30%_7%)] border overflow-hidden"
-        style={{
-          width: `${W}%`, maxWidth: "1040px",
-          height: `calc(100vh - ${lerp(88, 36, ep)}px)`,
-          borderColor: `hsl(41 80% 60% / ${bOp})`,
-          borderRadius: `${lerp(22, 14, ep)}px`,
-          padding: `${PY}px ${PX}px`,
-          boxShadow: `0 0 0 1px hsl(41 80% 55% / ${gOp * 0.8}), 0 ${Math.round(spr * 0.3)}px ${spr}px -12px hsl(220 90% 3%/0.96), 0 0 ${Math.round(spr * 0.5)}px -18px hsl(41 80% 55% / ${gOp * 2})`,
-          transition: "width 0.8s cubic-bezier(0.22,1,0.36,1), height 0.8s cubic-bezier(0.22,1,0.36,1), padding 0.8s cubic-bezier(0.22,1,0.36,1), border-color 0.8s cubic-bezier(0.22,1,0.36,1), box-shadow 0.8s cubic-bezier(0.22,1,0.36,1), border-radius 0.8s cubic-bezier(0.22,1,0.36,1)",
-        }}
-      >
-        {/* Corner brackets */}
+    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, transform, willChange: "transform" }}>
+      <div className="relative flex flex-col bg-[hsl(220_30%_7%)] border overflow-hidden" style={{ width: `${W}%`, maxWidth: "920px", height: `calc(100vh - ${lerp(96, 56, ep)}px)`, borderColor: `hsl(41 80% 60% / ${bOp})`, borderRadius: `${lerp(24, 16, ep)}px`, padding: `${PY}px ${PX}px`, boxShadow: `0 0 0 1px hsl(41 80% 55% / ${gOp * 0.75}), 0 ${Math.round(spr * 0.22)}px ${spr}px -16px hsl(220 90% 3%/0.94), 0 0 ${Math.round(spr * 0.45)}px -24px hsl(41 80% 55% / ${gOp * 1.8})`, transition: "width 1s cubic-bezier(0.22,1,0.36,1), height 1s cubic-bezier(0.22,1,0.36,1), padding 1s cubic-bezier(0.22,1,0.36,1), border-color 1s cubic-bezier(0.22,1,0.36,1), box-shadow 1s cubic-bezier(0.22,1,0.36,1), border-radius 1s cubic-bezier(0.22,1,0.36,1)" }}>
         {(["top-3.5 left-3.5 border-t border-l", "top-3.5 right-3.5 border-t border-r", "bottom-3.5 left-3.5 border-b border-l", "bottom-3.5 right-3.5 border-b border-r"] as const).map((cls, k) => (
           <span key={k} className={`absolute w-4 h-4 ${cls} border-gold/60`} style={{ opacity: ep * 0.65 }} />
         ))}
-
-        {/* Header */}
-        <header className="flex items-start gap-6 shrink-0" style={{ marginBottom: `${lerp(0, 26, ep)}px`, transition: "margin 0.8s cubic-bezier(0.22,1,0.36,1)" }}>
-          <figure className="relative shrink-0 overflow-hidden border bg-[hsl(220_30%_10%)]"
-            style={{ width: `${imgW}px`, aspectRatio: "3/4", borderColor: `hsl(41 80% 60%/${lerp(0.15, 0.45, ep)})`, transition: "width 0.8s cubic-bezier(0.22,1,0.36,1)" }}>
-            <img src={heroPortrait} alt="Geetika" className="absolute inset-0 w-full h-full object-cover object-[60%_25%]" />
-            <span className="absolute inset-1 border border-paper/10 pointer-events-none" />
-          </figure>
-          <div className="flex flex-col gap-1.5 pt-0.5 flex-1">
-            <span className="font-mono text-gold/65 uppercase tracking-[0.3em]" style={{ fontSize: `${lerp(8.5, 11, ep)}px` }}>§ 01 · Personal Profile</span>
-            <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: `${lerp(17, 32, ep)}px`, fontWeight: 600, lineHeight: 1.1, color: `hsl(38 40% ${lerp(80, 96, ep)}%)`, transition: "font-size 0.8s cubic-bezier(0.22,1,0.36,1)" }}>Geetika Gehlot</h2>
-            <p className="font-mono text-ink-soft/65 tracking-[0.08em]" style={{ fontSize: `${lerp(9, 12.5, ep)}px` }}>Montréal · India-born · Multidisciplinary</p>
-            {ep < 0.2 && <p className="font-accent italic text-ink-soft/45 mt-1" style={{ fontSize: "12px", opacity: Math.max(0, 1 - ep * 6) }}>Scroll to read ↓</p>}
+        <div className="relative z-10 flex items-start gap-4 md:gap-5 mb-5" style={{ opacity: lerp(0.88, 1, ep) }}>
+          <div className="overflow-hidden border border-border/25 bg-paper-deep shrink-0" style={{ width: `${imgW}px`, height: `${imgW}px`, borderRadius: `${lerp(4, 8, ep)}px` }}>
+            <img src={heroPortrait} alt="Geetika Gehlot" className="w-full h-full object-cover" />
           </div>
-        </header>
-
-        {/* Divider */}
-        <div className="shrink-0" style={{
-          height: "1px",
-          background: `linear-gradient(to right, hsl(41 80% 55%/${lerp(0, 0.45, ep)}), transparent)`,
-          marginBottom: `${lerp(0, 20, ep)}px`,
-          opacity: ep,
-          transition: "all 0.8s cubic-bezier(0.22,1,0.36,1)",
-        }} />
-
-        {/* Essay */}
-        <Essay innerRef={essayRef} />
-
-        {/* Bottom vignette */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0" style={{
-          height: "80px",
-          background: "linear-gradient(to top, hsl(220 30% 7%/0.97) 35%, transparent)",
-          opacity: ep, transition: "opacity 0.6s ease",
-        }} />
+          <div className="pt-1 min-w-0">
+            <div className="label-gold mb-2">§ 01 · Personal Profile</div>
+            <h2 className="font-display text-paper-contrast text-[clamp(22px,3vw,32px)] leading-none mb-1.5">Geetika Gehlot</h2>
+            <p className="font-mono uppercase tracking-[0.28em] text-paper-contrast-soft" style={{ fontSize: "8px" }}>Montréal · India-born · Multidisciplinary</p>
+          </div>
+        </div>
+        <div className="mb-4 text-ink-soft/40 font-mono uppercase tracking-[0.22em]" style={{ fontSize: "7.5px" }}>Scroll to read ↓</div>
+        <div ref={essayRef} className="flex-1 min-h-0 overflow-hidden rounded-[inherit] bg-[hsl(220_30%_6%)] border border-border/20">
+          <Essay innerRef={essayRef} />
+        </div>
       </div>
     </div>
   );
 }
 
-/* ─── Main exported component ───────────────────────────────────── */
 export function AboutCardStack({ topics }: { topics: TopicData[] }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const essayRef   = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  const CARD_ZONE = (1 - READ_END) / topics.length;
-
-  const handleScroll = useCallback(() => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const wh = window.innerHeight;
-    const travel = rect.height - wh;
-    if (travel <= 0) return;
-    const p = clamp(-rect.top / travel, 0, 1);
-    setProgress(p);
-
-    // Drive essay scrollTop
-    const essay = essayRef.current;
-    if (essay) {
-      const readStart = EXPAND_END;
-      const readEnd   = READ_END;
-      if (p >= readStart && p <= readEnd) {
-        const rp = easeInOut((p - readStart) / (readEnd - readStart));
-        const maxSc = essay.scrollHeight - essay.clientHeight;
-        if (maxSc > 0) essay.scrollTop = rp * maxSc;
-      }
-    }
-  }, []);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const essayRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
+  const [vh, setVh] = useState(typeof window !== "undefined" ? window.innerHeight : 900);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    const onScroll = () => setScrollY(window.scrollY || 0);
+    const onResize = () => setVh(window.innerHeight || 900);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
-  // Profile expansion progress
-  const ep = easeOut(clamp((progress - ENTER) / (EXPAND_END - ENTER), 0, 1));
-
-  // How many cards placed
-  const placedCount = topics.reduce((acc, _, i) => {
-    const slotStart = READ_END + i * CARD_ZONE;
-    return acc + (progress >= slotStart ? 1 : 0);
-  }, 0);
-
-  // Profile card pushes down as cards stack
-  const profileTY = placedCount * 4;
-  const profileScale = 1 - placedCount * 0.01;
-
-  // Ambient glow opacity
-  const glowOp = Math.max(lerp(0, 0.1, ep), lerp(0, 0.06, progress));
+  const totalScroll = shellRef.current ? Math.max(1, shellRef.current.offsetHeight - vh) : 1;
+  const t = clamp(scrollY / totalScroll, 0, 1);
+  const cardSpread = clamp((t - CARD_STACK_START) / CARD_STACK_SPAN, 0, 1);
+  const smoothSpread = easeOut(cardSpread);
+  const readProgress = easeInOut(clamp((t - ENTER) / Math.max(0.001, READ_END - ENTER), 0, 1));
 
   return (
-    <div ref={wrapperRef} className="relative" style={{ height: `${92 + topics.length * 118}vh` }}>
-      <div className="sticky top-0 w-full overflow-hidden" style={{ height: "100vh" }}>
-        {/* Ambient radial backdrop */}
-        <div className="pointer-events-none absolute inset-0" style={{
-          background: `radial-gradient(60% 55% at 50% 45%, hsl(41 80% 55%/${glowOp}), transparent 68%)`,
-          transition: "background 0.8s ease",
-        }} />
-
-        {/* Profile card */}
-        <ProfileCard
-          ep={ep}
-          essayRef={essayRef}
-          transform={`scale(${profileScale}) translateY(${profileTY}px)`}
-        />
-
-        {/* Topic cards — stacked on top */}
-        {topics.map((topic, i) => {
-          const slotStart  = CARD_STACK_START + i * (CARD_ZONE * CARD_STACK_SPAN);
-          const placingEnd = slotStart + CARD_ZONE * 0.28;
-
-          // Placement progress [0,1]
-          let pp = 0;
-          if (progress >= slotStart && progress < placingEnd) {
-            pp = (progress - slotStart) / (placingEnd - slotStart);
-          } else if (progress >= placingEnd) {
-            pp = 1;
-          }
-          const ppE = easeOut(pp);
-
-          const isPlaced = progress >= placingEnd;
-          const depth = isPlaced ? (placedCount - 1 - i) : -1;
-          const isTop  = depth === 0;
-
-          // Compute transform
-          let tx: number, ty: number, rot: number, scale: number, opacity: number;
-
-          if (!isPlaced && pp === 0) {
-            // Waiting — invisible, positioned at entry
-            opacity = 0; tx = 0; ty = -96; rot = ENTRY[i % ENTRY.length].angle; scale = 0.88;
-          } else if (pp < 1) {
-            // Flying in
-            const e = ENTRY[i % ENTRY.length];
-            opacity = ppE;
-            tx = lerp(e.x, 0, ppE);
-            ty = lerp(e.y, 0, ppE);
-            rot = lerp(e.angle, 0, ppE);
-            scale = lerp(0.88, 1, ppE);
-          } else if (isTop) {
-            // Current top — flat
-            opacity = 1; tx = 0; ty = 0; rot = 0; scale = 1;
-          } else {
-            // Buried — peek
-            const d = Math.min(depth, 4);
-            const pk = PEEK[i % PEEK.length];
-            opacity = 1;
-            tx = pk.x * d;
-            ty = pk.y * d;
-            rot = pk.angle * d;
-            scale = 1 - d * 0.018;
-          }
-
+    <section ref={shellRef} className="relative w-full" style={{ height: `${108 + topics.length * 116}vh` }}>
+      <div className="sticky top-0 h-screen overflow-hidden">
+        {topics.map((topic, index) => {
+          const appearAt = index / Math.max(1, topics.length - 1);
+          const enterT = clamp((t - appearAt * 0.86) / 0.34, 0, 1);
+          const settleT = clamp((t - (0.4 + appearAt * 0.2)) / 0.6, 0, 1);
+          const stackT = clamp((smoothSpread - index / Math.max(1, topics.length - 1)) * 1.4 + 0.1, 0, 1);
+          const entry = ENTRY[index % ENTRY.length];
+          const peek = PEEK[index % PEEK.length];
+          const y = lerp(54, peek.y, easeOut(stackT));
+          const x = lerp(0, peek.x, easeOut(stackT));
+          const rot = lerp(entry.angle, peek.angle, easeInOut(stackT));
+          const scale = lerp(0.9, 1, easeInOut(settleT));
+          const opacity = lerp(0.06, 1, easeInOut(enterT));
+          const transform = `translate3d(${x}%, ${y}%, 0) rotate(${rot}deg) scale(${scale})`;
           return (
             <TopicCard
               key={topic.slug}
               topic={topic}
-              index={i}
-              transform={`translateX(${tx}px) translateY(${ty}px) rotate(${rot}deg) scale(${scale})`}
+              index={index}
+              transform={transform}
               opacity={opacity}
-              zIndex={i + 2}
-              isInteractive={isTop && pp === 1}
+              zIndex={index + 2}
+              isInteractive={t > 0.04}
             />
           );
         })}
+        <ProfileCard ep={readProgress} essayRef={essayRef} transform={`translate3d(0, ${lerp(16, -14, readProgress)}%, 0) scale(${lerp(0.985, 1, readProgress)})`} />
       </div>
-    </div>
+    </section>
   );
 }
