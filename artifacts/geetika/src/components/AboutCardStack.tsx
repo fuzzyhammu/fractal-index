@@ -13,9 +13,9 @@ function lerp(a: number, b: number, t: number) { return a + (b - a) * clamp(t, 0
 function easeOut(t: number) { return 1 - Math.pow(1 - clamp(t, 0, 1), 3); }
 function easeInOut(t: number) { const c = clamp(t, 0, 1); return c < 0.5 ? 2 * c * c : 1 - Math.pow(-2 * c + 2, 2) / 2; }
 
-const EXPAND_END = 0.13;
-const ESSAY_END = 0.80;
-const BUFFER_END = 0.90;
+const EXPAND_END = 0.12;
+const ESSAY_END = 0.68;
+const BUFFER_END = 0.80;
 
 const LIGHTBOX_CARDS = [
   {
@@ -249,7 +249,6 @@ function LightboxCard({ card, index, floatProgress }: { card: typeof LIGHTBOX_CA
 
 export function AboutCardStack({ topics }: { topics: TopicData[] }) {
   const shellRef = useRef<HTMLDivElement>(null);
-  const essayRef = useRef<HTMLDivElement>(null);
   const [scrollY, setScrollY] = useState(0);
   const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
   const [vh, setVh] = useState(typeof window !== "undefined" ? window.innerHeight : 900);
@@ -288,21 +287,13 @@ export function AboutCardStack({ topics }: { topics: TopicData[] }) {
 
   const essayPhaseT = clamp((t - EXPAND_END) / Math.max(0.001, ESSAY_END - EXPAND_END), 0, 1);
 
-  useEffect(() => {
-    if (!essayRef.current) return;
-    const el = essayRef.current;
-    const maxScroll = el.scrollHeight - el.clientHeight;
-    if (maxScroll <= 0) return;
-    el.scrollTop = essayPhaseT * maxScroll;
-  });
-
   const floatProgress = clamp((t - BUFFER_END) / Math.max(0.001, 1 - BUFFER_END), 0, 1);
   const cardsVisible = t > BUFFER_END - 0.02;
 
   const headerOpacity = clamp(1 - (expandT * 3), 0, 1);
 
   return (
-    <section ref={shellRef} className="relative w-full" style={{ height: "580vh" }}>
+    <section ref={shellRef} className="relative w-full" style={{ height: "350vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden" style={{ background: "hsl(220 30% 5%)" }}>
 
         {expandT < 0.95 && (
@@ -391,15 +382,20 @@ export function AboutCardStack({ topics }: { topics: TopicData[] }) {
               <div style={{ height: 1, background: "hsl(43 60% 50% / 0.1)", margin: `${Math.round(cardPad * 0.6)}px ${cardPad}px` }} />
 
               <div
-                ref={essayRef}
                 style={{
                   flex: 1,
-                  overflowY: "hidden",
+                  overflow: "hidden",
                   padding: `0 ${cardPad}px ${cardPad}px`,
-                  scrollBehavior: "auto",
                 }}
               >
-                <Essay />
+                <div
+                  style={{
+                    willChange: "transform",
+                    transform: `translateY(-${essayPhaseT * 100}%)`,
+                  }}
+                >
+                  <Essay />
+                </div>
               </div>
             </div>
           )}
