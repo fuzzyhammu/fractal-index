@@ -218,47 +218,6 @@
     transition: transform 0.5s var(--ease-editorial);
   }
   .link-underline:hover::after { transform: scaleX(1); }
-  .page-transition-shell { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transition: opacity 220ms ease; }
-  .page-transition-shell-active { opacity: 1; }
-  .page-transition-ribbon,
-  .page-transition-wash {
-    position: absolute;
-    inset: -8%;
-    background: radial-gradient(circle at 50% 50%, hsl(var(--gold-bright) / 0.5) 0%, hsl(var(--gold) / 0.42) 18%, hsl(var(--navy-deep) / 0.92) 58%, hsl(var(--navy-deep) / 0.98) 100%);
-    filter: blur(16px) saturate(1.35);
-    transform: scale(0.82);
-    opacity: 0;
-  }
-  .page-transition-shell-active .page-transition-ribbon,
-  .page-transition-shell-active .page-transition-wash { opacity: 1; }
-  .page-transition-ribbon { animation: goo-ribbon var(--transition-ms) var(--ease-editorial) both; }
-  .page-transition-ribbon-a { clip-path: polygon(0 38%, 18% 10%, 44% 14%, 63% 2%, 84% 18%, 100% 10%, 100% 72%, 82% 90%, 64% 78%, 38% 98%, 14% 84%, 0 92%); }
-  .page-transition-ribbon-b { animation-delay: 80ms; clip-path: polygon(6% 20%, 28% 0%, 53% 18%, 77% 0%, 96% 24%, 100% 50%, 96% 76%, 74% 100%, 49% 82%, 25% 100%, 4% 78%, 0 50%); }
-  .page-transition-ribbon-c { animation-delay: 140ms; clip-path: polygon(12% 50%, 28% 28%, 44% 44%, 56% 18%, 74% 38%, 92% 26%, 100% 54%, 88% 80%, 68% 66%, 53% 92%, 32% 74%, 18% 88%, 0 62%); }
-  .page-transition-core {
-    position: relative;
-    z-index: 1;
-    width: clamp(120px, 18vw, 220px);
-    height: clamp(120px, 18vw, 220px);
-    display: grid;
-    place-items: center;
-    border-radius: 44% 56% 48% 52% / 49% 46% 54% 51%;
-    background: radial-gradient(circle at 35% 30%, hsl(var(--gold-bright)), hsl(var(--gold)) 42%, hsl(41 60% 24%) 100%);
-    box-shadow: 0 0 0 1px hsl(var(--gold) / 0.45), 0 24px 80px -20px hsl(var(--gold) / 0.5);
-    animation: goo-core var(--transition-ms) var(--ease-editorial) both;
-  }
-  .page-transition-core span {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: clamp(2.6rem, 4vw, 5rem);
-    letter-spacing: 0.22em;
-    text-indent: 0.22em;
-    color: hsl(44 100% 92%);
-    text-shadow: 0 0 22px hsl(var(--gold) / 0.55);
-  }
-  .page-transition-wash {
-    background: radial-gradient(circle at 50% 50%, hsl(var(--gold) / 0.35) 0%, hsl(var(--gold) / 0.18) 18%, transparent 52%);
-    animation: goo-wash var(--transition-ms) var(--ease-editorial) both;
-  }
 }
 
 @layer utilities {
@@ -286,22 +245,4 @@
     image-rendering: pixelated;
   }
   .crumpled-paper::before, .crumpled-paper::after { content: ''; }
-}
-
-@keyframes goo-ribbon {
-  from { transform: scale(0.7) rotate(-8deg) translate3d(-2%, -2%, 0); border-radius: 38% 62% 46% 54% / 46% 38% 62% 54%; }
-  50% { transform: scale(1.08) rotate(6deg) translate3d(1%, 1%, 0); }
-  to { transform: scale(1.16) rotate(14deg) translate3d(3%, 2%, 0); border-radius: 58% 42% 62% 38% / 36% 60% 40% 64%; }
-}
-
-@keyframes goo-core {
-  from { transform: scale(0.84) rotate(-10deg); opacity: 0; }
-  40% { opacity: 1; }
-  to { transform: scale(1.12) rotate(10deg); opacity: 0; }
-}
-
-@keyframes goo-wash {
-  from { opacity: 0; transform: scale(0.96); }
-  30% { opacity: 0.7; }
-  to { opacity: 0; transform: scale(1.12); }
 }
