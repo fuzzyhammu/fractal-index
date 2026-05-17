@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const DRIP_TIME = 420;
-const HOLD_TIME = 600;
+const DRIP_TIME = 520;
+const HOLD_TIME = 560;
 const LIFT_TIME = 520;
-const IDLE_HOLD = 400; // keep overlay briefly after lifting so nothing flashes through
+
+// Decelerating goop: starts fast, settles slow — like goo landing
+const EASE_OUT_DECEL = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 type Phase = "idle" | "dripping" | "covered" | "lifting" | "afterlift";
 
@@ -70,13 +72,11 @@ export function PageTransition() {
         }
         setPhase("lifting");
       }, DRIP_TIME + HOLD_TIME),
-      window.setTimeout(() => {
-        setPhase("afterlift");
-      }, DRIP_TIME + HOLD_TIME + LIFT_TIME),
+      window.setTimeout(() => setPhase("afterlift"), DRIP_TIME + HOLD_TIME + LIFT_TIME),
       window.setTimeout(() => {
         setPhase("idle");
         setShrinkLabel(false);
-      }, DRIP_TIME + HOLD_TIME + LIFT_TIME + IDLE_HOLD),
+      }, DRIP_TIME + HOLD_TIME + LIFT_TIME + 60),
     );
   }, []);
 
@@ -88,7 +88,13 @@ export function PageTransition() {
       setDestLabel(label);
       setIsHomeDest(pathname === "/");
       setShrinkLabel(false);
-      setPhase("dripping");
+      // Start in idle so the first transition triggers properly from hidden state
+      setPhase("idle");
+
+      // Kick off the first transition after a brief paint
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setPhase("dripping"));
+      });
 
       timers.current = [
         window.setTimeout(() => setPhase("covered"), DRIP_TIME),
@@ -97,14 +103,12 @@ export function PageTransition() {
           setShrinkLabel(true);
           setPhase("lifting");
         }, DRIP_TIME + HOLD_TIME),
-        window.setTimeout(() => {
-          setPhase("afterlift");
-        }, DRIP_TIME + HOLD_TIME + LIFT_TIME),
+        window.setTimeout(() => setPhase("afterlift"), DRIP_TIME + HOLD_TIME + LIFT_TIME),
         window.setTimeout(() => {
           setPhase("idle");
           setShrinkLabel(false);
           setFirstRender(false);
-        }, DRIP_TIME + HOLD_TIME + LIFT_TIME + IDLE_HOLD),
+        }, DRIP_TIME + HOLD_TIME + LIFT_TIME + 60),
       ];
       return () => timers.current.forEach(window.clearTimeout);
     }
@@ -126,25 +130,45 @@ export function PageTransition() {
     return () => window.removeEventListener("gg-force-nav", handler);
   }, [navigate, pathname, runTransition]);
 
-  // --- Motion values ---
+  // --- Motion: always drops downward ---
+  //
+  // Entry (idle → dripping):  hidden above (-110%) → visible (0%)
+  //   → The whole panel drops DOWN from above, decelerating like goo landing.
+  //
+  // Exit  (covered → lifting): visible (0%) → hidden below (+110%)
+  //   → The whole panel drops DOWN past the bottom, goop dripping away.
+  //
+  // Afterlift → idle: panel snaps instantly back to -110% (while opacity is 0)
+  //   → No visual jump because opacity is 0 during the reset.
 
-  // The whole panel slides down from above screen (hidden) into place, then back up.
   const panelTranslateY =
-    phase === "idle" || phase === "afterlift" ? -110
-    : phase === "dripping" ? 0
-    : phase === "covered" ? 0
-    : -112;
+    phase === "idle"
+      ? -110   // hidden above — ready to drop down on next entry
+      : phase === "dripping"
+      ? 0      // dropped down and settled
+      : phase === "covered"
+      ? 0      // holding in place
+      : phase === "lifting"
+      ? 110    // dropping down past bottom
+      : 110;   // afterlift — still below, about to snap back to idle position
 
   const panelOpacity =
     phase === "idle" ? 0
     : phase === "afterlift" ? 0
     : 1;
 
-  const panelTransition =
+  const transformTransition =
     phase === "dripping"
-      ? `transform ${DRIP_TIME}ms cubic-bezier(0.62, 0, 0.98, 0.78), opacity ${DRIP_TIME * 0.5}ms ease`
+      ? `transform ${DRIP_TIME}ms ${EASE_OUT_DECEL}`
       : phase === "lifting" || phase === "afterlift"
-      ? `transform ${LIFT_TIME}ms cubic-bezier(0.14, 0, 0.28, 1.22), opacity ${LIFT_TIME}ms ease`
+      ? `transform ${LIFT_TIME}ms ${EASE_OUT_DECEL}`
+      : "none";
+
+  const opacityTransition =
+    phase === "dripping"
+      ? `opacity ${DRIP_TIME * 0.5}ms ease`
+      : phase === "lifting" || phase === "afterlift"
+      ? `opacity ${LIFT_TIME * 0.6}ms ease`
       : "none";
 
   const labelOpacity = phase === "covered" && !shrinkLabel ? 1 : 0;
@@ -183,14 +207,18 @@ export function PageTransition() {
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 overflow-hidden"
-        style={{ zIndex: 9999, opacity: panelOpacity, transition: panelTransition }}
+        style={{
+          zIndex: 9999,
+          opacity: panelOpacity,
+          transition: opacityTransition,
+        }}
       >
         <div
           style={{
             position: "absolute",
             inset: 0,
             transform: `translateY(${panelTranslateY}%)`,
-            transition: panelTransition,
+            transition: transformTransition,
             willChange: "transform",
           }}
         >
@@ -290,7 +318,7 @@ export function PageTransition() {
             )}
           </div>
 
-          {/* Top goop — slides in from above */}
+          {/* Top goop — drips down with the panel */}
           <svg
             aria-hidden
             viewBox="0 0 1000 200"
@@ -314,7 +342,7 @@ export function PageTransition() {
             </g>
           </svg>
 
-          {/* Bottom goop — slides in from below */}
+          {/* Bottom goop — drips down with the panel */}
           <svg
             aria-hidden
             viewBox="0 0 1000 200"
