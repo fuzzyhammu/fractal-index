@@ -317,17 +317,6 @@ export function PageTransition() {
               <>
                 <span
                   style={{
-                    fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
-                    fontSize: "0.55rem",
-                    letterSpacing: "0.48em",
-                    textTransform: "uppercase",
-                    color: "hsl(43 65% 52% / 0.55)",
-                  }}
-                >
-                  § 00
-                </span>
-                <span
-                  style={{
                     fontFamily: "'Playfair Display', Georgia, serif",
                     fontSize: "clamp(2.4rem, 7.5vw, 5.8rem)",
                     fontWeight: 600,
@@ -341,20 +330,34 @@ export function PageTransition() {
                 >
                   Geetika Gehlot
                 </span>
-              </>
-            ) : (
-              <>
                 <span
                   style={{
                     fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
-                    fontSize: "0.55rem",
-                    letterSpacing: "0.45em",
+                    fontSize: "clamp(0.7rem, 1.2vw, 0.9rem)",
+                    letterSpacing: "0.35em",
                     textTransform: "uppercase",
-                    color: "hsl(43 65% 52% / 0.45)",
+                    color: "hsl(43 65% 52% / 0.6)",
+                    marginTop: "0.6rem",
                   }}
                 >
-                  GG
+                  Home
                 </span>
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)",
+                    fontWeight: 500,
+                    fontStyle: "italic",
+                    color: "hsl(43 60% 55% / 0.65)",
+                    letterSpacing: "0.08em",
+                    marginTop: "0.25rem",
+                  }}
+                >
+                  Geetika Gehlot
+                </span>
+              </>
+            ) : (
+              <>
                 <span
                   style={{
                     fontFamily: "'Playfair Display', Georgia, serif",
@@ -368,6 +371,19 @@ export function PageTransition() {
                   }}
                 >
                   {destLabel}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)",
+                    fontWeight: 500,
+                    fontStyle: "italic",
+                    color: "hsl(43 60% 55% / 0.65)",
+                    letterSpacing: "0.08em",
+                    marginTop: "0.35rem",
+                  }}
+                >
+                  Geetika Gehlot
                 </span>
               </>
             )}
