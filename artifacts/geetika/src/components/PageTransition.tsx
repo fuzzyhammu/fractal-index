@@ -1,70 +1,74 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const FADE_IN  = 110;
-const HOLD     = 130;
-const FADE_OUT = 160;
-const TOTAL    = FADE_IN + HOLD + FADE_OUT;
+const FADE_IN = 120;
+const HOLD = 180;
+const FADE_OUT = 140;
 
-type Phase = "idle" | "in" | "hold" | "out";
+type Phase = "idle" | "enter" | "hold" | "exit";
 
 export function PageTransition() {
   const { pathname } = useLocation();
-  const prevPath = useRef(pathname);
-  const [phase, setPhase]   = useState<Phase>("idle");
+  const lastPath = useRef(pathname);
+  const [phase, setPhase] = useState<Phase>("idle");
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
-    if (pathname === prevPath.current) return;
-    timers.current.forEach(clearTimeout);
+    if (pathname === lastPath.current) return;
+    timers.current.forEach(window.clearTimeout);
     timers.current = [];
-
-    setPhase("in");
-
+    setPhase("enter");
     timers.current.push(
+      window.setTimeout(() => setPhase("hold"), FADE_IN),
       window.setTimeout(() => {
-        prevPath.current = pathname;
-        setPhase("hold");
-      }, FADE_IN),
-
-      window.setTimeout(() => setPhase("out"),  FADE_IN + HOLD),
-      window.setTimeout(() => setPhase("idle"), TOTAL),
+        lastPath.current = pathname;
+        setPhase("exit");
+      }, FADE_IN + HOLD),
+      window.setTimeout(() => setPhase("idle"), FADE_IN + HOLD + FADE_OUT),
     );
+    return () => timers.current.forEach(window.clearTimeout);
   }, [pathname]);
 
-  const showing = phase !== "idle";
-  const opaque  = phase === "hold";
+  const visible = phase !== "idle";
+  const showText = phase === "hold";
+  const overlayTransition = phase === "enter"
+    ? `opacity ${FADE_IN}ms cubic-bezier(0.22,1,0.36,1)`
+    : phase === "exit"
+      ? `opacity ${FADE_OUT}ms cubic-bezier(0.22,1,0.36,1)`
+      : `opacity ${HOLD}ms linear`;
+  const textTransition = phase === "enter"
+    ? `opacity ${FADE_IN}ms ease, transform ${FADE_IN}ms cubic-bezier(0.22,1,0.36,1)`
+    : phase === "exit"
+      ? `opacity ${FADE_OUT}ms ease, transform ${FADE_OUT}ms cubic-bezier(0.22,1,0.36,1)`
+      : `opacity ${HOLD}ms linear`;
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+      className="pointer-events-none fixed inset-0 z-[9999] bg-black"
       style={{
-        opacity: showing ? (opaque ? 1 : 0) : 0,
-        transition: opaque
-          ? `opacity ${FADE_IN}ms cubic-bezier(0.4,0,0.2,1)`
-          : phase === "out"
-            ? `opacity ${FADE_OUT}ms cubic-bezier(0.4,0,0.2,1)`
-            : `opacity ${FADE_IN}ms cubic-bezier(0.4,0,0.2,1)`,
-        visibility: showing ? "visible" : "hidden",
+        opacity: visible ? 1 : 0,
+        visibility: visible ? "visible" : "hidden",
+        transition: overlayTransition,
       }}
     >
-      <span
-        style={{
-          fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-          fontSize: "clamp(3rem, 6vw, 5.5rem)",
-          fontWeight: 400,
-          letterSpacing: "0.35em",
-          textIndent: "0.35em",
-          color: "hsl(43 70% 62%)",
-          textShadow: "0 0 32px hsl(43 70% 62% / 0.55), 0 0 80px hsl(43 70% 62% / 0.2)",
-          transform: opaque ? "scale(1)" : "scale(0.94)",
-          opacity: opaque ? 1 : 0,
-          transition: `transform ${FADE_IN}ms cubic-bezier(0.22,1,0.36,1), opacity ${FADE_IN}ms ease`,
-        }}
-      >
-        GG
-      </span>
+      <div className="absolute inset-0 grid place-items-center">
+        <span
+          style={{
+            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+            fontSize: "clamp(3rem, 6vw, 5.25rem)",
+            letterSpacing: "0.38em",
+            textIndent: "0.38em",
+            color: "hsl(43 78% 62%)",
+            textShadow: "0 0 24px hsl(43 78% 62% / 0.45)",
+            opacity: showText ? 1 : 0,
+            transform: showText ? "scale(1)" : "scale(0.96)",
+            transition: textTransition,
+          }}
+        >
+          GG
+        </span>
+      </div>
     </div>
   );
 }

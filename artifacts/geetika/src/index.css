@@ -4,13 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-  Geetika Gehlot — E-Portfolio Design System
-  Meta-hybrid: editorial magazine + research dossier + cinematic founder.
-  Palette: deep navy / ivory paper / antique gold / oxblood accent.
-  All colors HSL.
-*/
-
 @layer base {
   :root {
     --background: 38 35% 95%;
@@ -86,28 +79,18 @@
   .dark .text-ink,
   .dark .hover\:text-ink:hover,
   .dark .group:hover .group-hover\:text-ink,
-  .dark .group\/tile:hover .group-hover\/tile\:text-ink {
-    color: hsl(var(--foreground));
-  }
-
+  .dark .group\/tile:hover .group-hover\/tile\:text-ink { color: hsl(var(--foreground)); }
   .dark .text-ink-soft,
   .dark .hover\:text-ink-soft:hover,
   .dark .group:hover .group-hover\:text-ink-soft,
-  .dark .group\/tile:hover .group-hover\/tile\:text-ink-soft {
-    color: hsl(var(--paper-contrast-soft));
-  }
-
+  .dark .group\/tile:hover .group-hover\/tile\:text-ink-soft { color: hsl(var(--paper-contrast-soft)); }
   .dark .text-paper,
   .dark .text-navy,
-  .dark .text-navy-deep {
-    color: hsl(var(--paper-contrast));
-  }
-
+  .dark .text-navy-deep { color: hsl(var(--paper-contrast)); }
   .dark .text-paper\/80 { color: hsl(var(--paper-contrast) / 0.8); }
   .dark .text-paper\/70 { color: hsl(var(--paper-contrast) / 0.7); }
   .dark .text-paper\/60 { color: hsl(var(--paper-contrast) / 0.6); }
   .dark .text-paper\/50 { color: hsl(var(--paper-contrast) / 0.5); }
-
   .dark .force-light .text-ink { color: hsl(220 60% 9%); }
   .dark .force-light .text-ink-soft { color: hsl(220 30% 22%); }
   .dark .force-light .text-muted-foreground { color: hsl(220 20% 38%); }
