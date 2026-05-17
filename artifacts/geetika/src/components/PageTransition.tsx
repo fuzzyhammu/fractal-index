@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const DRIP_TIME = 520;
-const HOLD_TIME = 560;
-const LIFT_TIME = 520;
+const DRIP_TIME = 600;
+const HOLD_TIME = 500;
+const LIFT_TIME = 600;
+const IDLE_HOLD = 80;
 
-// Decelerating goop: starts fast, settles slow — like goo landing
+// Decelerating goop: fast start, slow settle — like goo landing
 const EASE_OUT_DECEL = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 type Phase = "idle" | "dripping" | "covered" | "lifting" | "afterlift";
@@ -48,10 +49,12 @@ export function PageTransition() {
   const [isHomeDest, setIsHomeDest] = useState(false);
   const [shrinkLabel, setShrinkLabel] = useState(false);
   const timers = useRef<number[]>([]);
+  const pendingDest = useRef<string | null>(null);
 
   const runTransition = useCallback((destPathname: string, doReload = false) => {
     timers.current.forEach(window.clearTimeout);
     timers.current = [];
+    setFirstRender(false);
 
     const label =
       PAGE_LABELS[destPathname] ??
@@ -63,23 +66,96 @@ export function PageTransition() {
     setPhase("dripping");
 
     timers.current.push(
-      window.setTimeout(() => setPhase("covered"), DRIP_TIME),
+      // Phase 1: dripping → covered (screen fully covers)
+      window.setTimeout(() => {
+        setPhase("covered");
+        // Navigate NOW — screen is fully covered, no flash possible
+        if (doReload) {
+          window.setTimeout(() => window.location.reload(), 60);
+        } else if (pendingDest.current && pendingDest.current !== lastPath.current) {
+          navigate(pendingDest.current);
+        }
+      }, DRIP_TIME),
+      // Phase 2: covered → lifting (start revealing new page)
       window.setTimeout(() => {
         lastPath.current = destPathname;
         setShrinkLabel(true);
-        if (doReload) {
-          window.setTimeout(() => window.location.reload(), 60);
-        }
         setPhase("lifting");
       }, DRIP_TIME + HOLD_TIME),
+      // Phase 3: lifting → afterlift (panel below viewport, invisible)
       window.setTimeout(() => setPhase("afterlift"), DRIP_TIME + HOLD_TIME + LIFT_TIME),
+      // Phase 4: afterlift → idle (snap back above viewport, ready for next)
       window.setTimeout(() => {
         setPhase("idle");
         setShrinkLabel(false);
-      }, DRIP_TIME + HOLD_TIME + LIFT_TIME + 60),
+        pendingDest.current = null;
+      }, DRIP_TIME + HOLD_TIME + LIFT_TIME + IDLE_HOLD),
     );
+  }, [navigate]);
+
+  // --- Global click interceptor ---
+  // Catches all <a> clicks, including react-router <Link> elements,
+  // and routes them through gg-force-nav so the transition plays first.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+
+      // Let browser handle external links, special protocols, downloads, new tabs
+      if (
+        href.startsWith("http") ||
+        href.startsWith("//") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("tel:") ||
+        anchor.hasAttribute("download") ||
+        anchor.target === "_blank"
+      ) return;
+
+      // Let browser handle modifier clicks (open in new tab, etc.)
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+
+      // Skip same-page hash-only links (let browser scroll)
+      if (href.startsWith("#")) return;
+
+      // Only intercept internal paths
+      if (!href.startsWith("/")) return;
+
+      e.preventDefault();
+      window.dispatchEvent(
+        new CustomEvent("gg-force-nav", { detail: { to: href, reload: false } })
+      );
+    };
+
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
+  // --- gg-force-nav handler ---
+  // This is the ONLY way to trigger a transition. It starts the overlay,
+  // then navigates once the screen is fully covered.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { to, reload } = (e as CustomEvent<{ to: string; reload?: boolean }>).detail;
+      if (to === pathname) {
+        // Same page — replay transition, optionally reload
+        runTransition(to, reload ?? false);
+        return;
+      }
+      // Different page — store destination, start transition
+      pendingDest.current = to;
+      runTransition(to, false);
+    };
+    window.addEventListener("gg-force-nav", handler);
+    return () => window.removeEventListener("gg-force-nav", handler);
+  }, [pathname, runTransition]);
+
+  // --- Pathname change handler ---
+  // On first render: play the intro transition.
+  // On subsequent renders: the URL changed because navigate() was called
+  // during the covered phase. Just update lastPath — DO NOT start a new transition.
   useEffect(() => {
     if (firstRender) {
       const label =
@@ -88,10 +164,9 @@ export function PageTransition() {
       setDestLabel(label);
       setIsHomeDest(pathname === "/");
       setShrinkLabel(false);
-      // Start in idle so the first transition triggers properly from hidden state
       setPhase("idle");
 
-      // Kick off the first transition after a brief paint
+      // Kick off after paint so the CSS transition actually fires
       requestAnimationFrame(() => {
         requestAnimationFrame(() => setPhase("dripping"));
       });
@@ -108,54 +183,34 @@ export function PageTransition() {
           setPhase("idle");
           setShrinkLabel(false);
           setFirstRender(false);
-        }, DRIP_TIME + HOLD_TIME + LIFT_TIME + 60),
+        }, DRIP_TIME + HOLD_TIME + LIFT_TIME + IDLE_HOLD),
       ];
       return () => timers.current.forEach(window.clearTimeout);
     }
-    if (pathname === lastPath.current) return;
-    runTransition(pathname, false);
-    return () => timers.current.forEach(window.clearTimeout);
-  }, [pathname, runTransition, firstRender]);
 
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const { to, reload } = (e as CustomEvent<{ to: string; reload?: boolean }>).detail;
-      if (to !== pathname) {
-        navigate(to);
-      } else {
-        runTransition(to, reload ?? false);
-      }
-    };
-    window.addEventListener("gg-force-nav", handler);
-    return () => window.removeEventListener("gg-force-nav", handler);
-  }, [navigate, pathname, runTransition]);
+    // Not first render: pathname changed from navigate() during covered phase
+    if (pathname === lastPath.current) return;
+    lastPath.current = pathname;
+  }, [pathname, firstRender]);
 
   // --- Motion: always drops downward ---
   //
-  // Entry (idle → dripping):  hidden above (-110%) → visible (0%)
-  //   → The whole panel drops DOWN from above, decelerating like goo landing.
+  //  Entry (idle → dripping):  hidden above (-110%) → visible (0%)
+  //    → Panel drops DOWN from above. Decelerating like goo landing.
   //
-  // Exit  (covered → lifting): visible (0%) → hidden below (+110%)
-  //   → The whole panel drops DOWN past the bottom, goop dripping away.
+  //  Exit  (covered → lifting): visible (0%) → hidden below (+110%)
+  //    → Panel drops DOWN past bottom. Goo drips away.
   //
-  // Afterlift → idle: panel snaps instantly back to -110% (while opacity is 0)
-  //   → No visual jump because opacity is 0 during the reset.
+  //  Idle: panel sits at -110% (above viewport, invisible, ready to drop again)
 
   const panelTranslateY =
-    phase === "idle"
-      ? -110   // hidden above — ready to drop down on next entry
-      : phase === "dripping"
-      ? 0      // dropped down and settled
-      : phase === "covered"
-      ? 0      // holding in place
-      : phase === "lifting"
-      ? 110    // dropping down past bottom
-      : 110;   // afterlift — still below, about to snap back to idle position
+    phase === "idle" ? -110
+    : phase === "dripping" ? 0
+    : phase === "covered" ? 0
+    : phase === "lifting" ? 110
+    : 110;
 
-  const panelOpacity =
-    phase === "idle" ? 0
-    : phase === "afterlift" ? 0
-    : 1;
+  const panelOpacity = phase === "idle" || phase === "afterlift" ? 0 : 1;
 
   const transformTransition =
     phase === "dripping"
