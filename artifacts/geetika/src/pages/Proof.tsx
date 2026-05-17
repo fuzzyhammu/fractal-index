@@ -34,13 +34,13 @@ const Proof = () => {
           <span className="label-gold">Raw Archive</span>
           <span className="flex-1 h-px bg-border" />
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Placeholder label="Notebook scan — physics derivation" ratio="aspect-[4/3]" />
-          <Placeholder label="Sketch — robot arm concept" ratio="aspect-[4/3]" />
-          <Placeholder label="Margin notes — novel draft" ratio="aspect-[4/3]" />
-          <Placeholder label="Doodle — embroidery pattern" ratio="aspect-[4/3]" />
-          <Placeholder label="Calculation sheet — abacus practice" ratio="aspect-[4/3]" />
-          <Placeholder label="Half-formed idea — worldbuilding map" ratio="aspect-[4/3]" />
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 [grid-auto-flow:dense]">
+          <Placeholder label="Notebook scan — physics derivation" ratio="col-span-2 md:col-span-2 aspect-[16/9]" />
+          <Placeholder label="Sketch — robot arm concept" ratio="col-span-1 md:col-span-1 aspect-[4/5]" />
+          <Placeholder label="Margin notes — novel draft" ratio="col-span-1 md:col-span-1 aspect-[4/3]" />
+          <Placeholder label="Doodle — embroidery pattern" ratio="col-span-2 md:col-span-2 aspect-[16/9]" />
+          <Placeholder label="Calculation sheet — abacus practice" ratio="col-span-1 md:col-span-1 aspect-[4/3]" />
+          <Placeholder label="Half-formed idea — worldbuilding map" ratio="col-span-1 md:col-span-1 aspect-[1/1]" />
         </div>
       </section>
 

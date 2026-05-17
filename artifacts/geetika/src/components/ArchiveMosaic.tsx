@@ -84,17 +84,29 @@ function ArchiveTile({ topic, index, span }: { topic: TopicData; index: number; 
 }
 
 const SPANS_SM = ["col-span-2", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-1", "col-span-2"];
-const SPANS_LG = ["col-span-2", "col-span-1", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-1", "col-span-1", "col-span-2"];
+const SPANS_LG = ["col-span-2", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-2", "col-span-1", "col-span-1"];
+
+function shuffleSpans(index: number, slug: string, total: number) {
+  const hash = slug.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  const smPool = ["col-span-1", "col-span-1", "col-span-2", "col-span-2", "col-span-1", "col-span-1"];
+  const lgPool = ["col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-2", "col-span-1", "col-span-1", "col-span-2"];
+  const sm = smPool[(index + hash) % smPool.length];
+  const lg = lgPool[(index + hash) % lgPool.length];
+  // Last items: force smaller spans so dense flow can fill holes
+  if (index >= total - 2) {
+    return { sm: "col-span-1", lg: "col-span-1" };
+  }
+  return { sm, lg };
+}
 
 export function ArchiveMosaic({ topics }: { topics: TopicData[] }) {
   return (
     <section className="container pb-12">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-3.5">
         {topics.map((topic, i) => {
-          const lgSpan = SPANS_LG[i % SPANS_LG.length];
-          const smSpan = SPANS_SM[i % SPANS_SM.length];
+          const { sm, lg } = shuffleSpans(i, topic.slug, topics.length);
           return (
-            <ArchiveTile key={topic.slug} topic={topic} index={i} span={`${smSpan} md:${lgSpan}`} />
+            <ArchiveTile key={topic.slug} topic={topic} index={i} span={`${sm} md:${lg}`} />
           );
         })}
       </div>

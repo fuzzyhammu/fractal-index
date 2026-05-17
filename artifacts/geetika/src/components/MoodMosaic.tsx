@@ -178,6 +178,20 @@ function SplitTile({ left, right, tintLeft, tintRight, index }: { left: TopicDat
 export function MoodMosaic({ topics }: { topics: TopicData[] }) {
   const splitIndex = topics.findIndex((topic) => topic.slug === "childhood-trophies");
   const isWorks = topics.some((topic) => topic.slug === "frc-team-7700");
+  // Shuffle layouts deterministically by topic slug so they stay stable
+  // across re-renders but look different on each page
+  function getSpan(index: number, slug: string, total: number) {
+    const hash = slug.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+    const layouts = CELL_LAYOUTS.lg;
+    const base = layouts[(index + hash) % layouts.length];
+    // Force the last few items to fill remaining holes using dense flow
+    if (index >= total - 2) {
+      // alternate between small fills to patch gaps
+      return hash % 2 === 0 ? "col-span-1 row-span-1" : "col-span-2 row-span-1";
+    }
+    return base;
+  }
+
   return (
     <section className="px-10 md:px-20 lg:px-28 pb-4 overflow-hidden">
       <div className="mx-auto max-w-[1320px] grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[118px] md:auto-rows-[138px] lg:auto-rows-[156px] gap-2.5 md:gap-3.5 lg:gap-4 [grid-auto-flow:dense]">
@@ -213,7 +227,7 @@ export function MoodMosaic({ topics }: { topics: TopicData[] }) {
               key={topic.slug}
               topic={topic}
               index={index}
-              span={CELL_LAYOUTS.lg[index % CELL_LAYOUTS.lg.length]}
+              span={getSpan(index, topic.slug, topics.length)}
               tint={CELL_TINTS[index % CELL_TINTS.length]}
             />
           );

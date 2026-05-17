@@ -56,9 +56,16 @@ export function BentoGrid({ children, dense = true }: { children: ReactNode; den
   );
 }
 
-export function BentoCard({ item }: { item: BentoItem }) {
+const SIZE_POOL: BentoSize[] = ["sm", "md", "lg", "md", "sm", "wide", "lg", "xl"];
+
+function randomSize(id: string): BentoSize {
+  const hash = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  return SIZE_POOL[hash % SIZE_POOL.length];
+}
+
+export function BentoCard({ item, randomize = false }: { item: BentoItem; randomize?: boolean }) {
   const [open, setOpen] = useState(false);
-  const size = item.size ?? "md";
+  const size = randomize ? randomSize(item.id) : (item.size ?? "md");
   const accent = item.accent ?? "paper";
   const hasImage = !!item.image;
 
@@ -193,16 +200,18 @@ export function BentoCard({ item }: { item: BentoItem }) {
 }
 
 /** Convenience: render a list of items into a BentoGrid. */
-export const Bento = forwardRef<HTMLDivElement, { items: BentoItem[] }>(({ items }, ref) => {
-  return (
-    <div ref={ref}>
-      <BentoGrid>
-      {items.map((it) => (
-        <BentoCard key={it.id} item={it} />
-      ))}
-      </BentoGrid>
-    </div>
-  );
-});
+export const Bento = forwardRef<HTMLDivElement, { items: BentoItem[]; randomize?: boolean }>(
+  ({ items, randomize = false }, ref) => {
+    return (
+      <div ref={ref}>
+        <BentoGrid>
+          {items.map((it) => (
+            <BentoCard key={it.id} item={it} randomize={randomize} />
+          ))}
+        </BentoGrid>
+      </div>
+    );
+  }
+);
 
 Bento.displayName = "Bento";

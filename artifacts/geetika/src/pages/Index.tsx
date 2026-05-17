@@ -261,7 +261,7 @@ const Index = () => {
             </p>
           </div>
           <div data-reveal>
-            <Bento items={FEATURED} />
+            <Bento items={FEATURED} randomize />
           </div>
         </div>
       </section>
@@ -325,7 +325,7 @@ const Index = () => {
             </Link>
           </div>
           <div data-reveal>
-            <Bento items={CURIOSITIES} />
+            <Bento items={CURIOSITIES} randomize />
           </div>
         </div>
       </section>

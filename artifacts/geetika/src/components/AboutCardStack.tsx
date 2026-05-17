@@ -14,8 +14,8 @@ function easeOut(t: number) { return 1 - Math.pow(1 - clamp(t, 0, 1), 3); }
 function easeInOut(t: number) { const c = clamp(t, 0, 1); return c < 0.5 ? 2 * c * c : 1 - Math.pow(-2 * c + 2, 2) / 2; }
 
 const EXPAND_END = 0.12;
-const ESSAY_END = 0.72;
-const BUFFER_END = 0.78;
+const ESSAY_END = 0.88;
+const BUFFER_END = 0.90;
 
 const LIGHTBOX_CARDS = [
   {
@@ -67,7 +67,7 @@ function EssayPhoto({ src, alt, caption, align = "right" }: { src: string; alt: 
 
 function Essay() {
   return (
-    <article style={{ maxWidth: "640px", margin: "0 auto", paddingBottom: "0.25rem" }}>
+    <article style={{ maxWidth: "640px", margin: "0 auto" }}>
 
       <section style={{ marginBottom: "2.5rem" }}>
         <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(13px,1.1vw,15px)", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(43 70% 58%)", marginBottom: "1rem", opacity: 0.85 }}>I. Origin</h3>
