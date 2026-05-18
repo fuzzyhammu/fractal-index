@@ -12,7 +12,7 @@ const topLinks = [
 
 function forceNav(to: string) {
   if (to === window.location.pathname) {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     return;
   }
   window.dispatchEvent(
