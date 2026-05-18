@@ -36,17 +36,17 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 top-1/2 z-[1100] grid w-[calc(100vw-1.25rem)] max-w-lg max-h-[calc(100vh-1.25rem)] -translate-x-1/2 -translate-y-1/2 gap-4 border bg-popover text-popover-foreground p-6 shadow-[0_34px_110px_-24px_hsl(220_60%_4%/0.95)] duration-200 overflow-y-auto data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 sm:w-[calc(100vw-2rem)] sm:max-h-[calc(100vh-2rem)] sm:rounded-lg",
+        "fixed left-1/2 top-1/2 z-[1100] grid w-[calc(100vw-1.25rem)] max-w-lg max-h-[calc(100vh-1.25rem)] -translate-x-1/2 -translate-y-1/2 gap-4 border bg-popover text-popover-foreground p-6 shadow-[0_34px_110px_-24px_hsl(220_60%_4%/0.95)] duration-200 overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 sm:w-[calc(100vw-2rem)] sm:max-h-[calc(100vh-2rem)] sm:rounded-lg",
         className,
       )}
       {...props}
     >
       {children}
       <DialogPrimitive.Close
-        className="group absolute right-3 top-3 z-[1200] flex items-center justify-center rounded-full border border-gold/40 bg-[hsl(43_60%_14%_/_0.7)] text-gold backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[hsl(43_82%_50%)] hover:border-gold hover:text-black hover:shadow-[0_0_32px_6px_hsl(43_82%_50%/0.55),0_0_64px_12px_hsl(43_82%_50%/0.25)] focus:outline-none disabled:pointer-events-none"
+        className="group absolute right-3 top-3 z-[1200] flex items-center justify-center rounded-full border border-gold/40 bg-[hsl(43_60%_14%_/_0.7)] text-gold backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[6] hover:bg-[hsl(43_82%_50%)] hover:border-gold hover:text-black hover:shadow-[0_0_32px_6px_hsl(43_82%_50%/0.55),0_0_64px_12px_hsl(43_82%_50%/0.25)] focus:outline-none disabled:pointer-events-none"
         style={{ width: 72, height: 72 }}
       >
-        <X className="h-9 w-9 transition-transform duration-500 group-hover:rotate-90" strokeWidth={2} />
+        <X className="h-9 w-9 transition-transform duration-500 group-hover:scale-150 group-hover:rotate-90" strokeWidth={2} />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
