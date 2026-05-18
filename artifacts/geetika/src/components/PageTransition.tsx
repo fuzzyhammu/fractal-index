@@ -51,6 +51,7 @@ export function PageTransition() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const lastPath = useRef<string | null>(null);
+  const transitionTarget = useRef<string | null>(null);
   // Start covered so page is never visible before the intro animation lifts
   const [phase, setPhase] = useState<Phase>("covered");
   const [firstRender, setFirstRender] = useState(true);
@@ -68,6 +69,7 @@ export function PageTransition() {
     timers.current.forEach(window.clearTimeout);
     timers.current = [];
     setFirstRender(false);
+    transitionTarget.current = destPathname;
 
     const label =
       PAGE_LABELS[destPathname] ??
@@ -99,6 +101,7 @@ export function PageTransition() {
         setPhase("idle");
         setShrinkLabel(false);
         pendingDest.current = null;
+        transitionTarget.current = null;
       }, d + h + l),
     );
   }, [navigate]);
@@ -128,6 +131,7 @@ export function PageTransition() {
   useEffect(() => {
     const handler = (e: Event) => {
       const { to, reload } = (e as CustomEvent<{ to: string; reload?: boolean }>).detail;
+      if (transitionTarget.current === to && !reload) return;
       // Same-page click: skip transition entirely to avoid double animation / hang
       if (to === pathname && !reload) return;
       if (to === pathname) {
