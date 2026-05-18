@@ -10,8 +10,9 @@ const topLinks = [
 ];
 
 function forceNav(to: string) {
+  if (to === window.location.pathname) return;
   window.dispatchEvent(
-    new CustomEvent("gg-force-nav", { detail: { to, reload: to === window.location.pathname } })
+    new CustomEvent("gg-force-nav", { detail: { to, reload: false } })
   );
 }
 
