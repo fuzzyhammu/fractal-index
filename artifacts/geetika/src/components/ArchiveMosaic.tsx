@@ -19,54 +19,9 @@ function pickImage(topic: TopicData, index: number): string {
   return BG_POOL[index % BG_POOL.length];
 }
 
-// ---------------------------------------------------------------------------
-// Row-filling layout algorithm
-// Assigns col-spans so every row sums to exactly `cols`, with no partial rows
-// and no random gaps. Each item gets exactly one fixed row height.
-// ---------------------------------------------------------------------------
-
-const ROW_PATTERNS: Record<number, number[][]> = {
-  2: [[1, 1], [2]],
-  3: [[1, 1, 1], [2, 1], [1, 2]],
-  4: [[1, 1, 1, 1], [2, 2], [2, 1, 1], [1, 1, 2], [1, 2, 1]],
-};
-
-function fillPartialRow(count: number, cols: number): number[] {
-  if (count === 0) return [];
-  if (count === 1) return [cols];
-  const base = Math.floor(cols / count);
-  const extras = cols % count;
-  return Array.from({ length: count }, (_, i) => base + (i < extras ? 1 : 0));
-}
-
-function rowFillSpans(count: number, cols: number, seed: number): number[] {
-  if (count === 0) return [];
-  const ps = ROW_PATTERNS[cols] ?? [Array(cols).fill(1) as number[]];
-  const spans: number[] = [];
-  let i = 0;
-  let patIdx = seed;
-
-  while (i < count) {
-    const remaining = count - i;
-    // Only use patterns whose item-count fits the remaining items
-    const fitting = ps
-      .filter((p) => p.length <= remaining)
-      .sort((a, b) => b.length - a.length); // prefer patterns that consume more items
-
-    if (fitting.length > 0) {
-      const pat = fitting[patIdx % fitting.length];
-      spans.push(...pat);
-      i += pat.length;
-    } else {
-      // Last row: stretch items to fill remaining columns
-      spans.push(...fillPartialRow(remaining, cols));
-      break;
-    }
-    patIdx++;
-  }
-
-  return spans;
-}
+const SPANS_SM = ["col-span-2", "col-span-2", "col-span-1", "col-span-1", "col-span-2", "col-span-2", "col-span-1", "col-span-1"];
+const SPANS_MD = ["col-span-3", "col-span-2", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-3", "col-span-2"];
+const SPANS_LG = ["col-span-4", "col-span-2", "col-span-1", "col-span-1", "col-span-2", "col-span-1", "col-span-3", "col-span-2"];
 
 function ArchiveTile({ topic, index, span }: { topic: TopicData; index: number; span: string }) {
   const [open, setOpen] = useState(false);
@@ -133,14 +88,6 @@ function ArchiveTile({ topic, index, span }: { topic: TopicData; index: number; 
 }
 
 export function ArchiveMosaic({ topics }: { topics: TopicData[] }) {
-  const count = topics.length;
-
-  // Compute spans per breakpoint — rows always sum to the column count,
-  // so the grid forms a perfect filled rectangle with no gaps.
-  const smSpans = rowFillSpans(count, 2, 0);
-  const mdSpans = rowFillSpans(count, 3, 1);
-  const lgSpans = rowFillSpans(count, 4, 2);
-
   return (
     <section className="container pb-12">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-3.5">
@@ -149,7 +96,7 @@ export function ArchiveMosaic({ topics }: { topics: TopicData[] }) {
             key={topic.slug}
             topic={topic}
             index={i}
-            span={`col-span-${smSpans[i]} md:col-span-${mdSpans[i]} lg:col-span-${lgSpans[i]}`}
+            span={`${SPANS_SM[i % SPANS_SM.length]} ${SPANS_MD[i % SPANS_MD.length]} ${SPANS_LG[i % SPANS_LG.length]}`}
           />
         ))}
       </div>
