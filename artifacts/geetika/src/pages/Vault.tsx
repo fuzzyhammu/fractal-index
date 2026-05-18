@@ -48,7 +48,7 @@ const CVResume = () => {
             <span className="flex-1 h-px bg-border/40" />
           </div>
         </div>
-        <ArchiveMosaic topics={findCluster("vault")!.topics} />
+        <ArchiveMosaic topics={findCluster("vault")!.topics} wideSlug="recognition" />
       </section>
     </PageShell>
   );
