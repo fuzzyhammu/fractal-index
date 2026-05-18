@@ -10,7 +10,6 @@ import { Bento, type BentoItem } from "@/components/Bento";
 import { HeroSlideshow, type Slide } from "@/components/HeroSlideshow";
 import { CLUSTERS, findCluster } from "@/data/clusters";
 import { useReveal } from "@/hooks/useReveal";
-import heroPortrait from "@/assets/hero-portrait.jpg";
 import textureCosmos from "@/assets/texture-cosmos.jpg";
 import texturePaper from "@/assets/texture-paper.jpg";
 import atmosTelescope from "@/assets/atmos-telescope.jpg";
@@ -20,7 +19,7 @@ import atmosMusic from "@/assets/atmos-music.jpg";
 /* -------------------- HERO SLIDESHOW -------------------- */
 const HERO_SLIDES: Slide[] = [
   {
-    src: heroPortrait, alt: "Geetika Gehlot — portrait",
+    src: texturePaper, alt: "Paper texture pattern",
     tone: "light", eyebrow: "Geetika Gehlot · I",
     title: "Building worlds.",
     body: "Scientist · Researcher · Creator · Musician · Storyteller · Innovator. A 15-year-old multidisciplinary mind from Montréal.",
@@ -138,16 +137,16 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-multiply pointer-events-none animate-ken"
         />
         <img
-          src={atmosNotebook}
+          src={textureCosmos}
           alt=""
           aria-hidden
-          className="absolute -right-16 top-6 w-[44%] max-w-2xl h-[80%] object-cover opacity-20 grayscale pointer-events-none hidden md:block animate-float"
+          className="absolute -right-16 top-6 w-[44%] max-w-2xl h-[80%] object-cover opacity-20 pointer-events-none hidden md:block animate-float"
         />
         <img
-          src={atmosTelescope}
+          src={texturePaper}
           alt=""
           aria-hidden
-          className="absolute -left-24 -bottom-10 w-[28%] max-w-md h-[55%] object-cover opacity-10 grayscale rotate-[-4deg] pointer-events-none hidden md:block animate-drift"
+          className="absolute -left-24 -bottom-10 w-[28%] max-w-md h-[55%] object-cover opacity-10 pointer-events-none hidden md:block animate-drift"
         />
 
         <div className="container relative">
@@ -191,13 +190,13 @@ const Index = () => {
       {/* SKILLS TOOLKIT — layered telescope + cosmos veil + scanlines */}
       <section className="relative py-10 md:py-14 overflow-hidden scanlines film-grain dust weave-soft stipple">
         <img
-          src={atmosTelescope}
+          src={textureCosmos}
           alt=""
           aria-hidden
-          className="absolute -left-24 top-10 w-[40%] max-w-xl h-[80%] object-cover opacity-25 grayscale pointer-events-none hidden md:block animate-float"
+          className="absolute -left-24 top-10 w-[40%] max-w-xl h-[80%] object-cover opacity-25 pointer-events-none hidden md:block animate-float"
         />
         <img
-          src={textureCosmos}
+          src={texturePaper}
           alt=""
           aria-hidden
           className="absolute right-0 -bottom-10 w-[55%] h-[60%] object-cover opacity-10 pointer-events-none animate-drift"
@@ -245,10 +244,10 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none animate-ken"
         />
         <img
-          src={atmosNotebook}
+          src={textureCosmos}
           alt=""
           aria-hidden
-          className="absolute -left-10 bottom-0 w-[26%] max-w-sm h-[55%] object-cover opacity-10 grayscale rotate-[3deg] pointer-events-none hidden md:block animate-float"
+          className="absolute -left-10 bottom-0 w-[26%] max-w-sm h-[55%] object-cover opacity-10 pointer-events-none hidden md:block animate-float"
         />
         <div className="container relative">
           <div className="flex items-end justify-between mb-8 gap-6 flex-wrap" data-reveal>
@@ -335,13 +334,13 @@ const Index = () => {
       {/* GRAND GROUPS — index, layered music plate */}
       <section className="relative py-10 md:py-16 overflow-hidden film-grain dust crumpled-paper marble fibers">
         <img
-          src={atmosMusic}
+          src={texturePaper}
           alt=""
           aria-hidden
           className="absolute right-0 top-0 w-[40%] max-w-2xl h-[55%] object-cover opacity-20 grayscale pointer-events-none hidden md:block animate-float"
         />
         <img
-          src={texturePaper}
+          src={textureCosmos}
           alt=""
           aria-hidden
           className="absolute -left-10 bottom-0 w-[30%] max-w-md h-[50%] object-cover opacity-15 mix-blend-multiply pointer-events-none hidden md:block"

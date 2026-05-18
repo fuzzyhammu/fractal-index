@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import heroPortrait from "@/assets/hero-portrait.jpg";
-import atmosNotebook from "@/assets/atmos-notebook.jpg";
-import atmosTelescope from "@/assets/atmos-telescope.jpg";
-import atmosMusic from "@/assets/atmos-music.jpg";
-import textureComos from "@/assets/texture-cosmos.jpg";
+import texturePaper from "@/assets/texture-paper.jpg";
+import textureCosmos from "@/assets/texture-cosmos.jpg";
 
 function clamp(v: number, lo: number, hi: number) {
   return Math.max(lo, Math.min(hi, v));
@@ -125,7 +122,7 @@ export function ScrollExpandProfile() {
                 transition: "width 0.8s cubic-bezier(0.22,1,0.36,1), border-color 0.8s cubic-bezier(0.22,1,0.36,1)",
               }}
             >
-              <img src={heroPortrait} alt="Geetika Gehlot" className="absolute inset-0 w-full h-full object-cover object-[60%_25%]" />
+              <img src={textureCosmos} alt="Cosmos texture" className="absolute inset-0 w-full h-full object-cover object-[60%_25%]" />
               <span className="absolute inset-1.5 border border-paper/10 pointer-events-none" />
             </figure>
 
@@ -271,7 +268,7 @@ function Essay() {
 
       <section className="essay-section mb-9">
         <h3 className="essay-heading">I. Origin</h3>
-        <EssayPhoto src={heroPortrait} alt="Geetika Gehlot portrait" caption="Montréal, 2024" align="right" />
+        <EssayPhoto src={textureCosmos} alt="Cosmos texture" caption="Montréal, 2024" align="right" />
         <p className="drop-cap">
           I was born in a city that does not sleep lightly. Rajasthan, India — sandstone
           and spice and a sky so wide it made ambition feel obligatory. My earliest memories
@@ -295,7 +292,7 @@ function Essay() {
 
       <section className="essay-section mb-9">
         <h3 className="essay-heading">II. Between Worlds</h3>
-        <EssayPhoto src={atmosNotebook} alt="Notebook and handwritten notes" caption="Notes, drafts, half-formed questions" align="left" />
+        <EssayPhoto src={texturePaper} alt="Paper texture" caption="Notes, drafts, half-formed questions" align="left" />
         <p>
           Moving between countries at a formative age is not a neutral event. It rewires
           something. You stop assuming that the way things are done where you grew up is the
@@ -329,7 +326,7 @@ function Essay() {
 
       <section className="essay-section mb-9">
         <h3 className="essay-heading">III. The Mind and Its Obsessions</h3>
-        <EssayPhoto src={atmosTelescope} alt="Telescope and night sky observation" caption="Observing — always observing" align="right" />
+        <EssayPhoto src={textureCosmos} alt="Cosmos texture" caption="Observing — always observing" align="right" />
         <p>
           If you asked me to identify the central obsession of my intellectual life, I
           would not give you a subject. I would give you a posture. I am obsessed with
@@ -367,11 +364,11 @@ function Essay() {
         </p>
       </section>
 
-      <EssayPhoto src={textureComos} alt="Cosmos texture" caption="The texture of deep time" align="full" />
+      <EssayPhoto src={textureCosmos} alt="Cosmos texture" caption="The texture of deep time" align="full" />
 
       <section className="essay-section mb-9">
         <h3 className="essay-heading">IV. The Creative Life</h3>
-        <EssayPhoto src={atmosMusic} alt="Music and instruments" caption="Riyaaz — daily practice in Hindustani vocal" align="left" />
+        <EssayPhoto src={texturePaper} alt="Paper texture" caption="Riyaaz — daily practice in Hindustani vocal" align="left" />
         <p>
           The assumption that STEM and the arts are in competition is one I have never
           been able to take seriously, because it has never matched my experience. The

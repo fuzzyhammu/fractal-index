@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import type { TopicData } from "@/data/clusters";
-import heroPortrait from "@/assets/hero-portrait.jpg";
 import atmosNotebook from "@/assets/atmos-notebook.jpg";
 import atmosTelescope from "@/assets/atmos-telescope.jpg";
 import atmosMusic from "@/assets/atmos-music.jpg";
 import texturePaper from "@/assets/texture-paper.jpg";
+import textureCosmos from "@/assets/texture-cosmos.jpg";
 
 function clamp(v: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, v)); }
 function lerp(a: number, b: number, t: number) { return a + (b - a) * clamp(t, 0, 1); }
@@ -20,7 +20,7 @@ const LIGHTBOX_CARDS = [
     label: "The Scientist",
     blurb: "Physics, mathematics, and the obsession with first principles.",
     accent: "#c9a342",
-    photo: atmosTelescope,
+    photo: textureCosmos,
     detail: `Physics found me before I found it. I remember being seven years old in Jaipur, watching my father sketch orbital diagrams on the back of a receipt and explaining why the moon doesn't fall. Something clicked — not just the fact, but the machinery of explanation itself. That there could be a language precise enough to describe the universe felt, to me, miraculous.\n\nMathematics followed as the natural companion. I moved through arithmetic into algebra, then into calculus and combinatorics, drawn less by grades than by the specific pleasure of a proof that snaps shut. Olympiad mathematics taught me that the goal is never mere computation — it is the identification of the hidden structure beneath a problem, the moment the labyrinth reveals itself to have a logic.\n\nIn Montréal I found myself in an environment where STEM was both celebrated and accessible. My school's AP track let me push ahead in physics and math simultaneously, and I began supplementing formal coursework with independent reading: Feynman's lectures, Penrose's road to reality, papers on quantum information that I understood imperfectly but returned to obsessively.\n\nChess, too, belongs here. The board is a finite combinatorial universe in which intuition and calculation must negotiate in real time. Training in chess sharpened my ability to hold several scenarios in mind, evaluate positions under pressure, and make decisions with incomplete information — skills that transfer directly into every other domain I inhabit.\n\nComputer science completed the triangle. Code is the third language, after mathematics and English, in which I think most fluently. I built this site myself, not because it was the easiest solution but because I wanted to understand the full stack: the data, the components, the types, the deployment. Understanding the whole system is the only way to build at the edges where domains meet — and that intersection is precisely where I intend to spend my life.`,
   },
   {
@@ -28,7 +28,7 @@ const LIGHTBOX_CARDS = [
     label: "The Artist",
     blurb: "Hindustani vocal, fiction, and the discipline of daily practice.",
     accent: "#8ab4c8",
-    photo: atmosMusic,
+    photo: texturePaper,
     detail: `I have been singing since before I had words for what I was doing. Hindustani classical vocal is not a hobby — it is a practice in the deepest sense of the word. The Sanskrit root of riyaaz is the same as the root of the word for repetition: you come to the tanpura every morning not because you are not yet good enough, but because perfection in this tradition is a direction, not a destination.\n\nI train in the guru-shishya tradition under a teacher who learned from a teacher who learned from a teacher — a lineage that stretches back centuries. What I am learning is not only a repertoire of raagas and taals but an entire epistemology of listening. The classical form demands that you understand silence as structure, that you hear the space between notes as meaningfully as the notes themselves.\n\nWriting is the other primary creative strand. I have been building a novel series — multiple volumes, a complete fictional world with its own geographies, languages, and histories — since I was twelve. The project has become a laboratory for every intellectual obsession I have: the physics of imaginary cosmologies, the linguistics of constructed languages, the political economy of fictional civilisations.\n\nLong-form fiction demands exactly the qualities that scientific thinking rewards: patience with complexity, willingness to revise fundamental assumptions when the evidence demands it, attention to the gap between intended meaning and received meaning. The creative life and the scientific life are not opposites — they are the same impulse expressed in different registers, both reaching toward the same goal: understanding, made communicable.\n\nI have also run a podcast, exploring the intersections of creativity, science, and culture through conversation and monologue. The discipline of speaking clearly and precisely for an audience has sharpened my writing in ways that surprised me. Every medium teaches you something the others cannot.`,
   },
   {
@@ -36,7 +36,7 @@ const LIGHTBOX_CARDS = [
     label: "The Builder",
     blurb: "FRC Team 7700, engineering systems, and things that ship.",
     accent: "#7bbcb4",
-    photo: atmosNotebook,
+    photo: textureCosmos,
     detail: `The first time I held a drill during FRC build season, I was terrified. Six weeks to design, fabricate, wire, and programme a competition robot from a kit of parts and a game manual — that is the premise of FIRST Robotics, and it is one of the most demanding creative environments I have ever entered.\n\nTeam 7700 changed how I think about making things. The build season is a compressed version of every engineering project that exists: the initial excitement of the design phase, the brutal middle weeks when nothing works as specified, the integration hell when subsystems that tested fine individually refuse to cooperate, and then — if you have done the work — the game-day clarity when the machine does what you built it to do.\n\nI learned Onshape and SolidWorks for CAD, gained hands-on experience with fabrication (metal, plastic, pneumatics, wiring), and contributed to the programming side using Java and later Python. But the most important thing I learned on the team was not any particular tool — it was how to debug a system whose components you do not fully understand, under time pressure, with imperfect information.\n\nThat skill — systematic debugging of complex, partially-opaque systems — is the most transferable thing I own. I apply it when I am writing code, when I am revising a chapter of my novel, when I am preparing for a physics exam. Every domain I work in is, at some level, a system. The engineering mindset is the practice of engaging those systems honestly: defining inputs and outputs, isolating variables, testing assumptions one at a time.\n\nThis site is also a build. Every component, every data structure, every animation you see was designed and implemented by me. Building the dossier was itself a proof of concept: that I could ship something complete, functional, and genuinely representative of who I am.`,
   },
 ];
@@ -160,7 +160,7 @@ function Essay() {
 
       <section style={{ marginBottom: "2.5rem" }}>
         <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(13px,1.1vw,15px)", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(43 70% 58%)", marginBottom: "1rem", opacity: 0.85 }}>I. Origin</h3>
-        <EssayPhoto src={heroPortrait} alt="Geetika portrait" caption="Montréal, 2024" align="right" />
+        <EssayPhoto src={textureCosmos} alt="Cosmos texture" caption="Montréal, 2024" align="right" />
         <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(15px,1.25vw,17px)", lineHeight: 1.82, color: "hsl(220 15% 82%)", marginBottom: "1rem" }}>
           <span style={{ float: "left", fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(3.2rem,5vw,4.2rem)", lineHeight: 0.78, fontWeight: 700, color: "hsl(43 78% 62%)", marginRight: "0.18em", marginTop: "0.08em" }}>I</span>
           was born in Rajasthan, in the high-desert heart of India, where the architecture is rose-pink sandstone and the sky at night is so uninterrupted that the Milky Way looks less like a smear than a fact. The land there has a particular quality of light — hard, clarifying, indifferent to sentiment — that I carry with me still, as a standard of precision against which softer environments sometimes feel inadequate.
@@ -178,7 +178,7 @@ function Essay() {
 
       <section style={{ marginBottom: "2.5rem" }}>
         <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(13px,1.1vw,15px)", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(43 70% 58%)", marginBottom: "1rem", opacity: 0.85 }}>II. Between Worlds</h3>
-        <EssayPhoto src={atmosNotebook} alt="Notebook and drafts" caption="Notes and drafts, always" align="left" />
+        <EssayPhoto src={texturePaper} alt="Paper texture" caption="Notes and drafts, always" align="left" />
         <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(15px,1.25vw,17px)", lineHeight: 1.82, color: "hsl(220 15% 78%)", marginBottom: "1rem" }}>
           I speak four languages: English, French, Hindi, and Marwari. The last one is the language of my family, a dialect of Rajasthan that is unwritten, oral, carried in the throat rather than on any page. Each of these languages has its own grammar not only in the syntactic sense but in the epistemic sense — each one organises the world differently, makes different things sayable, privileges different kinds of knowledge.
         </p>
@@ -194,7 +194,7 @@ function Essay() {
 
       <section style={{ marginBottom: "2.5rem" }}>
         <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(13px,1.1vw,15px)", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(43 70% 58%)", marginBottom: "1rem", opacity: 0.85 }}>III. The Scientist's Mind</h3>
-        <EssayPhoto src={atmosTelescope} alt="Telescope" caption="Observing — always observing" align="right" />
+        <EssayPhoto src={textureCosmos} alt="Cosmos texture" caption="Observing — always observing" align="right" />
         <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(15px,1.25vw,17px)", lineHeight: 1.82, color: "hsl(220 15% 78%)", marginBottom: "1rem" }}>
           Physics found me before I found it. I remember being seven years old, watching my father sketch orbital diagrams on the back of a receipt and explaining why the moon doesn't fall toward the Earth the way an apple does. Something clicked — not just the fact, but the machinery behind the explanation. That there could be a language precise enough to describe the universe felt miraculous.
         </p>
@@ -208,7 +208,7 @@ function Essay() {
 
       <section style={{ marginBottom: "2.5rem" }}>
         <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(13px,1.1vw,15px)", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "hsl(43 70% 58%)", marginBottom: "1rem", opacity: 0.85 }}>IV. The Creative Life</h3>
-        <EssayPhoto src={atmosMusic} alt="Music and riyaaz" caption="Daily riyaaz — discipline as practice" align="left" />
+        <EssayPhoto src={texturePaper} alt="Paper texture" caption="Daily riyaaz — discipline as practice" align="left" />
         <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(15px,1.25vw,17px)", lineHeight: 1.82, color: "hsl(220 15% 78%)", marginBottom: "1rem" }}>
           I have been singing since before I had words for what I was doing. Hindustani classical vocal is not a hobby — it is a practice in the deepest sense of the word. The root of <em>riyaaz</em> is the same as the root of the word for repetition: you come to the tanpura every morning not because you are not yet good enough, but because perfection in this tradition is a direction, not a destination.
         </p>
@@ -398,7 +398,7 @@ export function AboutCardStack({ topics: _topics }: { topics: TopicData[] }) {
                   }}
                 >
                   <div style={{ width: 48, height: 48, borderRadius: 6, overflow: "hidden", border: "1px solid hsl(43 60% 50% / 0.2)", flexShrink: 0 }}>
-                    <img src={heroPortrait} alt="Geetika Gehlot" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src={textureCosmos} alt="Cosmos texture" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
                   <div>
                     <div style={{ fontFamily: "ui-monospace, monospace", fontSize: "7px", letterSpacing: "0.32em", textTransform: "uppercase", color: "hsl(43 70% 55% / 0.65)", marginBottom: "0.25rem" }}>§ 01 · Personal Profile</div>

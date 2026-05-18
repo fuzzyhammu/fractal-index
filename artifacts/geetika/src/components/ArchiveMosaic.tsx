@@ -2,24 +2,21 @@ import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import type { TopicData } from "@/data/clusters";
-import heroPortrait from "@/assets/hero-portrait.jpg";
-import atmosNotebook from "@/assets/atmos-notebook.jpg";
-import atmosTelescope from "@/assets/atmos-telescope.jpg";
-import atmosMusic from "@/assets/atmos-music.jpg";
 import textureCosmos from "@/assets/texture-cosmos.jpg";
+import texturePaper from "@/assets/texture-paper.jpg";
 
 const BG_POOL = [
-  heroPortrait, atmosNotebook, atmosTelescope, atmosMusic, textureCosmos,
-  atmosNotebook, atmosTelescope, heroPortrait, atmosMusic, textureCosmos,
-  atmosNotebook, atmosTelescope,
+  textureCosmos, texturePaper, textureCosmos, texturePaper, textureCosmos,
+  texturePaper, textureCosmos, texturePaper, textureCosmos, texturePaper,
+  textureCosmos, texturePaper,
 ];
 
 function pickImage(topic: TopicData, index: number): string {
   const s = (topic.label + " " + topic.blurb).toLowerCase();
-  if (s.includes("music") || s.includes("vocal") || s.includes("riyaaz") || s.includes("instrument")) return atmosMusic;
-  if (s.includes("physics") || s.includes("telescope") || s.includes("research") || s.includes("cosmos") || s.includes("science")) return atmosTelescope;
-  if (s.includes("note") || s.includes("writing") || s.includes("essay") || s.includes("journal") || s.includes("novel")) return atmosNotebook;
-  if (s.includes("profile") || s.includes("identity") || s.includes("about") || s.includes("personal")) return heroPortrait;
+  if (s.includes("music") || s.includes("vocal") || s.includes("riyaaz") || s.includes("instrument")) return texturePaper;
+  if (s.includes("physics") || s.includes("telescope") || s.includes("research") || s.includes("cosmos") || s.includes("science")) return textureCosmos;
+  if (s.includes("note") || s.includes("writing") || s.includes("essay") || s.includes("journal") || s.includes("novel")) return texturePaper;
+  if (s.includes("profile") || s.includes("identity") || s.includes("about") || s.includes("personal")) return textureCosmos;
   return BG_POOL[index % BG_POOL.length];
 }
 
